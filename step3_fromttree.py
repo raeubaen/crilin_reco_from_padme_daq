@@ -39,7 +39,7 @@ parser.add_argument('--nsamples', type=int, help='Nsamples per waveform', defaul
 parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=5)
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
-parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set nboards=0', default=0)
+parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
 parser.add_argument('--seriessignalstart', type=int, help='Series Signal start (ns)', default=20)
 parser.add_argument('--seriessignalend', type=int, help='Series Signal end (ns)', default=100)
 parser.add_argument('--parallelsignalstart', type=int, help='Series Signal start (ns)', default=20)

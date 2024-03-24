@@ -7,6 +7,8 @@ parser = argparse.ArgumentParser(description='Online monitor and reconstruction 
 
 parser.add_argument('nrun', type=str, help='nrun')
 parser.add_argument('label', type=str, help='label', default="")
+parser.add_argument('--lyso', type=str, help="Lyso with series", default=0)
+parser.add_argument('--lysoparallel', type=str, help="Lyso with parallel", default=0)
 parser.add_argument('--rootinputfolder', type=str, help="Root input folder", default='/eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output')
 parser.add_argument('--condorfolder', type=str, help="Folder where logs etc. are saved", default='../jobs')
 parser.add_argument('--rootoutfolder', type=str, help="Root/json out folder", default='/eos/user/e/edimeco/BTF/crilin/output/')
@@ -20,6 +22,9 @@ v["njobs"] = len(glob.glob(f"{rootinputfolder}/run_{nrun}/out_temp_*.root"))
 v["codedir"] = os.getcwd()
 for key in ["rootinputfolder", "condorfolder", "rootoutfolder"]:
   v[key] = os.path.abspath(v[key])
+
+v["script"] = "condorjob_lyso.sh" if lyso else "condorjob.sh"
+if lysoparallel: v["script"] = "condorjob_lyso_parallel.sh"
 
 os.system(f"mkdir {condorfolder}/{nrun}_{label}")
 os.system(f"mkdir {condorfolder}/{nrun}_{label}/output")
@@ -36,4 +41,4 @@ f = open(f"{condorfolder}/{nrun}_{label}/jobsub{nrun}.condor", "w")
 f.write(sub)
 f.close()
 
-os.system(f"condor_submit {condorfolder}/{nrun}_{label}/jobsub{nrun}.condor")
+#os.system(f"condor_submit {condorfolder}/{nrun}_{label}/jobsub{nrun}.condor")

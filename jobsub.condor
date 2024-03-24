@@ -1,4 +1,4 @@
-executable            = condorjob.sh
+executable            = $script
 arguments             = $(ClusterId) $(ProcId) $nrun $label $rootinputfolder $rootoutfolder $codedir
 input                 = input
 output                = $condorfolder/$nrun_$label/output/output.$(ClusterId).$(ProcId).out
