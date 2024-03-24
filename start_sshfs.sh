@@ -1,1 +1,1 @@
-autossh -M 0 -f -R mu2edaqlnf:22:localhost:22 serveo.net
+sshfs -o ssh_command="ssh -J serveo.net" mu2e@mu2edaqlnf:/home/mu2e/onlinemonitor/outonline outonline
