@@ -41,4 +41,4 @@ f = open(f"{condorfolder}/{nrun}_{label}/jobsub{nrun}.condor", "w")
 f.write(sub)
 f.close()
 
-#os.system(f"condor_submit {condorfolder}/{nrun}_{label}/jobsub{nrun}.condor")
+os.system(f"condor_submit {condorfolder}/{nrun}_{label}/jobsub{nrun}.condor")
