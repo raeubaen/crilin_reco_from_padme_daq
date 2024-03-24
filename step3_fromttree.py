@@ -36,7 +36,7 @@ parser.add_argument('--timeoffset', type=float, help='time offset (ns)', default
 parser.add_argument('--offset', type=int, help='Start event number', default=0)
 parser.add_argument('--maxevents', type=int, help='Number of events', default=100000)
 parser.add_argument('--nsamples', type=int, help='Nsamples per waveform', default=1000)
-parser.add_argument('--samplingrate', type=int, help='GHz sampling rate', default=5)
+parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=5)
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set nboards=0', default=0)
