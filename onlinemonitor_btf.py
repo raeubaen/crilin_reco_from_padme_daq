@@ -47,8 +47,8 @@ while True:
         os.system(f"cp {run_outfolder}/out_cat.root {run_outfolder}/out_temp.root")
         os.system(f"hadd -f {run_outfolder}/out_cat.root {run_outfolder}/out_temp_{n}.root {run_outfolder}/out_temp.root")
         try:
-          print("from now yo have 2 seconds to kill me")
-          time.sleep(2)
+          print("from now yo have 4 seconds to kill me")
+          time.sleep(4)
         except KeyboardInterrupt:
           print("Exiting")
           break
@@ -59,8 +59,8 @@ while True:
       os.system(f"cp {run_outfolder}/out_cat.root {run_outfolder}/out_temp.root")
       os.system(f"hadd -f {run_outfolder}/out_cat.root {run_outfolder}/out_temp_{n}.root {run_outfolder}/out_temp.root")
       try:
-        print("from now yo have 2 seconds to kill me")
-        time.sleep(2)
+        print("from now yo have 4 seconds to kill me")
+        time.sleep(4)
       except KeyboardInterrupt:
         print("Exiting")
         break

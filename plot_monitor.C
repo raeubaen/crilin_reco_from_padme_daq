@@ -40,6 +40,6 @@ void plot_monitor(TString filebig, TString filesmall){
       cout << "finito" << endl;
     }
   }
-  c->SaveAs("onlinemonitorbtf_last_summary.root");
+  c->SaveAs("../outonline/onlinemonitorbtf_last_summary.root");
   c->RaiseWindow();
 }
