@@ -1,7 +1,7 @@
 executable            = condorjob.sh
-arguments             = $(ClusterId) $(ProcId) $nrun $label $fb $nevents_per_job $rootinputfolder $rootoutfolder $timeoffset
+arguments             = $(ClusterId) $(ProcId) $nrun $label $rootinputfolder $rootoutfolder $codedir
 input                 = input
-output                = $condorfolder/$nrun/output/output.$(ClusterId).$(ProcId).out
-error                 = $condorfolder/$nrun/error/error.$(ClusterId).$(ProcId).err
-log                   = $condorfolder/$nrun/log/log.$(ClusterId).log
+output                = $condorfolder/$nrun_$label/output/output.$(ClusterId).$(ProcId).out
+error                 = $condorfolder/$nrun_$label/error/error.$(ClusterId).$(ProcId).err
+log                   = $condorfolder/$nrun_$label/log/log.$(ClusterId).log
 queue $njobs

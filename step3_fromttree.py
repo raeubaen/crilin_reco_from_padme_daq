@@ -148,7 +148,10 @@ for ev in range(maxevents):
   to_discard = 1
   zero_all_vars(tree_vars)
 
-  if ev%int(maxevents/100)==0:
+  period = int(maxevents/100)
+  if period==0: period=5
+
+  if ev%period==0:
     print("Event: %i"%ev)
     if np.random.uniform() < 0.1:
       tree_vars.savewave[0] = 1

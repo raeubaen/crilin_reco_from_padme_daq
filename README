@@ -1,2 +1,5 @@
 onlinemonitor_btf.py per btf aprile 2024
 source start_autossh.sh per aprire tunnel
+source start_sshfs.sh su lxplus per sshfs
+
+conf step3 per lyso in condorjob.sh
