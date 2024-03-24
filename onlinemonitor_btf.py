@@ -10,7 +10,7 @@ parser.add_argument('nrun', type=int, help='nrun - please unambigous')
 parser.add_argument('--outfolder', type=str, help='outfolder', default="/home/mu2e/onlinemonitor/outonline")
 parser.add_argument('--startn', type=int, help='skip n fragments', default=0)
 parser.add_argument('--cat', type=int, help='concatenate last .cat file when startn!=0', default=1)
-parser.add_argument('--sleep', type=int, help='sleep between fragments', default=20)
+parser.add_argument('--sleep', type=int, help='sleep between fragments', default=4)
 
 args = parser.parse_args()
 v = vars(args)
@@ -47,8 +47,8 @@ while True:
         os.system(f"cp {run_outfolder}/out_cat.root {run_outfolder}/out_temp.root")
         os.system(f"hadd -f {run_outfolder}/out_cat.root {run_outfolder}/out_temp_{n}.root {run_outfolder}/out_temp.root")
         try:
-          print("from now yo have 4 seconds to kill me")
-          time.sleep(4)
+          print(f"from now yo have {sleep} seconds to kill me")
+          time.sleep(sleep)
         except KeyboardInterrupt:
           print("Exiting")
           break
@@ -59,8 +59,8 @@ while True:
       os.system(f"cp {run_outfolder}/out_cat.root {run_outfolder}/out_temp.root")
       os.system(f"hadd -f {run_outfolder}/out_cat.root {run_outfolder}/out_temp_{n}.root {run_outfolder}/out_temp.root")
       try:
-        print("from now yo have 4 seconds to kill me")
-        time.sleep(4)
+        print(f"from now yo have {sleep} seconds to kill me")
+        time.sleep(sleep)
       except KeyboardInterrupt:
         print("Exiting")
         break
