@@ -30,8 +30,7 @@ infile_name_base = infile_dir.split(f"{work_dir}/DAQ/rawdata/")[1]
 run_outfolder = f"{outfolder}/run_{nrun}"
 os.system(f"mkdir -p {run_outfolder}")
 
-try:
-  while True:
+while True:
     try:
       print(f"trying to reconstruct fragment {n}")
       next_file = f"{work_dir}/DAQ/rawdata/{infile_name_base}/{infile_name_base}_lvl1_00_{n+1:03d}.root"
@@ -43,6 +42,9 @@ try:
         print(f"fragment {n+1} not yet present, so {n}th not closed - skipping")
         time.sleep(sleep)
         continue
+
+      code = os.system(f"sshpass -p Evale2.71828 scp {run_outfolder}/out_temp_{n}.root rgargiul@lxplus.cern.ch:/eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output/run_{nrun}/out_temp_{n}.root")
+      if code!=0: break
 
       print(f"{sleep} seconds to kill with ctrl-c")
       time.sleep(sleep)
@@ -56,5 +58,3 @@ try:
       n+=1
     except KeyboardInterrupt:
       break
-except KeyboardInterrupt:
-  break
