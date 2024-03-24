@@ -14,7 +14,7 @@ parser.add_argument('nrun', type=int, help='nrun - please unambigous')
 parser.add_argument('--outfolder', type=str, help='outfolder', default="/home/mu2e/onlinemonitor/outonline")
 parser.add_argument('--startn', type=int, help='skip n fragments', default=0)
 parser.add_argument('--cat', type=int, help='concatenate last .cat file when startn!=0', default=1)
-parser.add_argument('--sleep', type=float, help='sleep between fragments', default=4)
+parser.add_argument('--sleep', type=float, help='sleep between fragments', default=2)
 
 args = parser.parse_args()
 v = vars(args)

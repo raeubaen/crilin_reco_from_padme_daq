@@ -1,5 +1,36 @@
-onlinemonitor_btf.py per btf aprile 2024
-source start_autossh.sh per aprire tunnel
-source start_sshfs.sh su lxplus per sshfs
+su mu2edaq per online monitor
+python3 onlinemonitor_btf.py nrun 
 
-conf step3 per lyso in condorjob.sh
+copia lui stesso frammento per frammento su eos
+su /eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output
+
+su lxplus in:
+/afs/cern.ch/work/r/rgargiul/crilin_btf_2024_march/repo
+
+python3 submit_condor_btf_2024.py 119 cosmicilyso --lyso 1
+(ad esempio, cosmicilyso è la label)
+per pbf2 runnare ovviamente senza opzione lyso
+per lyso in parallelo runnare con opzione lysoparallel a 1
+i parametri che vengono mandato a step3 sono in:
+- condorjob.sh (no parametri opzionali)
+- condorjob_lyso.sh
+- condorjob_lyso_parallel.sh
+
+il condor fa partire 1 job per frammento e finisce in max 1 minuto (a 500 ev per frammento, scalato da 100) per ogni job
+
+output su:
+/eos/user/e/edimeco/BTF/crilin/output/
+
+
+PRIMA DI MODIFICARE QUALSIASI QUALCOSA DA QUALSIASI PARTE:
+git pull
+
+durante le modifiche non si tocca nessuna altra versione della repo su altri pc
+
+Dopo le modifiche:
+git add .
+git commit -m "ho modificato questa cosa"
+git push
+
+poi si va su tutte le altre versioni della repo in utilizzo e si fa:
+git pull
