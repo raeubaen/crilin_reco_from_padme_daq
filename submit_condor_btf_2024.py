@@ -18,6 +18,7 @@ v = vars(args)
 print(v)
 vars().update(v)
 
+
 os.system(f"mkdir {condorfolder}/{nrun}")
 os.system(f"mkdir {condorfolder}/{nrun}/output")
 os.system(f"mkdir {condorfolder}/{nrun}/error")
@@ -34,3 +35,4 @@ f.write(sub)
 f.close()
 
 os.system(f"condor_submit {condorfolder}/{nrun}/jobsub{nrun}.condor")
+
