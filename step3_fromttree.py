@@ -36,12 +36,12 @@ parser.add_argument('--timeoffset', type=float, help='time offset (ns)', default
 parser.add_argument('--offset', type=int, help='Start event number', default=0)
 parser.add_argument('--maxevents', type=int, help='Number of events', default=100000)
 parser.add_argument('--nsamples', type=int, help='Nsamples per waveform', default=1000)
-parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=5)
+parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=2.5)
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
-parser.add_argument('--seriessignalstart', type=int, help='Series Signal start (ns)', default=20)
-parser.add_argument('--seriessignalend', type=int, help='Series Signal end (ns)', default=100)
+parser.add_argument('--seriessignalstart', type=int, help='Series Signal start (ns)', default=220)
+parser.add_argument('--seriessignalend', type=int, help='Series Signal end (ns)', default=370)
 parser.add_argument('--parallelsignalstart', type=int, help='Series Signal start (ns)', default=20)
 parser.add_argument('--parallelsignalend', type=int, help='Series Signal end (ns)', default=190)
 parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=140)
@@ -54,13 +54,13 @@ parser.add_argument('--trigger_thr_start', type=float, help='Fixed threshold for
 parser.add_argument('--trigger_thr_end', type=float, help='Fixed threshold for trigger timing (end) mV', default=250)
 parser.add_argument('--check_timing', type=int, help='Plot if timing fails', default=0)
 parser.add_argument('--lpfilter', type=int, help='2-order Butterworth active', default=1)
-parser.add_argument('--charge_thr_for_series', type=float, help='Charge thr on crilin series channels', default=2)
+parser.add_argument('--charge_thr_for_series', type=float, help='Charge thr on crilin series channels', default=5)
 parser.add_argument('--charge_thr_for_parallel', type=float, help='Charge thr on crilin parallel channels', default=5)
 parser.add_argument('--charge_thr_for_trigger', type=float, help='Charge thr on crilin series channels', default=0)
-parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=60)
-parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=20)
-parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=170)
-parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=150)
+parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=370)
+parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=200)
+parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=300)
+parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=200)
 parser.add_argument('--rise_min_points', type=int, help='Minimium number of points in the monotonic rise to accept the event', default=8)
 parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=0)
 parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.5)
@@ -70,7 +70,7 @@ parser.add_argument('--seriespseudotime_cf', type=float, help='Pseudotime CF', d
 parser.add_argument('--parallelpseudotime_cf', type=float, help='Pseudotime CF', default=0.11)
 parser.add_argument('--zerocr', type=int, help='Evaluate Zerocrossing time', default=1)
 parser.add_argument('--centroid_square_cut_thr', type=float, help='Threshold in mm on abs centroid x and y', default=2.5)
-parser.add_argument('--rmscut', type=float, help='cut on pre signal rms (mV)', default=1.5)
+parser.add_argument('--rmscut', type=float, help='cut on pre signal rms (mV)', default=10)
 parser.add_argument('--saveallwave', type=int, help='save ala waves', default=0)
 
 
@@ -142,7 +142,7 @@ maxevents = min(maxevents, intree.GetEntries())
 tree_vars.front_board[0] = frontboard
 
 for ev in range(maxevents):
-  if intree.GetEntry(ev+offset) <= 0:
+  if intree.GetEntry(ev-offset) <= 0:
     continue
 
   to_discard = 1
