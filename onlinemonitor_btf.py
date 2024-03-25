@@ -30,6 +30,8 @@ infile_name_base = infile_dir.split(f"{work_dir}/DAQ/rawdata/")[1]
 run_outfolder = f"{outfolder}/run_{nrun}"
 os.system(f"mkdir -p {run_outfolder}")
 
+os.system(f"sshpass -p Evale2.71828 ssh rgargiul@lxplus.cern.ch mkdir /eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output/run_{nrun}")
+
 while True:
     try:
       print(f"trying to reconstruct fragment {n}")
