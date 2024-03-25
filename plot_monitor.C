@@ -42,8 +42,10 @@ void plot_monitor(TString all_files, TString lastfile){
       f.SetParameters(intree[j]->GetEntries()/30., 25, 10, intree[j]->GetEntries()/300., 50, 7);
       auto *h = new TH1F(Form("h_%i", 9*j+i), "h", 50, 5, 105);
       intree[j]->Draw(Form("(QCh[0][%i]+QCh[0][%i])/2>>h_%i(50, 5, 105)", i*2, i*2+1, 9*j+i),Form("QCh[0][%i]>5 && QCh[0][%i]>5",i*2, i*2+1));
-      h->Fit(&f, "R");
-      h->SetTitle(Form("%.2f +/- %.2f", f.GetParameter(1), f.GetParError(1)));
+      if (h->Integral(6, 29) > 100){
+        h->Fit(&f, "R");
+        h->SetTitle(Form("%.2f +/- %.2f", f.GetParameter(1), f.GetParError(1)));
+      }
     }
   }
   c->SaveAs("../outonline/onlinemonitorbtf_last_summary.root");

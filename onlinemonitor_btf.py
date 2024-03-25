@@ -53,7 +53,7 @@ while True:
 
       print(f"plot-ing fragment {n}")
       code = os.system(f"root -q -l -b -x \"plot_monitor.C(\\\"{run_outfolder}/*.root\\\", \\\"{run_outfolder}/out_temp_{n}.root\\\")\"")
-      if code!=0: break
+      #if code!=0: break
 
       print("\n\n")
 
