@@ -34,7 +34,7 @@ void plot_monitor(TString all_files, TString lastfile){
       int _x = x(i*2);
       int _y = y(i*2);
       p->cd((3*_x+_y + 1));
-      intree[j]->Draw(Form("(QCh[0][%i]+QCh[0][%i])/2>>h_%i(50, 5, 55)", i*2, i*2+1, 9*j+i),Form("QCh[0][%i]>5 && QCh[0][%i]>5",i*2, i*2+1));
+      intree[j]->Draw(Form("(QCh[0][%i]+QCh[0][%i])/2>>h_%i(50, 5, 105)", i*2, i*2+1, 9*j+i),Form("QCh[0][%i]>5 && QCh[0][%i]>5",i*2, i*2+1));
     }
   }
   c->SaveAs("../outonline/onlinemonitorbtf_last_summary.root");
