@@ -1,3 +1,4 @@
+
 # Reconstruction for crilin July ("Elisa" output of Padme DAQ)
 import json
 import sys
@@ -40,12 +41,18 @@ parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', defa
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
-parser.add_argument('--seriessignalstart', type=int, help='Series Signal start (ns)', default=220)
-parser.add_argument('--seriessignalend', type=int, help='Series Signal end (ns)', default=370)
-parser.add_argument('--parallelsignalstart', type=int, help='Series Signal start (ns)', default=20)
-parser.add_argument('--parallelsignalend', type=int, help='Series Signal end (ns)', default=190)
+parser.add_argument('--seriessignalstart', type=float, help='Series Signal start (ns)', default=200)
+parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=370)
+parser.add_argument('--parallelsignalstart', type=float, help='Series Signal start (ns)', default=2000)
+parser.add_argument('--parallelsignalend', type=float, help='Series Signal end (ns)', default=370)
 parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=140)
 parser.add_argument('--triggersignalend', type=int, help='Series Signal end (ns)', default=175)
+parser.add_argument('--parallel_lowedge_fromtpeak', type=float, help="parallel charge integration low bound from tpeak", default=-20)
+parser.add_argument('--parallel_highedge_fromtpeak', type=float, help="parallel charge integration high bound from tpeak", default=50)
+parser.add_argument('--series_lowedge_fromtpeak', type=float, help="series charge integration low bound from tpeak", default=-20)
+parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=50)
+parser.add_argument('--trigger_lowedge_fromtpeak', type=float, help="trigger charge integration low bound from tpeak", default=-20)
+parser.add_argument('--trigger_highedge_fromtpeak', type=float, help="trigger charge integration high bound from tpeak", default=50)
 parser.add_argument('--debug', type=int, help='Plot all check plots', default=0)
 parser.add_argument('--chs', type=str, help='reco only ch list es. "[1, 2, 3, 4]"', default=0)
 parser.add_argument('--zerocr_thr', type=float, help='Zerocr threshold for fit start', default=2)
@@ -172,6 +179,8 @@ for ev in range(maxevents):
         thr = trigger_thr_start
         amp = np.asarray(intree.WavesTrig)[nsamples*4*board + (ch-chsnum)*nsamples : nsamples*4*board + (ch-chsnum+1)*nsamples]
         charge_thr = charge_thr_for_trigger
+        lowedge_fromtpeak = trigger_lowedge_fromtpeak
+        highedge_fromtpeak = trigger_highedge_fromtpeak
       else:
         amp = np.asarray(intree.Waves)[nsamples*chsnum*board + ch*nsamples:nsamples*chsnum*board + (ch+1)*nsamples]
         if board==series_board:
@@ -183,6 +192,8 @@ for ev in range(maxevents):
           rise_window_end = crilin_rise_window_end + timeoffset
           thr, cf = zerocr_thr, zerocr_cf
           charge_thr = charge_thr_for_series
+          lowedge_fromtpeak = series_lowedge_fromtpeak
+          highedge_fromtpeak = series_highedge_fromtpeak
         else:
           B_pb, A_pb = butter(2, [parallellpfreq/(samplingrate/2.)])
           signalstart = parallelsignalstart + timeoffset
@@ -193,6 +204,8 @@ for ev in range(maxevents):
           rise_ind = np.logical_and(t>rise_window_start, t<rise_window_end)
           thr, cf = zerocr_thr, zerocr_cf
           charge_thr = charge_thr_for_parallel
+          lowedge_fromtpeak = parallel_lowedge_fromtpeak
+          highedge_fromtpeak = parallel_highedge_fromtpeak
 
       virgin_amp = amp.copy()
 
@@ -264,6 +277,11 @@ for ev in range(maxevents):
         monotone_rise_amp = rise_amp[firstind:lastind+4]
         tree_vars.ampPeak[board][ch] = monotone_rise_amp.max()
         tree_vars.timePeak[board][ch] = monotone_rise_t[monotone_rise_amp.argmax()]
+
+        signal_index = np.logical_and(t > tree_vars.timePeak[board][ch] + lowedge_fromtpeak, t < tree_vars.timePeak[board][ch] + highedge_fromtpeak)
+        signal_amp = amp[signal_index]
+
+        tree_vars.charge[board][ch] = signal_amp.sum()  / (50 * samplingrate) # V * ns * 1e3 / ohm = pC
 
         no_zerocr = 0
         failed = 0
