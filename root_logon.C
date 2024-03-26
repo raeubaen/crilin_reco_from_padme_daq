@@ -39,6 +39,8 @@
    myStyle->SetTitleOffset(1.3, "Y");
    myStyle->SetTitleOffset(1.1, "X");
 
+   myStyle->SetStatFontSize(0.02);
+
    // default canvas positioning
 //   myStyle->SetCanvasDefX(900);
 //  myStyle->SetCanvasDefY(20);
@@ -54,18 +56,21 @@
    myStyle->SetFrameBorderMode(0);
 
    myStyle->SetTitleBorderSize(0);
-   myStyle->SetOptTitle(0);
+   myStyle->SetOptTitle(1);
 
    // Din letter
 //   myStyle->SetPaperSize(21, 28);
 
    myStyle->SetStatBorderSize(0);
    myStyle->SetStatColor(1184);
+   myStyle->SetStatH(.15);
+   myStyle->SetStatW(.1);
+
    myStyle->SetStatX(0.75);
    myStyle->SetStatY(0.77);
    myStyle->SetStatFont(42);
    myStyle->SetOptStat("e");// Show overflow and underflow as well
-   myStyle->SetOptFit(111);
+   myStyle->SetOptFit(01111);
    myStyle->SetPalette(1);
 
    // apply the new style
