@@ -36,21 +36,23 @@ parser.add_argument('--frontboard', type=int, help='Board. in front', default=0)
 parser.add_argument('--timeoffset', type=float, help='time offset (ns)', default=0)
 parser.add_argument('--offset', type=int, help='Start event number', default=0)
 parser.add_argument('--maxevents', type=int, help='Number of events', default=100000)
-parser.add_argument('--nsamples', type=int, help='Nsamples per waveform', default=1000)
+parser.add_argument('--crilinnsamples', type=int, help='Nsamples per waveform', default=1024)
+parser.add_argument('--triggernsamples', type=int, help='Nsamples per waveform', default=1000)
+parser.add_argument('--globalnsamples', type=int, help='Nsamples per waveform', default=1000)
 parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=2.5)
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
 parser.add_argument('--seriessignalstart', type=float, help='Series Signal start (ns)', default=200)
-parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=370)
-parser.add_argument('--parallelsignalstart', type=float, help='Series Signal start (ns)', default=2000)
+parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=280)
+parser.add_argument('--parallelsignalstart', type=float, help='Series Signal start (ns)', default=200)
 parser.add_argument('--parallelsignalend', type=float, help='Series Signal end (ns)', default=370)
-parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=140)
-parser.add_argument('--triggersignalend', type=int, help='Series Signal end (ns)', default=175)
+parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=230)
+parser.add_argument('--triggersignalend', type=int, help='Series Signal end (ns)', default=360)
 parser.add_argument('--parallel_lowedge_fromtpeak', type=float, help="parallel charge integration low bound from tpeak", default=-20)
 parser.add_argument('--parallel_highedge_fromtpeak', type=float, help="parallel charge integration high bound from tpeak", default=50)
 parser.add_argument('--series_lowedge_fromtpeak', type=float, help="series charge integration low bound from tpeak", default=-20)
-parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=50)
+parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=60)
 parser.add_argument('--trigger_lowedge_fromtpeak', type=float, help="trigger charge integration low bound from tpeak", default=-20)
 parser.add_argument('--trigger_highedge_fromtpeak', type=float, help="trigger charge integration high bound from tpeak", default=50)
 parser.add_argument('--debug', type=int, help='Plot all check plots', default=0)
@@ -64,10 +66,10 @@ parser.add_argument('--lpfilter', type=int, help='2-order Butterworth active', d
 parser.add_argument('--charge_thr_for_series', type=float, help='Charge thr on crilin series channels', default=5)
 parser.add_argument('--charge_thr_for_parallel', type=float, help='Charge thr on crilin parallel channels', default=5)
 parser.add_argument('--charge_thr_for_trigger', type=float, help='Charge thr on crilin series channels', default=0)
-parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=370)
+parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=230)
 parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=200)
-parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=300)
-parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=200)
+parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=260)
+parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=230)
 parser.add_argument('--rise_min_points', type=int, help='Minimium number of points in the monotonic rise to accept the event', default=8)
 parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=0)
 parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.5)
@@ -107,9 +109,9 @@ tree_vars.update({
   "timePeak": tree_var(tree, "timePeak", std_shape, np.float32, "F"),
   "timeAve": tree_var(tree, "timeAve", std_shape, np.float32, "F"),
   "savewave": tree_var(tree, "savewave", (1,), np.int32, "I"),
-  "wave": tree_var(tree, "wave", (std_shape[0], std_shape[1], nsamples), np.float32, "F"),
-  "unfiltered_wave": tree_var(tree, "unfiltered_wave", (std_shape[0], std_shape[1], nsamples), np.float32, "F"),
-  "tWave": tree_var(tree, "tWave", (nsamples,), np.float32, "F"),
+  "wave": tree_var(tree, "wave", (std_shape[0], std_shape[1], globalnsamples), np.float32, "F"),
+  "unfiltered_wave": tree_var(tree, "unfiltered_wave", (std_shape[0], std_shape[1], globalnsamples), np.float32, "F"),
+  "tWave": tree_var(tree, "tWave", (globalnsamples,), np.float32, "F"),
   "chi2_zerocr": tree_var(tree, "chi2_zerocr", std_shape, np.float32, "F"),
   "time_zerocr": tree_var(tree, "time_zerocr", std_shape, np.float32, "F"),
   "sumcharge": tree_var(tree, "sumcharge", (boardsnum,), np.float32, "F"),
@@ -138,7 +140,7 @@ for i in [3, 2, 1, 0]: chiter.insert(0, chsnum+i) #expects ntuple with chsnum+4 
 f = ROOT.TFile(infile)
 intree = f.Get("NTU")
 
-t = np.arange(nsamples)/samplingrate
+t = np.arange(globalnsamples)/samplingrate
 
 novalidrise = 0
 failed = 0
@@ -177,12 +179,13 @@ for ev in range(maxevents):
         rise_window_start = trigger_rise_window_start + timeoffset
         rise_window_end = trigger_rise_window_end + timeoffset
         thr = trigger_thr_start
-        amp = np.asarray(intree.WavesTrig)[nsamples*4*board + (ch-chsnum)*nsamples : nsamples*4*board + (ch-chsnum+1)*nsamples]
+        amp = np.asarray(intree.WavesTrig)[triggernsamples*4*board + (ch-chsnum)*triggernsamples : triggernsamples*4*board + (ch-chsnum+1)*triggernsamples][:globalnsamples]
         charge_thr = charge_thr_for_trigger
         lowedge_fromtpeak = trigger_lowedge_fromtpeak
         highedge_fromtpeak = trigger_highedge_fromtpeak
       else:
-        amp = np.asarray(intree.Waves)[nsamples*chsnum*board + ch*nsamples:nsamples*chsnum*board + (ch+1)*nsamples]
+        amp = np.asarray(intree.Waves)[crilinnsamples*chsnum*board + ch*crilinnsamples:crilinnsamples*chsnum*board + (ch+1)*crilinnsamples][:globalnsamples]
+
         if board==series_board:
           B_pb, A_pb = butter(2, [serieslpfreq/(samplingrate/2.)])
           signalstart = seriessignalstart + timeoffset
@@ -299,10 +302,9 @@ for ev in range(maxevents):
           if check_timing: no_zerocr = 1
         else:
           if not args.timingwithoutfilter:
-            g = ROOT.TGraphErrors(nsamples, t.astype(np.float64), amp.astype(np.float64), np.zeros(nsamples,), np.ones(nsamples,)*temp_pre_signal_rms)
+            g = ROOT.TGraphErrors(globalnsamples, t.astype(np.float64), amp.astype(np.float64), np.zeros(globalnsamples,), np.ones(globalnsamples,)*temp_pre_signal_rms)
           else:
-            g = ROOT.TGraphErrors(nsamples, t.astype(np.float64), virgin_amp.astype(np.float64), np.zeros(nsamples,), np.ones(nsamples,)*temp_pre_signal_rms)
-
+            g = ROOT.TGraphErrors(globalnsamples, t.astype(np.float64), virgin_amp.astype(np.float64), np.zeros(globalnsamples,), np.ones(globalnsamples,)*temp_pre_signal_rms)
           if zerocr:
             func = ROOT.TF1("func", zerocr_func, tstart_zerocr, tend_zerocr)
             g.Fit(func, "RQ")
@@ -355,7 +357,7 @@ for ev in range(maxevents):
         )
         c = ROOT.TCanvas("c")
         if novalidrise or no_zerocr:
-          g = ROOT.TGraphErrors(nsamples, t.astype(np.float64), amp.astype(np.float64), np.zeros(nsamples,), np.ones(nsamples,)*temp_pre_signal_rms)
+          g = ROOT.TGraphErrors(globalnsamples, t.astype(np.float64), amp.astype(np.float64), np.zeros(globalnsamples,), np.ones(globalnsamples,)*temp_pre_signal_rms)
           g.SetMarkerStyle(20)
           g.SetMarkerSize(.7)
           g.Draw("AP")
