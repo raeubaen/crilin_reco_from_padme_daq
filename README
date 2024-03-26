@@ -7,19 +7,33 @@ su /eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output
 su lxplus in:
 /afs/cern.ch/work/r/rgargiul/crilin_btf_2024_march/repo
 
-python3 submit_condor_btf_2024.py 119 cosmicilyso --lyso 1
+tipo:
+python3 submit_condor_btf_2024.py 133 91V_cry5
+
+la label deve essere {bias}V_cry{ncry}
+
 (ad esempio, cosmicilyso è la label)
-per pbf2 runnare ovviamente senza opzione lyso
+per pbf2 runnare ovviamente senza opzione lyso (--lyso 1)
 per lyso in parallelo runnare con opzione lysoparallel a 1
 i parametri che vengono mandato a step3 sono in:
 - condorjob.sh (no parametri opzionali)
 - condorjob_lyso.sh
 - condorjob_lyso_parallel.sh
 
+Aggiornando il file runlist.dat con i run da mandare su condor, poi basta fare:
+python3 job_runmap_condor.py runlist.dat
+
+Attenzione a non mandare n>1 volte un run a ricostruire
+
 il condor fa partire 1 job per frammento e finisce in max 1 minuto (a 500 ev per frammento, scalato da 100) per ogni job
 
 output su:
 /eos/user/e/edimeco/BTF/crilin/output/
+
+
+per fare i plot on the fly:
+python3 script_charge_onthefly.py 2>/dev/null
+nella cartella ../plots poi si trovano i pdf
 
 
 PRIMA DI MODIFICARE QUALSIASI QUALCOSA DA QUALSIASI PARTE:
@@ -34,3 +48,5 @@ git push
 
 poi si va su tutte le altre versioni della repo in utilizzo e si fa:
 git pull
+
+
