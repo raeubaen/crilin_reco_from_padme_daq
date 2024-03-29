@@ -19,16 +19,22 @@ for folder in folders:
     continue
   c = ROOT.TChain("tree")
   c.Add(f"{folder}/*.root")
-  h = ROOT.TH1F(f"h_{ncry}_{label}", f"charge_cry{ncry}_{label}", 100, 5, 105)
+  if int(run)<148:
+    h = ROOT.TH1F(f"h_{ncry}_{label}", f"charge_cry{ncry}_{label}", 100, 5, 105)
+  else:
+    h = ROOT.TH1F(f"h_{ncry}_{label}", f"charge_cry{ncry}_{label}", 160, 3, 43)
   cnv = ROOT.TCanvas()
   c.Draw(f"(charge[0][{ncry*2}]+charge[0][{ncry*2+1}])/2>>h_{ncry}_{label}")
   postirr_run = -1
   if label=="91":
     f = ROOT.TF1("func", "gaus(0)+gaus(3)", 12, 60);
     f.SetParameters(500, 25, 10, 50, 50, 7);
-  if label=="87" or int(run) > 147:
+  if label=="87":
     f = ROOT.TF1("func", "gaus(0)+gaus(3)", 10, 37);
     f.SetParameters(350, 14, 4, 220, 28, 5);
+  if int(run) > 147:
+    f = ROOT.TF1("func", "gaus(0)+gaus(3)", 6, 26);
+    f.SetParameters(200, 8, 4, 30, 16, 6);
     if int(run)>147 and int(run) < 159:
       postirr_run = 0
     elif int(run) > 158:
