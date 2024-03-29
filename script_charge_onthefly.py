@@ -26,12 +26,13 @@ for folder in folders:
   if label=="91":
     f = ROOT.TF1("func", "gaus(0)+gaus(3)", 12, 60);
     f.SetParameters(500, 25, 10, 50, 50, 7);
-  if label=="87" or int(run) > 140:
+  if label=="87" or int(run) > 147:
     f = ROOT.TF1("func", "gaus(0)+gaus(3)", 10, 37);
     f.SetParameters(350, 14, 4, 220, 28, 5);
-    if int(run)>143:
-      label="91"
+    if int(run)>147 and int(run) < 159:
       postirr_run = 0
+    elif int(run) > 158:
+      postirr_run = 1
   print(run, label, ncry)
   f.SetParNames("N (1e)", "Q (1e)", "#sigma_{Q} (1e)", "N (2e)", "Q (2e)", "#sigma_{Q} (2e)")
   h.Fit(f, "RQ")
