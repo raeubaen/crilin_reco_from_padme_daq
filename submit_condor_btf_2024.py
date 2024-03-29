@@ -9,6 +9,7 @@ parser.add_argument('nrun', type=str, help='nrun')
 parser.add_argument('label', type=str, help='label', default="")
 parser.add_argument('--lyso', type=str, help="Lyso with series", default=0)
 parser.add_argument('--lysoparallel', type=str, help="Lyso with parallel", default=0)
+parser.add_argument('--scintsipmparallel', type=str, help="scint with parallel sipms", default=0)
 parser.add_argument('--rootinputfolder', type=str, help="Root input folder", default='/eos/user/e/edimeco/BTF/crilin/onlinemonitor_btf_output')
 parser.add_argument('--condorfolder', type=str, help="Folder where logs etc. are saved", default='../jobs')
 parser.add_argument('--rootoutfolder', type=str, help="Root/json out folder", default='/eos/user/e/edimeco/BTF/crilin/output/')
@@ -25,6 +26,7 @@ for key in ["rootinputfolder", "condorfolder", "rootoutfolder"]:
 
 v["script"] = "condorjob_lyso.sh" if lyso else "condorjob.sh"
 if lysoparallel: v["script"] = "condorjob_lyso_parallel.sh"
+if scintsipmparallel: v["script"] = "condorjob_scint_sipmparallel.sh"
 
 os.system(f"mkdir {condorfolder}/{nrun}_{label}")
 os.system(f"mkdir {condorfolder}/{nrun}_{label}/output")
