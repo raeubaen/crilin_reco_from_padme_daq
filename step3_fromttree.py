@@ -45,6 +45,8 @@ parser.add_argument('--chsnum', type=int, help='Number of channels per board', d
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
 parser.add_argument('--seriessignalstart', type=float, help='Series Signal start (ns)', default=200)
 parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=280)
+parser.add_argument('--lgsignalstart', type=float, help='lead glass Signal start (ns)', default=250)
+parser.add_argument('--lgsignalend', type=float, help='lead glass Signal end (ns)', default=315)
 parser.add_argument('--parallelsignalstart', type=float, help='Series Signal start (ns)', default=145)
 parser.add_argument('--parallelsignalend', type=float, help='Series Signal end (ns)', default=250)
 parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=230)
@@ -53,6 +55,8 @@ parser.add_argument('--parallel_lowedge_fromtpeak', type=float, help="parallel c
 parser.add_argument('--parallel_highedge_fromtpeak', type=float, help="parallel charge integration high bound from tpeak", default=150)
 parser.add_argument('--series_lowedge_fromtpeak', type=float, help="series charge integration low bound from tpeak", default=-20)
 parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=60)
+parser.add_argument('--lg_lowedge_fromtpeak', type=float, help="lead glass charge integration low bound from tpeak", default=-25)
+parser.add_argument('--lg_highedge_fromtpeak', type=float, help="lead glass charge integration high bound from tpeak", default=40)
 parser.add_argument('--trigger_lowedge_fromtpeak', type=float, help="trigger charge integration low bound from tpeak", default=-20)
 parser.add_argument('--trigger_highedge_fromtpeak', type=float, help="trigger charge integration high bound from tpeak", default=50)
 parser.add_argument('--debug', type=int, help='Plot all check plots', default=0)
@@ -64,18 +68,23 @@ parser.add_argument('--trigger_thr_end', type=float, help='Fixed threshold for t
 parser.add_argument('--check_timing', type=int, help='Plot if timing fails', default=0)
 parser.add_argument('--lpfilter', type=int, help='2-order Butterworth active', default=1)
 parser.add_argument('--charge_thr_for_series', type=float, help='Charge thr on crilin series channels', default=5)
+parser.add_argument('--charge_thr_for_lg', type=float, help='Charge thr on lead glass channels', default=15)
 parser.add_argument('--charge_thr_for_parallel', type=float, help='Charge thr on crilin parallel channels', default=0)
 parser.add_argument('--charge_thr_for_trigger', type=float, help='Charge thr on crilin series channels', default=0)
 parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=180)
 parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=140)
+parser.add_argument('--lg_rise_window_end', type=float, help='End of window where signal rise is accepted', default=300)
+parser.add_argument('--lg_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=250)
 parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=260)
 parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=230)
 parser.add_argument('--rise_min_points', type=int, help='Minimium number of points in the monotonic rise to accept the event', default=8)
 parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=0)
 parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.5)
 parser.add_argument('--parallellpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.25)
+parser.add_argument('--lglpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.5)
 parser.add_argument('--triggerlpfreq', type=float, help='Trigger Low pass filter cut frequency (GHz)', default=0.5)
 parser.add_argument('--seriespseudotime_cf', type=float, help='Pseudotime CF', default=0.11)
+parser.add_argument('--lgpseudotime_cf', type=float, help='Pseudotime CF', default=0.11)
 parser.add_argument('--parallelpseudotime_cf', type=float, help='Pseudotime CF', default=0.11)
 parser.add_argument('--zerocr', type=int, help='Evaluate Zerocrossing time', default=1)
 parser.add_argument('--centroid_square_cut_thr', type=float, help='Threshold in mm on abs centroid x and y', default=2.5)
@@ -96,7 +105,7 @@ tree.SetAutoSave(1000)
 with open("%s"%outfile.replace('.root', '.json'), 'w') as fp:
     json.dump(vars(args), fp)
 
-std_shape = (boardsnum, chsnum+4)
+std_shape = (boardsnum, chsnum+5)
 
 tree_vars = AttrDict()
 tree_vars.update({
@@ -133,6 +142,7 @@ if args.chs != 0:
   if 20 not in chlist: chlist.append(20)
   chiter = chlist
 else: chiter = list(range(chsnum))
+chiter.insert(0, chsnum+4)
 for i in [3, 2, 1, 0]: chiter.insert(0, chsnum+i) #expects ntuple with chsnum+4 channels (last 4 are trigger)
 
 #gestire canali trigger, vanno analizzati prima degli altri per sottrarre timing
@@ -170,9 +180,19 @@ for ev in range(maxevents):
   for board in range(boardsnum):
     for ch in chiter: # makes trigger channels before
 
-      if ch==18: continue
-
-      if ch >= chsnum:
+      if ch==chsnum+4:
+        B_pb, A_pb = butter(2, [lglpfreq/(samplingrate/2.)])
+        signalstart = lgsignalstart + timeoffset
+        signalend = lgsignalend + timeoffset
+        rise_window_start = lg_rise_window_start + timeoffset
+        rise_window_end = lg_rise_window_end + timeoffset
+        amp = -1 * np.asarray(intree.Waves)[crilinnsamples*chsnum*board + 30*crilinnsamples : crilinnsamples*chsnum*board + (30+1)*crilinnsamples][:globalnsamples]
+        thr, cf = zerocr_thr, zerocr_cf
+        pseudotime_cf = lgpseudotime_cf
+        charge_thr = charge_thr_for_lg
+        lowedge_fromtpeak = lg_lowedge_fromtpeak
+        highedge_fromtpeak = lg_highedge_fromtpeak
+      elif ch >= chsnum:
         B_pb, A_pb = butter(2, [triggerlpfreq/(samplingrate/2.)])
         signalstart = triggersignalstart + timeoffset
         signalend = triggersignalend + timeoffset
@@ -235,7 +255,7 @@ for ev in range(maxevents):
       if temp_charge < charge_thr or temp_pre_signal_rms > rmscut:
         continue
       else:
-        if ch <18:
+        if ch<18:
           to_discard = 0
 
       tree_vars.pre_signal_bline[board][ch] = temp_pre_signal_bline
@@ -291,11 +311,11 @@ for ev in range(maxevents):
         zerocr_func = "pol1"
 
         try:
-          if ch >= chsnum: 
+          if ch >= chsnum and ch != chsnum+4:
             zerocr_func = "pol2"
             tstart_zerocr = monotone_rise_t[monotone_rise_amp>trigger_thr_start][0]
             tend_zerocr = monotone_rise_t[monotone_rise_amp>trigger_thr_end][0]
-          else: 
+          else:
             tstart_zerocr = monotone_rise_t[0]
             tend_zerocr = monotone_rise_t[monotone_rise_amp>cf*tree_vars.ampPeak[board][ch]][0]
         except IndexError:
@@ -324,7 +344,7 @@ for ev in range(maxevents):
           sptf1 = ROOT.TF1("spf", spf, tstart_zerocr-5, tend_zerocr);
 
           try:
-            if ch >= chsnum: x_pseudot = sptf1.GetX(thr)
+            if ch >= chsnum and ch != chsnum+4: x_pseudot = sptf1.GetX(thr)
             else: x_pseudot = sptf1.GetX(pseudotime_cf*tree_vars.ampPeak[board][ch])
 
             if ROOT.TMath.IsNaN(x_pseudot):
@@ -335,7 +355,8 @@ for ev in range(maxevents):
               if check_timing: failed = 1
 
           tree_vars.time_pseudotime[board][ch] = x_pseudot
-          if ch >= chsnum: tree_vars.time_trig[board][ch-chsnum] = x_pseudot
+          if ch == chsnum+4: tree_vars.time_pseudotime_corr[board][ch] = x_pseudot - tree_vars.time_trig[board][int(30/8)]
+          elif ch >= chsnum: tree_vars.time_trig[board][ch-chsnum] = x_pseudot
           else: tree_vars.time_pseudotime_corr[board][ch] = x_pseudot - tree_vars.time_trig[board][int(ch/8)]
 
       if debug or (check_timing and (failed or no_zerocr or novalidrise)):
