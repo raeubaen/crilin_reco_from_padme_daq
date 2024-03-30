@@ -1,0 +1,6 @@
+python3 submit_condor_btf_2024.py 171 trk_plus0.0X_plus0.0Y --scintsipmparallel 1
+python3 submit_condor_btf_2024.py 172 trk_minus0.5X_plus0.5Y --scintsipmparallel 1
+python3 submit_condor_btf_2024.py 173 trk_minus0.5X_minus0.5Y --scintsipmparallel 1
+python3 submit_condor_btf_2024.py 174 trk_minus0.25X_minus0.25Y --scintsipmparallel 1
+python3 submit_condor_btf_2024.py 175 trk_plus0.0X_plus0.5Y --scintsipmparallel 1
+
