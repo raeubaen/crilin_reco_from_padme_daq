@@ -10,5 +10,5 @@ for folder in folders:
   elif "minus" in x: x = -float(x.split("minus")[1].split("X")[0])
   if "plus" in y: y = float(y.split("plus")[1].split("Y")[0])
   elif "minus" in y: y = -float(y.split("minus".split("Y")[0])[1].split("Y")[0])
-  os.system(f"./trk_reco.sh {nrun} {x:.2f} {y:.2f} {folder}")
+  os.system(f"./trk_reco.sh {nrun} {x:.2f} {y:.2f} {folder} 2> /dev/null 1> ../plots_trk/reco_trk_values.csv")
 
