@@ -13,4 +13,4 @@ while True:
         print("killing")
         process.communicate(input=b'.q')
     process = subprocess.Popen(["root", "-l", "-x", f"plot_client_btf.C()"], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
-    time.sleep(30)
+    time.sleep(40)
