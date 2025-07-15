@@ -39,30 +39,30 @@ parser.add_argument('--maxevents', type=int, help='Number of events', default=10
 parser.add_argument('--crilinnsamples', type=int, help='Nsamples per waveform', default=1024)
 parser.add_argument('--triggernsamples', type=int, help='Nsamples per waveform', default=1000)
 parser.add_argument('--globalnsamples', type=int, help='Nsamples per waveform', default=1000)
-parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=2.5)
+parser.add_argument('--samplingrate', type=float, help='GHz sampling rate', default=5)
 parser.add_argument('--boardsnum', type=int, help='Number of boards', default=1)
 parser.add_argument('--chsnum', type=int, help='Number of channels per board', default=18)
 parser.add_argument('--series_board', type=int, help='board in series (1 if only parallel) - then set boardsnum=1', default=0)
-parser.add_argument('--seriessignalstart', type=float, help='Series Signal start (ns)', default=200)
-parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=280)
+parser.add_argument('--seriessignalstart', type=float, help='Series Signal start (ns)', default=24)
+parser.add_argument('--seriessignalend', type=float, help='Series Signal end (ns)', default=160)
 parser.add_argument('--lgsignalstart', type=float, help='lead glass Signal start (ns)', default=250)
 parser.add_argument('--lgsignalend', type=float, help='lead glass Signal end (ns)', default=315)
 parser.add_argument('--parallelsignalstart', type=float, help='Series Signal start (ns)', default=145)
 parser.add_argument('--parallelsignalend', type=float, help='Series Signal end (ns)', default=250)
-parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=230)
-parser.add_argument('--triggersignalend', type=int, help='Series Signal end (ns)', default=360)
+parser.add_argument('--triggersignalstart', type=int, help='Series Signal start (ns)', default=60)
+parser.add_argument('--triggersignalend', type=int, help='Series Signal end (ns)', default=190)
 parser.add_argument('--parallel_lowedge_fromtpeak', type=float, help="parallel charge integration low bound from tpeak", default=-35)
 parser.add_argument('--parallel_highedge_fromtpeak', type=float, help="parallel charge integration high bound from tpeak", default=150)
-parser.add_argument('--series_lowedge_fromtpeak', type=float, help="series charge integration low bound from tpeak", default=-20)
-parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=60)
+parser.add_argument('--series_lowedge_fromtpeak', type=float, help="series charge integration low bound from tpeak", default=-5)
+parser.add_argument('--series_highedge_fromtpeak', type=float, help="series charge integration high bound from tpeak", default=80)
 parser.add_argument('--lg_lowedge_fromtpeak', type=float, help="lead glass charge integration low bound from tpeak", default=-25)
 parser.add_argument('--lg_highedge_fromtpeak', type=float, help="lead glass charge integration high bound from tpeak", default=40)
 parser.add_argument('--trigger_lowedge_fromtpeak', type=float, help="trigger charge integration low bound from tpeak", default=-20)
 parser.add_argument('--trigger_highedge_fromtpeak', type=float, help="trigger charge integration high bound from tpeak", default=50)
 parser.add_argument('--debug', type=int, help='Plot all check plots', default=0)
 parser.add_argument('--chs', type=str, help='reco only ch list es. "[1, 2, 3, 4]"', default=0)
-parser.add_argument('--zerocr_thr', type=float, help='Zerocr threshold for fit start', default=2)
-parser.add_argument('--zerocr_cf', type=float, help='Zerocr CF for fit end', default=0.65)
+parser.add_argument('--zerocr_thr', type=float, help='Zerocr threshold for fit start', default=80)
+parser.add_argument('--zerocr_cf', type=float, help='Zerocr CF for fit end', default=0.75)
 parser.add_argument('--trigger_thr_start', type=float, help='Fixed threshold for trigger timing (start) mV', default=50)
 parser.add_argument('--trigger_thr_end', type=float, help='Fixed threshold for trigger timing (end) mV', default=250)
 parser.add_argument('--check_timing', type=int, help='Plot if timing fails', default=0)
@@ -71,15 +71,15 @@ parser.add_argument('--charge_thr_for_series', type=float, help='Charge thr on c
 parser.add_argument('--charge_thr_for_lg', type=float, help='Charge thr on lead glass channels', default=15)
 parser.add_argument('--charge_thr_for_parallel', type=float, help='Charge thr on crilin parallel channels', default=0)
 parser.add_argument('--charge_thr_for_trigger', type=float, help='Charge thr on crilin series channels', default=0)
-parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=180)
-parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=140)
+parser.add_argument('--crilin_rise_window_end', type=float, help='End of window where signal rise is accepted', default=80)
+parser.add_argument('--crilin_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=24)
 parser.add_argument('--lg_rise_window_end', type=float, help='End of window where signal rise is accepted', default=300)
 parser.add_argument('--lg_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=250)
-parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=260)
-parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=230)
+parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=90)
+parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=50)
 parser.add_argument('--rise_min_points', type=int, help='Minimium number of points in the monotonic rise to accept the event', default=8)
 parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=0)
-parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.5)
+parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.25)
 parser.add_argument('--parallellpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.25)
 parser.add_argument('--lglpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.5)
 parser.add_argument('--triggerlpfreq', type=float, help='Trigger Low pass filter cut frequency (GHz)', default=0.5)
@@ -180,7 +180,8 @@ for ev in range(maxevents):
   for board in range(boardsnum):
     for ch in chiter: # makes trigger channels before
 
-      if ch==chsnum+4:
+      if ch>=chsnum+4: continue #NO LEAD GLASS FOR NOW
+      elif ch==chsnum+4:
         B_pb, A_pb = butter(2, [lglpfreq/(samplingrate/2.)])
         signalstart = lgsignalstart + timeoffset
         signalend = lgsignalend + timeoffset
@@ -241,8 +242,11 @@ for ev in range(maxevents):
       if np.sum(pre_signal_index) == 0: #for safety
         continue
       pre_signal_amp = amp[pre_signal_index]
-      temp_pre_signal_bline = 0
+      temp_pre_signal_bline = pre_signal_amp.mean()
       temp_pre_signal_rms = pre_signal_amp.std()
+
+      amp -= temp_pre_signal_bline
+      pre_signal_amp = amp[pre_signal_index]
 
       temp_pedestal = pre_signal_amp[:-1].sum()  / (50 * samplingrate) / (signalstart-1) * (signalend - signalstart)
 
@@ -253,6 +257,22 @@ for ev in range(maxevents):
       temp_charge = signal_amp.sum()  / (50 * samplingrate) # V * ns * 1e3 / ohm = pC
 
       if temp_charge < charge_thr or temp_pre_signal_rms > rmscut:
+        if debug:
+          print(
+          "Rejected for tempCharge or BaslineRMS - Event: ", ev,
+          ", Board: ", board,
+          ", Channel: ", ch,
+          ", Charge: ", temp_charge,
+          ", Baseline RMS: ", temp_pre_signal_rms,
+          )
+          c = ROOT.TCanvas("c")
+          g = ROOT.TGraphErrors(globalnsamples, t.astype(np.float64), amp.astype(np.float64), np.zeros(globalnsamples,), np.ones(globalnsamples,)*temp_pre_signal_rms)
+          g.SetMarkerStyle(20)
+          g.SetMarkerSize(.7)
+          g.Draw("AP")
+
+          input()
+
         continue
       else:
         if ch<18:
@@ -308,7 +328,7 @@ for ev in range(maxevents):
 
         no_zerocr = 0
         failed = 0
-        zerocr_func = "pol1"
+        zerocr_func = "pol2" #### MUST ME POL1, FIX ME
 
         try:
           if ch >= chsnum and ch != chsnum+4:
@@ -359,7 +379,7 @@ for ev in range(maxevents):
           elif ch >= chsnum: tree_vars.time_trig[board][ch-chsnum] = x_pseudot
           else: tree_vars.time_pseudotime_corr[board][ch] = x_pseudot - tree_vars.time_trig[board][int(ch/8)]
 
-      if debug or (check_timing and (failed or no_zerocr or novalidrise)):
+      if check_timing or (debug and (failed or no_zerocr or novalidrise)):
         print(
           "Event: ", ev,
           ", Board: ", board,
