@@ -1,0 +1,6 @@
+togliere active_ch_list
+
+mapping con un listone di tutti i canali ordinati per board*32 + ch
+colonne: x, y, z, board, canale_nella_board, canale_globale, detector (crilin, tracker, etc., UNUSED)
+
+quelli UNUSED vengono mascherati sia nelle onde che in tutti gli altri array presi dal csv
