@@ -78,7 +78,7 @@ parser.add_argument('--lg_rise_window_start', type=float, help='Start of window 
 parser.add_argument('--trigger_rise_window_end', type=float, help='End of window where signal rise is accepted', default=90)
 parser.add_argument('--trigger_rise_window_start', type=float, help='Start of window where signal rise is accepted', default=50)
 parser.add_argument('--rise_min_points', type=int, help='Minimium number of points in the monotonic rise to accept the event', default=8)
-parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=0)
+parser.add_argument('--timingwithoutfilter', type=float, help='timingwithoutfilter', default=1)
 parser.add_argument('--serieslpfreq', type=float, help='Series Low pass filter cut frequency (GHz)', default=0.25)
 parser.add_argument('--parallellpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.25)
 parser.add_argument('--lglpfreq', type=float, help='Parallel Low pass filter cut frequency (GHz)', default=0.5)

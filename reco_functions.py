@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import ndimage
 
-def split(waveforms, threshold=20, pre=5, post=10):
+def split(waveforms, pre=5, post=10):
 
     # Assume waveforms is shape (E, C, S)
     E, C, S = waveforms.shape
@@ -10,23 +10,23 @@ def split(waveforms, threshold=20, pre=5, post=10):
     argmax_idx = np.argmax(waveforms, axis=2)  # shape (E, C)
 
     # Step 2: Build offsets
-    window_offsets = np.arange(-5, 10).reshape(1, 1, -1)         # shape (1,1,15)
-    baseline_offsets = np.arange(-15, -5).reshape(1, 1, -1)      # shape (1,1,10)
+    window_offsets = np.arange(-pre, post).reshape(1, 1, -1)
+    baseline_offsets = np.arange(-50, -pre - 10).reshape(1, 1, -1)
 
     # Expand argmax index for broadcasting
     argmax_exp = argmax_idx[:, :, np.newaxis]  # shape (E, C, 1)
 
     # Add offsets and wrap with modulo S to stay in bounds
-    window_indices   = (argmax_exp + window_offsets) % S        # shape (E, C, 15)
-    baseline_indices = (argmax_exp + baseline_offsets) % S      # shape (E, C, 10)
+    window_indices   = (argmax_exp + window_offsets) % S
+    baseline_indices = (argmax_exp + baseline_offsets) % S
 
     # Build broadcasted event/channel indices
     event_idx = np.arange(E)[:, None, None]
     chan_idx  = np.arange(C)[None, :, None]
 
     # Extract waveform windows and baseline windows
-    #window_waveforms   = waveforms[event_idx, chan_idx, window_indices]      # (E, C, 15)
-    #baseline_waveforms = waveforms[event_idx, chan_idx, baseline_indices]    # (E, C, 10)
+    #window_waveforms   = waveforms[event_idx, chan_idx, window_indices]      # (E, C, pre+post)
+    #baseline_waveforms = waveforms[event_idx, chan_idx, baseline_indices]    # (E, C, ..)
 
     # Step 3: Compute baseline mean
     #baseline = np.mean(baseline_waveforms, axis=2)  # shape (E, C)
@@ -39,7 +39,8 @@ def generic_reco(
   signal_samples_pre_peak=5, signal_samples_post_peak=10,
   charge_zerosup_peak_threshold=10, seed_charge_threshold=50,
   do_centroid=True,
-  do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5, cf=0.12, interpolation_factor=20
+  do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
+  timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20
 ):
 
   argmax_idx, event_idx, chan_idx, signal_indices, baseline_indices = split(waves, pre=signal_samples_pre_peak, post=signal_samples_post_peak)
@@ -96,16 +97,28 @@ def generic_reco(
     rise = signal_waveforms[:, :, (signal_samples_pre_peak - rise_samples_pre_peak):(signal_samples_pre_peak + rise_samples_post_peak)]
     rise_interp = ndimage.zoom(rise, [1, 1, interpolation_factor])
 
-    peak_interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
 
-    pseudo_t = np.argmax(rise_interp > np.repeat((peak_interp*cf)[:, :, np.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
+    if timing_method == "cf":
+      peak_interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
+      thresholds = peak_interp*cf #values_max*cf
+      return_dict.update({f"{det}_peak_interp": peak_interp})
+
+    elif timing_method == "fixed_thr":
+      thresholds = np.ones((rise.shape[0], rise.shape[1]))*timing_thr
+
+    else:
+      raise NotImplemented(f"method: {timing_method} not implemented")
+
+
+    pseudo_t = np.argmax(rise_interp > np.repeat((thresholds)[:, :, np.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
+
     pseudo_t /= float(sampling_rate*interpolation_factor)
 
     pseudo_t += ((argmax_idx - rise_samples_pre_peak)/ sampling_rate)
-    return_dict.update({f"{det}_cf_time": pseudo_t, f"{det}_peak_interp": peak_interp})
+    return_dict.update({f"{det}_cf_time": pseudo_t})
 
   return_dict.update({
-    f"{det}_peak_pos": argmax_idx, f"{det}_ich": ich,
+    f"{det}_peak_pos": argmax_idx,
     f"{det}_peak": values_max, f"{det}_charge": charge,
     f"{det}_wave": waves, f"{det}_t_wave": tWave
   })

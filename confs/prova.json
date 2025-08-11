@@ -1,24 +1,48 @@
 {
-  "tree_name": "NTU",
+  "global": {
+    "tree_name": "NTU",
+    "map_filename": "maps/laser_2ch.csv"
+  },
+
   "detectors": {
+
     "crilin": {
-      "_comment": "null active_ch_list means all channels active",
-      "active_ch_list": [3, 4],
-      "to_be_inverted": false,
-      "map_filename": "maps/laser_2ch.csv",
       "waves_branch_name": "Waves",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
       "reco_conf": {
-        "signal_samples_pre_peak": 25,
+        "signal_samples_pre_peak": 30,
         "signal_samples_post_peak": 500,
         "charge_zerosup_peak_threshold": 10,
-        "rise_samples_pre_peak": 20,
-        "rise_samples_post_peak": 20,
+        "rise_samples_pre_peak": 30,
+        "rise_samples_post_peak": 30,
         "sampling_rate": 5,
-        "cf": 0.12,
+        "timing_method": "cf",
+        "timing_thr": 0.11,
         "interpolation_factor": 20,
-        "do_centroid": true,
+        "do_centroid": false,
         "do_timing": true
       }
-    }
+    },
+
+    "trigger": {
+      "waves_branch_name": "WavesTrig",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 30,
+        "signal_samples_post_peak": 10,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 30,
+        "rise_samples_post_peak": 3,
+        "sampling_rate": 5,
+        "timing_method": "fixed_thr",
+        "timing_thr": 50,
+        "interpolation_factor": 20,
+        "do_centroid": false,
+        "do_timing": true
+        }
+     }
+
   }
 }
