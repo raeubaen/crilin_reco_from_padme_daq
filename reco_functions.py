@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import ndimage
+from scipy.signal import filtfilt, butter
 
 def split(waveforms, pre=5, post=10):
 
@@ -24,13 +25,6 @@ def split(waveforms, pre=5, post=10):
     event_idx = np.arange(E)[:, None, None]
     chan_idx  = np.arange(C)[None, :, None]
 
-    # Extract waveform windows and baseline windows
-    #window_waveforms   = waveforms[event_idx, chan_idx, window_indices]      # (E, C, pre+post)
-    #baseline_waveforms = waveforms[event_idx, chan_idx, baseline_indices]    # (E, C, ..)
-
-    # Step 3: Compute baseline mean
-    #baseline = np.mean(baseline_waveforms, axis=2)  # shape (E, C)
-
     return argmax_idx, event_idx, chan_idx, window_indices, baseline_indices
 
 
@@ -40,7 +34,7 @@ def generic_reco(
   charge_zerosup_peak_threshold=10, seed_charge_threshold=50,
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
-  timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20
+  timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
 ):
 
   argmax_idx, event_idx, chan_idx, signal_indices, baseline_indices = split(waves, pre=signal_samples_pre_peak, post=signal_samples_post_peak)
@@ -51,6 +45,11 @@ def generic_reco(
   waves = waves - np.repeat(baseline_means[:, :, np.newaxis], waves.shape[2], axis=2)  # baseline subtraction
 
   signal_waveforms = waves[event_idx, chan_idx, signal_indices]
+
+  if lp_freq is not None:
+    B_coeff, A_coeff = butter(2, [lp_freq/(sampling_rate/2.)])
+    signal_waveforms = filtfilt(B_coeff, A_coeff, signal_waveforms)
+
 
   event_idx_2d = np.arange(waves.shape[0])[:, None]        # shape (E, 1)
   chan_idx_2d  = np.arange(waves.shape[1])[None, :]        # shape (1, C)
@@ -111,6 +110,8 @@ def generic_reco(
 
 
     pseudo_t = np.argmax(rise_interp > np.repeat((thresholds)[:, :, np.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
+
+    pseudo_t += np.random.uniform(low=-0.5, high=0.5, size=pseudo_t.shape)
 
     pseudo_t /= float(sampling_rate*interpolation_factor)
 
