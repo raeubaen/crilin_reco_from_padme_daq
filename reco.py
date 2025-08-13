@@ -8,6 +8,8 @@ from concurrent.futures import ThreadPoolExecutor as tpe
 
 def main(arguments):
 
+    time_start = time.time()
+
     # input parameters
     parser = argparse.ArgumentParser(description='')
     parser.add_argument("-i", f"--input", type=str, required=True, help="input ROOT file with unpacked tree")
@@ -25,11 +27,16 @@ def main(arguments):
 
     map_df = pd.read_csv(global_dict["map_filename"])
 
+    print(f"1: {time.time() - time_start:.2f}")
+
+    time_open = time.time()
     # open input file
     file = uproot.open(args.input, num_workers=10)
     tree = file[global_dict["tree_name"]]
+    print(f"2: {time.time() - time_open :.2f}")
 
     for detector in detectors_dict:
+      time_curr = time.time()
       dd = detectors_dict[detector]
 
       active_row_list = (map_df["type"] == detector).tolist()
@@ -38,6 +45,8 @@ def main(arguments):
       with tpe(max_workers=8) as decompr_exec, tpe(max_workers=8) as interpret_exec:
         waves = tree[dd["waves_branch_name"]].array(library="np", decompression_executor=decompr_exec, interpretation_executor=interpret_exec)
 
+      print(f"{detector} read: {time.time() - time_curr:.2f}")
+      time_read = time.time()
       if len(waves.shape) == 4: waves = waves.reshape(waves.shape[0], waves.shape[1]*waves.shape[2], waves.shape[3])
       waves = waves[:, active_branch_ch_list, :]
 
@@ -50,8 +59,12 @@ def main(arguments):
       else:
         x_y_z_tuple = None
 
+      print(f"{detector} pre-process: {time.time() - time_read:.2f}")
+      time_reco = time.time()
       dd["mask"], dd["reco_dict"] = reco_functions.generic_reco(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
+      print(f"{detector} reco: {time.time() - time_reco:.2f}")
 
+    time_write = time.time()
     mask_global, reco_dict = np.logical_and.reduce([detectors_dict[detector]["mask"] for detector in detectors_dict]), {}
     for detector in detectors_dict: reco_dict.update(detectors_dict[detector]["reco_dict"])
     for branch in reco_dict: reco_dict[branch] = reco_dict[branch][mask_global, ...]
@@ -73,6 +86,8 @@ def main(arguments):
     with uproot.recreate(args.reco_output_file, compression=compression_map[args.compression_type]) as f:
         tree = f.mktree("tree", branch_types)
         tree.extend(reco_dict)
+
+    print(f"write: {time.time() - time_write:.2f}")
 
 if __name__ == '__main__':
     main(sys.argv[1:])
