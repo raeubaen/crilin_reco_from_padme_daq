@@ -118,6 +118,10 @@ def generic_reco(
     pseudo_t += ((argmax_idx - rise_samples_pre_peak)/ sampling_rate)
     return_dict.update({f"{det}_cf_time": pseudo_t})
 
+  save_waves_mask = np.random.uniform(size=(waves.shape[0],)) > 0.01
+  waves[save_waves_mask, ...] = 0
+  tWave[save_waves_mask, ...] = 0
+
   return_dict.update({
     f"{det}_peak_pos": argmax_idx,
     f"{det}_peak": values_max, f"{det}_charge": charge,

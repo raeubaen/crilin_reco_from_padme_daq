@@ -15,7 +15,7 @@ def main(arguments):
     parser.add_argument("-i", f"--input", type=str, required=True, help="input ROOT file with unpacked tree")
     parser.add_argument("-ro", f"--reco-output-file", type=str, required=True, help="output file")
     parser.add_argument("-dj", f"--detectors-json", type=str, required=False, help="detectors reco configuration", default="detectors_conf.json")
-    parser.add_argument("-ct", f"--compression-type", type=str, required=False, help="compression type", default="zlib")
+    parser.add_argument("-ct", f"--compression-type", type=str, required=False, help="compression type", default="lz4")
     parser.add_argument("-p", f"--plot-list", type=str, required=True, help="csv file with plot list (mcp and ecal)")
     parser.add_argument("-po", f"--plot-output-folder", type=str, required=True, help="output folder for plots")
 
@@ -64,23 +64,28 @@ def main(arguments):
       dd["mask"], dd["reco_dict"] = reco_functions.generic_reco(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
       print(f"{detector} reco: {time.time() - time_reco:.2f}")
 
-    time_write = time.time()
+    time_merge = time.time()
     mask_global, reco_dict = np.logical_and.reduce([detectors_dict[detector]["mask"] for detector in detectors_dict]), {}
     for detector in detectors_dict: reco_dict.update(detectors_dict[detector]["reco_dict"])
     for branch in reco_dict: reco_dict[branch] = reco_dict[branch][mask_global, ...]
+    print(f"merge: {time.time() - time_merge:.2f}")
 
-    '''
-    plotconf_df = pd.read_csv(args.plot_list, sep=",")
+    time_plot = time.time()
+    plotconf_df = pd.read_csv(args.plot_list, sep=",", comment='#')
     plotconf_df = plotconf_df.fillna("")
 
-    # os.system(f"cp index.php {outputfolder}")
-
     ROOT.gROOT.LoadMacro("root_logon.C")
+    os.system(f"mkdir {args.plot_output_folder}")
+    if not os.path.exists(f"{args.plot_output_folder}/index.php"):
+        os.system(f"cp /var/www/html/online_monitor/index.php {args.plot_output_folder}/index.php")
+    elif not os.path.exists(f"{args.plot_output_folder}/jsroot_viewer.php"):
+        os.system(f"cp /var/www/html/online_monitor/jsroot_viewer.php {args.plot_output_folder}/jsroot_viewer.php")
 
-    os.system(f"mkdir {args.plot_output_folder}/prova")
-    plotconf_df.apply(lambda row: plot_functions.plot(row, reco_dict, f"{args.plot_output_folder}/prova"), axis=1)
-    '''
+    plotconf_df.apply(lambda row: plot_functions.plot(row, reco_dict, f"{args.plot_output_folder}/"), axis=1)
+    
+    print(f"plot: {time.time() - time_plot:.2f}")
 
+    time_write = time.time()
     branch_types = {k: (v.dtype, v.shape[1:]) for k, v in reco_dict.items()}
     compression_map = {"zlib": uproot.compression.ZLIB(level=4), "lz4": uproot.compression.LZ4(level=1), "none": None}
     with uproot.recreate(args.reco_output_file, compression=compression_map[args.compression_type]) as f:
