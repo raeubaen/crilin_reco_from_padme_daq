@@ -1,7 +1,8 @@
 {
   "global": {
     "tree_name": "NTU",
-    "map_filename": "maps/tb_all.csv"
+    "map_filename": "maps/tb_all.csv",
+    "plot_list": "plotlists/plot_list.csv"
   },
 
   "detectors": {

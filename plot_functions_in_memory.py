@@ -1,7 +1,7 @@
 import time, re, os, ROOT
 import numpy as np
-import matplotlib.pyplot as plt
-
+import traceback
+import shutil
 
 def eval_formula(formula, data_dict):
     if "[" not in formula: return data_dict[formula]
@@ -36,30 +36,52 @@ def convert_root_cut_to_numpy_expr(cut_str, available_vars):
     return expr
 
 
-def plot(row, uproot_dict, outputfolder):
+def plot(row, uproot_dict, outputfolder, just_draw=False):
+
+  ROOT.gErrorIgnoreLevel = ROOT.kError
+
+  try:
     name = row['name']
-    f = ROOT.TFile(f"{outputfolder}/{name}.root", "recreate")
+
+    if not just_draw:
+      os.makedirs(f"{outputfolder}/{row.folder}/", exist_ok=True)
+
+    f = ROOT.TFile(f"{outputfolder}/{row.folder}/{name}.root", ("update" if just_draw else "recreate"))
     f.cd()
+
     ROOT.gROOT.SetBatch(ROOT.kTRUE)
+
+    if just_draw:
+      for key in f.GetListOfKeys():
+        obj = key.ReadObj()
+        if obj.InheritsFrom("TCanvas"):
+          f.Delete(f"{key.GetName()};{key.GetCycle()}")
 
     c = ROOT.TCanvas(f"{name}_canvas")
     c.cd()
 
-    # Handle ROOT-style cuts
-    if str(row.cuts).strip() == "":
+    if just_draw:
+      pass
+    else:
+      if str(row.cuts).strip() == "":
         first_key = next(iter(uproot_dict.keys()))
         mask = np.ones((uproot_dict[first_key].shape[0],), dtype=bool)
-    else:
+      else:
         expr = convert_root_cut_to_numpy_expr(str(row.cuts), uproot_dict.keys())
         mask = eval(expr)
 
-    x = eval_formula(row.x, uproot_dict)[mask]
-    nevents = x.shape[0]
-    x = x.ravel()
+      x = eval_formula(row.x, uproot_dict)[mask]
+      nevents = x.shape[0]
+      x = x.ravel()
 
     if str(row.y).strip() == "0" and str(row.z).strip() == "0":
-        h = ROOT.TH1F(name, row.title, int(row.binsnx), float(row.binsminx), float(row.binsmaxx))
-        h.FillN(len(x), x.astype(np.float64), np.ones_like(x, dtype=np.float64))
+        if just_draw:
+          h = f.Get(f"{name}")
+        else:
+          h = ROOT.TH1F(name, row.title, int(row.binsnx), float(row.binsminx), float(row.binsmaxx))
+
+          h.FillN(len(x), x.astype(np.float64), np.ones_like(x, dtype=np.float64))
+
         h.Draw("HIST")
         h.SetFillColorAlpha(ROOT.kBlue, 0.2)
         h.SetLineColor(eval(f"ROOT.{row.color}"))
@@ -91,35 +113,46 @@ def plot(row, uproot_dict, outputfolder):
         pave.Draw()
 
     elif str(row.y).strip() != "0" and str(row.z).strip() == "0":
-        y = eval_formula(row.y, uproot_dict)[mask].ravel()
-
-        print(name, row.title,
+        if just_draw:
+          h = f.Get(f"{name}")
+        else:
+          y = eval_formula(row.y, uproot_dict)[mask].ravel()
+          h = ROOT.TH2F(name, row.title,
                       int(row.binsnx), float(row.binsminx), float(row.binsmaxx),
                       int(row.binsny), float(row.binsminy), float(row.binsmaxy))
+          h.FillN(len(x), x.astype(np.float64), y.astype(np.float64), np.ones_like(x, dtype=np.float64))
 
-
-        h = ROOT.TH2F(name, row.title,
-                      int(row.binsnx), float(row.binsminx), float(row.binsmaxx),
-                      int(row.binsny), float(row.binsminy), float(row.binsmaxy))
-        h.FillN(len(x), x.astype(np.float64), y.astype(np.float64), np.ones_like(x, dtype=np.float64))
         h.Draw("ZCOL")
         h.GetYaxis().SetTitle(row.ylabel)
 
-    else:
-        y = eval_formula(row.y, uproot_dict)[mask].ravel()
-        z = eval_formula(row.z, uproot_dict)[mask].ravel()
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1)) #iterative...
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1))
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 5*h.GetRMS(1), h.GetMean(1) + 5*h.GetRMS(1))
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2)) #iterative...
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2))
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 5*h.GetRMS(2), h.GetMean(2) + 5*h.GetRMS(2))
 
-        h = ROOT.TH2D(name, row.title,
+    else:
+        ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
+
+        if just_draw:
+          h = f.Get(f"{name}")
+        else:
+          y = eval_formula(row.y, uproot_dict)[mask].ravel()
+          z = eval_formula(row.z, uproot_dict)[mask].ravel()
+
+          h = ROOT.TH2D(name, row.title,
                             int(row.binsnx), float(row.binsminx), float(row.binsmaxx),
                             int(row.binsny), float(row.binsminy), float(row.binsmaxy))
 
 
-        ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
-        h.FillN(len(x),
+          h.FillN(len(x),
                 x.astype(np.float64),
                 y.astype(np.float64),
                 z.astype(np.float64))
-        h.Scale(1/nevents)
+
+          h.Scale(1/nevents)
+
         h.Draw("ZCOL")
         h.SetContour(int(row.contours))
         h.GetZaxis().SetTitle(row.zlabel)
@@ -129,16 +162,32 @@ def plot(row, uproot_dict, outputfolder):
         c.SetGrid()
         c.SetLogz(int(row.logz))
         c.SetRightMargin(0.15)
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1)) #iterative...
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1))
+        h.GetXaxis().SetRangeUser(h.GetMean(1) - 5*h.GetRMS(1), h.GetMean(1) + 5*h.GetRMS(1))
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2)) #iterative...
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2))
+        h.GetYaxis().SetRangeUser(h.GetMean(2) - 5*h.GetRMS(2), h.GetMean(2) + 5*h.GetRMS(2))
+
 
     h.GetXaxis().SetTitle(row.xlabel)
-    c.SaveAs(f"{outputfolder}/{name}.pdf")
-    c.SaveAs(f"{outputfolder}/{name}.png")
-    c.SaveAs(f"{outputfolder}/{name}.root")
-    c.Write()
-    h.Write()
+
+    if not os.path.exists(f"{outputfolder}/{row.folder}/index.php"):
+      shutil.copy2(f"{outputfolder}/index.php", f"{outputfolder}/{row.folder}/index.php")
+    if not os.path.exists(f"{outputfolder}/{row.folder}/jsroot_viewer.php"):
+      shutil.copy2(f"{outputfolder}/jsroot_viewer.php", f"{outputfolder}/{row.folder}/jsroot_viewer.php")
+
+    #c.SaveAs(f"{outputfolder}/{row.folder}/{name}.pdf")
+    c.SaveAs(f"{outputfolder}/{row.folder}/{name}.png")
+    if just_draw: c.Write("", ROOT.TObject.kOverwrite)
+    else:
+      c.Write()
+      h.Write()
     f.Close()
     c.Close()
     del c
     del h
 
+  except Exception:
+    print(traceback.format_exc())
 

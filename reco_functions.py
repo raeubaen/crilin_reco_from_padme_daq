@@ -1,3 +1,5 @@
+from multiprocessing import Pool
+
 import numpy as np
 from scipy import ndimage
 from scipy.signal import filtfilt, butter
@@ -31,7 +33,7 @@ def split(waveforms, pre=5, post=10):
 def generic_reco(
   waves, detector_name, chid_dict, x_y_z_tuple,
   signal_samples_pre_peak=5, signal_samples_post_peak=10,
-  charge_zerosup_peak_threshold=10, seed_charge_threshold=50,
+  charge_zerosup_peak_threshold=10,
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
   timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
@@ -60,6 +62,7 @@ def generic_reco(
 
   charge = np.sum(signal_waveforms, axis=2)
   charge[mask_under_thr] = 0
+  charge_sum = np.sum(charge, axis=1)
 
   tWave = np.repeat(np.arange(0, waves.shape[2])[np.newaxis, :], waves.shape[1], axis=0)
   tWave = np.repeat(tWave[np.newaxis, :], waves.shape[0], axis=0).astype(float)
@@ -79,7 +82,6 @@ def generic_reco(
     x, y, z = x_y_z_tuple
     # amplitude_map of the 5x5 matrix
     charge_ratios = charge/np.repeat(np.sum(charge, axis=1)[:, np.newaxis], charge.shape[1], axis=1)
-    print(charge_ratios.shape, x.shape)
     x_centroid = charge_ratios @ x #shape: (Events, Channel) * (Channel) -> (Events)
     y_centroid = charge_ratios @ y #shape: (Events, Channel) * (Channel) -> (Events)
 
@@ -124,9 +126,37 @@ def generic_reco(
 
   return_dict.update({
     f"{det}_peak_pos": argmax_idx,
-    f"{det}_peak": values_max, f"{det}_charge": charge,
+    f"{det}_peak": values_max, f"{det}_charge": charge, f"{det}_charge_sum": charge_sum,
     f"{det}_wave": waves, f"{det}_t_wave": tWave
   })
 
 
   return mask_selected_events, return_dict
+
+def generic_reco_chunk(args):
+    """
+    Wrapper to handle chunking for multiprocessing.
+    """
+    waves_chunk, detector_name, chid_dict, x_y_z_tuple, kwargs = args
+    return generic_reco(
+        waves_chunk, detector_name, chid_dict, x_y_z_tuple, **kwargs
+    )
+
+def generic_reco_parallel(waves, detector_name, chid_dict, x_y_z_tuple, n_cpus=8, **kwargs):
+    E = waves.shape[0]
+    chunk_size = (E + n_cpus - 1) // n_cpus  # ceil division
+    chunks = [(waves[i*chunk_size:(i+1)*chunk_size], detector_name, chid_dict, x_y_z_tuple, kwargs)
+              for i in range(n_cpus)]
+
+    with Pool(n_cpus) as pool:
+        results = pool.map(generic_reco_chunk, chunks)
+
+    # Combine results
+    masks_list, dicts_list = zip(*results)
+    combined_mask = np.concatenate(masks_list, axis=0)
+
+    combined_dict = {}
+    for key in dicts_list[0].keys():
+        combined_dict[key] = np.concatenate([d[key] for d in dicts_list], axis=0)
+
+    return combined_mask, combined_dict

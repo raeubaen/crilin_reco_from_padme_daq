@@ -1,10 +1,11 @@
 import os, json, uproot, argparse, sys, time, ROOT
-import awkward as ak
 import numpy as np
 import reco_functions
 import pandas as pd
 import plot_functions_in_memory as plot_functions
 from concurrent.futures import ThreadPoolExecutor as tpe
+
+print("importato")
 
 def main(arguments):
 
@@ -16,24 +17,24 @@ def main(arguments):
     parser.add_argument("-ro", f"--reco-output-file", type=str, required=True, help="output file")
     parser.add_argument("-dj", f"--detectors-json", type=str, required=False, help="detectors reco configuration", default="detectors_conf.json")
     parser.add_argument("-ct", f"--compression-type", type=str, required=False, help="compression type", default="lz4")
-    parser.add_argument("-p", f"--plot-list", type=str, required=True, help="csv file with plot list (mcp and ecal)")
     parser.add_argument("-po", f"--plot-output-folder", type=str, required=True, help="output folder for plots")
 
     args = parser.parse_args(arguments)
 
+    print("argomenti letti")
 
     json_dict = json.load(open(args.detectors_json, "r"))
     global_dict, detectors_dict = json_dict["global"], json_dict["detectors"]
 
     map_df = pd.read_csv(global_dict["map_filename"])
 
-    print(f"1: {time.time() - time_start:.2f}")
+    print(f"init and reading conf and map: {time.time() - time_start:.2f}")
 
     time_open = time.time()
     # open input file
     file = uproot.open(args.input, num_workers=10)
     tree = file[global_dict["tree_name"]]
-    print(f"2: {time.time() - time_open :.2f}")
+    print(f"open file: {time.time() - time_open :.2f}")
 
     for detector in detectors_dict:
       time_curr = time.time()
@@ -55,13 +56,13 @@ def main(arguments):
       if dd["to_be_inverted"]: waves = 4096 - waves
 
       if dd["reco_conf"]["do_centroid"]:
-        x_y_z_tuple = (map_df[coord].to_numpy()[active_row_list] for coord in ["x", "y", "z"])
+        x_y_z_tuple = [map_df[coord].to_numpy()[active_row_list] for coord in ["x", "y", "z"]]
       else:
         x_y_z_tuple = None
 
       print(f"{detector} pre-process: {time.time() - time_read:.2f}")
       time_reco = time.time()
-      dd["mask"], dd["reco_dict"] = reco_functions.generic_reco(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
+      dd["mask"], dd["reco_dict"] = reco_functions.generic_reco_parallel(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
       print(f"{detector} reco: {time.time() - time_reco:.2f}")
 
     time_merge = time.time()
@@ -71,18 +72,20 @@ def main(arguments):
     print(f"merge: {time.time() - time_merge:.2f}")
 
     time_plot = time.time()
-    plotconf_df = pd.read_csv(args.plot_list, sep=",", comment='#')
+    plotconf_df = pd.read_csv(global_dict["plot_list"], sep=",", comment='#')
     plotconf_df = plotconf_df.fillna("")
 
     ROOT.gROOT.LoadMacro("root_logon.C")
     os.system(f"mkdir {args.plot_output_folder}")
+
+
     if not os.path.exists(f"{args.plot_output_folder}/index.php"):
         os.system(f"cp /var/www/html/online_monitor/index.php {args.plot_output_folder}/index.php")
-    elif not os.path.exists(f"{args.plot_output_folder}/jsroot_viewer.php"):
+    if not os.path.exists(f"{args.plot_output_folder}/jsroot_viewer.php"):
         os.system(f"cp /var/www/html/online_monitor/jsroot_viewer.php {args.plot_output_folder}/jsroot_viewer.php")
 
     plotconf_df.apply(lambda row: plot_functions.plot(row, reco_dict, f"{args.plot_output_folder}/"), axis=1)
-    
+
     print(f"plot: {time.time() - time_plot:.2f}")
 
     time_write = time.time()

@@ -1,0 +1,15 @@
+name,title,folder,x,y,z,cuts,color,binsnx,binsminx,binsmaxx,binsny,binsminy,binsmaxy,contours,xlabel,ylabel,zlabel,logz
+charge_pos6_xm1_ym1, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== -10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
+charge_pos3_xm1_y0, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 0,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
+charge_pos0_xm1_y1, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
+charge_pos7_x0_ym1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== -10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_pos4_x0_y0,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 0,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_central,,main,crilin_charge,0,0,crilin_x==0 && crilin_y== 0,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_pos1_x0_y1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_pos8_x1_ym1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_pos5_x1_y0,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_pos2_x1_y1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+charge_sum,,main,crilin_charge_sum,0,0,,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+peak_central,,main,crilin_peak,0,0,crilin_x==0 && crilin_y== 0,kBlue,5000,0,5000,0,0,0,0,Peak [ADCcounts],,,
+charge_vs_peak_central,,main,crilin_charge,crilin_peak,0,crilin_x==0 && crilin_y== 0,0,2000,0,100000,2000,0,100000,2000,Charge [ADCcounts],Peak [ADCcounts],0,0
+
