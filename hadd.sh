@@ -21,7 +21,7 @@ for folder in $(ls -1d /var/www/html/online_monitor/runs/$run_name/current_fragm
       if [[ $n_fragment == "000" ]]; then
         cp $source $dest;
       else
-	      hadd -a $dest $source > /dev/null 2>&1;
+	hadd -a $dest $source > /dev/null 2>&1;
       fi
     fi
   done

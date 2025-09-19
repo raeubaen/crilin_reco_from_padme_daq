@@ -1,6 +1,6 @@
 import os, json, uproot, argparse, sys, time, ROOT
 import numpy as np
-import reco_functions
+import gpu_reco_functions as reco_functions
 import pandas as pd
 import plot_functions_in_memory as plot_functions
 from concurrent.futures import ThreadPoolExecutor as tpe
@@ -58,11 +58,11 @@ def main(arguments):
       if dd["reco_conf"]["do_centroid"]:
         x_y_z_tuple = [map_df[coord].to_numpy()[active_row_list] for coord in ["x", "y", "z"]]
       else:
-	x_y_z_tuple = None
+        x_y_z_tuple = None
 
       print(f"{detector} pre-process: {time.time() - time_read:.2f}")
       time_reco = time.time()
-      dd["mask"], dd["reco_dict"] = reco_functions.generic_reco_parallel(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
+      dd["mask"], dd["reco_dict"] = reco_functions.generic_reco(waves, detector, chid_dict, x_y_z_tuple, **dd["reco_conf"])
       print(f"{detector} reco: {time.time() - time_reco:.2f}")
 
     time_merge = time.time()
@@ -80,15 +80,15 @@ def main(arguments):
 
 
     if not os.path.exists(f"{args.plot_output_folder}/index.php"):
-        os.system(f"cp /var/www/html/online_monitor/index.php {args.plot_output_folder}/index.php")
+        os.system(f"cp /root/plot_files/index.php {args.plot_output_folder}/index.php")
     if not os.path.exists(f"{args.plot_output_folder}/jsroot_viewer.php"):
-        os.system(f"cp /var/www/html/online_monitor/jsroot_viewer.php {args.plot_output_folder}/jsroot_viewer.php")
+        os.system(f"cp /root/plot_files/jsroot_viewer.php {args.plot_output_folder}/jsroot_viewer.php")
 
     plotconf_df.apply(lambda row: plot_functions.plot(row, reco_dict, f"{args.plot_output_folder}/"), axis=1)
 
     print(f"plot: {time.time() - time_plot:.2f}")
 
-    os.system(args.hadd_cmd)
+    #os.system(args.hadd_cmd)
 
     time_write = time.time()
     branch_types = {k: (v.dtype, v.shape[1:]) for k, v in reco_dict.items()}
@@ -101,4 +101,3 @@ def main(arguments):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-
