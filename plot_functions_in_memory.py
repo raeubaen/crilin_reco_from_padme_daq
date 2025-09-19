@@ -3,17 +3,32 @@ import numpy as np
 import traceback
 import shutil
 
+def replace_index_axis1(match):
+    var = match.group(1)
+    idx = match.group(2)
+    return f"uproot_dict['{var}'][:,{idx}]"
+
+def replace_index_noch(match):
+    var = match.group(1)
+    return f"uproot_dict['{var}']"
+
 def eval_formula(formula, data_dict):
+    if "(" in formula and "[" not in formula:
+      pattern = re.compile(r"(\w+)")
+      numpy_expr = pattern.sub(replace_index_noch, formula)
+      print(numpy_expr)
+      result = eval(numpy_expr, {"uproot_dict": data_dict, "np": np})
+
+      return result
+
+
     if "[" not in formula: return data_dict[formula]
 
-    def replace_index(match):
-        var = match.group(1)
-        idx = match.group(2)
-        return f"uproot_dict['{var}'][:,{idx}]"
+    #if "[" not in formula: eval(formula, {"uproot_dict": data_dict, "np": np})
 
     pattern = re.compile(r"(\w+)\[(\d+)\]")
-    numpy_expr = pattern.sub(replace_index, formula)
-
+    numpy_expr = pattern.sub(replace_index_axis1, formula)
+    print(numpy_expr)
     result = eval(numpy_expr, {"uproot_dict": data_dict, "np": np})
 
     return result
@@ -68,6 +83,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         mask = np.ones((uproot_dict[first_key].shape[0],), dtype=bool)
       else:
         expr = convert_root_cut_to_numpy_expr(str(row.cuts), uproot_dict.keys())
+        print(expr)
         mask = eval(expr)
 
       x = eval_formula(row.x, uproot_dict)[mask]
@@ -120,6 +136,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
           h = ROOT.TH2F(name, row.title,
                       int(row.binsnx), float(row.binsminx), float(row.binsmaxx),
                       int(row.binsny), float(row.binsminy), float(row.binsmaxy))
+          print(x.shape, y.shape)
           h.FillN(len(x), x.astype(np.float64), y.astype(np.float64), np.ones_like(x, dtype=np.float64))
 
         h.Draw("ZCOL")

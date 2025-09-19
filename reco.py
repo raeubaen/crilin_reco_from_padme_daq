@@ -18,7 +18,7 @@ def main(arguments):
     parser.add_argument("-dj", f"--detectors-json", type=str, required=False, help="detectors reco configuration", default="detectors_conf.json")
     parser.add_argument("-ct", f"--compression-type", type=str, required=False, help="compression type", default="lz4")
     parser.add_argument("-po", f"--plot-output-folder", type=str, required=True, help="output folder for plots")
-
+    parser.add_argument("-hd", "--hadd-cmd", type=str, required=False, default="", help="command to hadd")
     args = parser.parse_args(arguments)
 
     print("argomenti letti")
@@ -87,6 +87,8 @@ def main(arguments):
     plotconf_df.apply(lambda row: plot_functions.plot(row, reco_dict, f"{args.plot_output_folder}/"), axis=1)
 
     print(f"plot: {time.time() - time_plot:.2f}")
+
+    os.system(args.hadd_cmd)
 
     time_write = time.time()
     branch_types = {k: (v.dtype, v.shape[1:]) for k, v in reco_dict.items()}

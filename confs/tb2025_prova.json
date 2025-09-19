@@ -1,0 +1,111 @@
+{
+  "global": {
+    "tree_name": "NTU",
+    "map_filename": "maps/tb_all.csv",
+    "plot_list": "plotlists/plot_list_prova.csv"
+  },
+
+  "detectors": {
+
+    "crilin": {
+      "waves_branch_name": "Waves",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 30,
+        "signal_samples_post_peak": 200,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 30,
+        "rise_samples_post_peak": 30,
+        "sampling_rate": 1,
+        "timing_method": "cf",
+        "timing_thr": 0.11,
+        "interpolation_factor": 40,
+        "do_centroid": true,
+        "do_timing": true,
+        "lp_freq": 0.25
+      }
+    },
+   "tagger": {
+      "waves_branch_name": "Waves",
+      "to_be_inverted": true,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 30,
+        "signal_samples_post_peak": 250,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 30,
+        "rise_samples_post_peak": 30,
+        "sampling_rate": 1,
+        "timing_method": "cf",
+        "timing_thr": 0.11,
+        "interpolation_factor": 40,
+        "do_centroid": true,
+        "do_timing": true,
+        "lp_freq": 0.25
+      }
+    },
+   "tracker_u": {
+      "waves_branch_name": "Waves",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 35,
+        "signal_samples_post_peak": 600,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 35,
+        "rise_samples_post_peak": 30,
+        "sampling_rate": 1,
+        "timing_method": "cf",
+        "timing_thr": 0.11,
+        "interpolation_factor": 40,
+        "do_centroid": true,
+        "do_timing": false,
+        "lp_freq": 0.25
+      }
+    },
+
+   "tracker_d": {
+      "waves_branch_name": "Waves",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 35,
+        "signal_samples_post_peak": 600,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 35,
+        "rise_samples_post_peak": 30,
+        "sampling_rate": 1,
+        "timing_method": "cf",
+        "timing_thr": 0.11,
+        "interpolation_factor": 40,
+        "do_centroid": true,
+        "do_timing": false,
+        "lp_freq": 0.25
+      }
+    },
+
+
+
+    "trigger": {
+      "waves_branch_name": "WavesTrig",
+      "to_be_inverted": false,
+      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "reco_conf": {
+        "signal_samples_pre_peak": 30,
+        "signal_samples_post_peak": 10,
+        "charge_zerosup_peak_threshold": 10,
+        "rise_samples_pre_peak": 30,
+        "rise_samples_post_peak": 3,
+        "sampling_rate": 1,
+        "timing_method": "fixed_thr",
+        "timing_thr": 50,
+        "interpolation_factor": 40,
+        "do_centroid": false,
+        "do_timing": false,
+        "lp_freq": 0.25
+        }
+     }
+
+  }
+}

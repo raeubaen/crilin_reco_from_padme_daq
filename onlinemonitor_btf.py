@@ -31,7 +31,8 @@ while True:
       next_file = f"{work_dir}/local/rawdata/{infile_name_base}/{infile_name_base}_lvl1_00_{n+1:03d}.root"
       current_file = f"{work_dir}/local/rawdata/{infile_name_base}/{infile_name_base}_lvl1_00_{n:03d}.root"
       if os.path.isfile(next_file):
-        code = os.system(f"source {script_dir}/process_single_fragment.sh {current_file} {conf} 2>&1 | tee /tmp/onlinelogs_{nrun}_{n}.txt")
+        code = os.system(f"source {script_dir}/process_single_fragment.sh {current_file} {conf} 2>&1 | tee /tmp/onlinelogs_{nrun}_{n}.txt &")
+        print("------------------------- reco done ----------------------------")
         if code!=0: break
       else:
         print(f"fragment {n+1} not yet present, so {n}th not closed - skipping and sleeping for {sleep}s")
