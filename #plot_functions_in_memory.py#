@@ -95,7 +95,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
           h = f.Get(f"{name}")
         else:
           h = ROOT.TH1F(name, row.title, int(row.binsnx), float(row.binsminx), float(row.binsmaxx))
-
+          
           h.FillN(len(x), x.astype(np.float64), np.ones_like(x, dtype=np.float64))
 
         h.Draw("HIST")
@@ -106,8 +106,6 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         h.GetXaxis().SetRangeUser(h.GetMean() - 3*h.GetRMS(), h.GetMean() + 3*h.GetRMS())
         h.GetXaxis().SetRangeUser(h.GetMean() - 5*h.GetRMS(), h.GetMean() + 5*h.GetRMS())
         h.GetYaxis().SetTitle(f"entries / {float(f'{binw:.1g}'):g} {row.ylabel}")
-        c.SetLogy(int(row.logy))
-
         c.Update()
         max_bin = h.GetMaximumBin()
         max_position = h.GetBinCenter(max_bin)
@@ -129,7 +127,6 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         if max_position > 1000: pave.AddText(f"Ratio = {fwhm/max_position/2.35:.3f}")
 
         pave.Draw()
-
 
     elif str(row.y).strip() != "0" and str(row.z).strip() == "0":
         if just_draw:
@@ -180,6 +177,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         h.GetXaxis().SetNdivisions(120)
         h.GetYaxis().SetNdivisions(120)
         c.SetGrid()
+        c.SetLogz(int(row.logz))
         c.SetRightMargin(0.15)
         h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1)) #iterative...
         h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1))

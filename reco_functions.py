@@ -46,6 +46,8 @@ def generic_reco(
 
   waves = waves - np.repeat(baseline_means[:, :, np.newaxis], waves.shape[2], axis=2)  # baseline subtraction
 
+  waves *= 1000./4096
+
   signal_waveforms = waves[event_idx, chan_idx, signal_indices]
 
   if lp_freq is not None:
@@ -58,9 +60,12 @@ def generic_reco(
 
   values_max = waves[event_idx_2d, chan_idx_2d, argmax_idx]  # shape (Event, Channels)
 
+  charge = np.sum(signal_waveforms, axis=2)
+
+  charge /= (50 * sampling_rate)
+
   mask_under_thr = values_max < charge_zerosup_peak_threshold #shape (Event, Channels)
 
-  charge = np.sum(signal_waveforms, axis=2)
   charge[mask_under_thr] = 0
   charge_sum = np.sum(charge, axis=1)
 
@@ -100,9 +105,9 @@ def generic_reco(
 
 
     if timing_method == "cf":
-      peak_interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
-      thresholds = peak_interp*cf #values_max*cf
-      return_dict.update({f"{det}_peak_interp": peak_interp})
+      interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
+      thresholds = interp*cf #values_max*cf
+      return_dict.update({f"{det}_interp": interp})
 
     elif timing_method == "fixed_thr":
       thresholds = np.ones((rise.shape[0], rise.shape[1]))*timing_thr
@@ -125,7 +130,7 @@ def generic_reco(
   tWave[save_waves_mask, ...] = 0
 
   return_dict.update({
-    f"{det}_peak_pos": argmax_idx,
+    f"{det}_pos": argmax_idx,
     f"{det}_peak": values_max, f"{det}_charge": charge, f"{det}_charge_sum": charge_sum,
     f"{det}_wave": waves, f"{det}_t_wave": tWave
   })
