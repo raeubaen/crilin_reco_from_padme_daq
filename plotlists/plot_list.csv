@@ -1,47 +1,47 @@
-name,title,folder,x,y,z,cuts,color,binsnx,binsminx,binsmaxx,binsny,binsminy,binsmaxy,contours,xlabel,ylabel,zlabel,logz
-charge_pos6_xm1_ym1_ch0, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== -10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
-charge_pos3_xm1_y0_ch3, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 0 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
-charge_pos0_xm1_y1_ch6, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
-charge_pos7_x0_ym1_ch1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== -10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_pos4_x0_y0_ch4,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_central,,main,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_pos1_x0_y1_ch7,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_pos8_x1_ym1_ch2,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_pos5_x1_y0_ch5,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_pos2_x1_y1_ch8,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10 && crilin_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-charge_sum,,main,crilin_charge_sum,0,0,,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-peak_central,,main,crilin_peak,0,0,crilin_x==0 && crilin_y== 0,kBlue,5000,0,5000,0,0,0,0,Peak [ADCcounts],,,
-#charge_vs_peak_central,,main,crilin_charge,crilin_peak,0,crilin_x==0 && crilin_y== 0,0,5000,0,100000,5000,0,5000,,Charge [ADCcounts],Peak [ADCcounts],0,0
-peak_scint,,main,tagger_peak,0,0,,kBlue,5000,0,5000,0,0,0,0,Peak [ADCcounts],,,
-#charge_vs_peak_scint,,main,tagger_charge,tagger_peak,0,,0,5000,0,100000,5000,0,5000,,Charge [ADCcounts],Peak [ADCcounts],0,0
-charge_scint,,main,tagger_charge,0,0, tagger_charge>20,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+name,title,folder,x,y,z,cuts,color,binsnx,binsminx,binsmaxx,binsny,binsminy,binsmaxy,contours,xlabel,ylabel,zlabel,logy
+charge_pos6_xm1_ym1_ch0, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== -10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],, ,1
+charge_pos3_xm1_y0_ch3, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 0 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],, ,1
+charge_pos0_xm1_y1_ch6, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],, ,1
+charge_pos7_x0_ym1_ch1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== -10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_pos4_x0_y0_ch4,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_central,,main,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_pos1_x0_y1_ch7,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_pos8_x1_ym1_ch2,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_pos5_x1_y0_ch5,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_pos2_x1_y1_ch8,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+charge_sum,,main,crilin_charge_sum,0,0,,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+peak_central,,main,crilin_peak,0,0,crilin_x==0 && crilin_y== 0,kBlue,2000,0,200,0,0,0,0,Peak [ADCcounts],,,1
+#charge_vs_peak_central,,main,crilin_charge,crilin_peak,0,crilin_x==0 && crilin_y== 0,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
+peak_scint,,main,tagger_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [ADCcounts],,,1
+#charge_vs_peak_scint,,main,tagger_charge,tagger_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
+charge_scint,,main,tagger_charge,0,0, tagger_charge>20,kBlue,2000,0,400,0,0,0,0,Charge [pC],,,1
 #
-crilin_x_y_centroid,,main,crilin_x_centroid,crilin_y_centroid,0,crilin_charge_sum > 10000,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
-tracker_down_x_y_centroid,,main,tracker_d_x_centroid,tracker_d_y_centroid,0,crilin_charge_sum > 10000,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
-tracker_up_x_y_centroid,,main,tracker_u_x_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 10000,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
-tracker_up_down_x_centroid,,main,tracker_d_x_centroid,tracker_u_x_centroid,0,crilin_charge_sum > 10000,0,600,-30,30,600,-30,30,,Downstream X [mm], Upstream X [mm],0,0
-tracker_up_down_y_centroid,,main,tracker_d_y_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 10000,0,600,-30,30,600,-30,30,,Downstream Y [mm], Upstream Y [mm],0,0
+crilin_x_y_centroid,,main,crilin_x_centroid,crilin_y_centroid,0,(crilin_charge_sum > 0) && ((crilin_x_centroid*crilin_y_centroid)!= 0),0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
+tracker_down_x_y_centroid,,main,tracker_d_x_centroid,tracker_d_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
+tracker_up_x_y_centroid,,main,tracker_u_x_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
+tracker_up_down_x_centroid,,main,tracker_d_x_centroid,tracker_u_x_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Downstream X [mm], Upstream X [mm],0,0
+tracker_up_down_y_centroid,,main,tracker_d_y_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Downstream Y [mm], Upstream Y [mm],0,0
 #
-tracker_up_charge_sum,,main,tracker_u_charge_sum,0,0,,kBlue,15000,0.1e6,1.6e6,0,0,0,0,Charge [ADCcounts],,,
-tracker_down_charge_sum,,main,tracker_d_charge_sum,0,0,,kBlue,15000,0.1e6,1.6e6,0,0,0,0,Charge [ADCcounts],,,
+tracker_up_charge_sum,,main,tracker_u_charge_sum,0,0,,kBlue,20000,0,5000,0,0,0,0,Charge [pC],,,1
+tracker_down_charge_sum,,main,tracker_d_charge_sum,0,0,,kBlue,20000,0,5000,0,0,0,0,Charge [pC],,,1
 #
-#tracker_up_down_y_centroid_diff_vs_charge_sum,,main,(tracker_d_y_centroid) - (tracker_u_y_centroid),(tracker_u_charge_sum) + (tracker_d_charge_sum),0,,0,60,-30,30,5000,0,100000,,Downstream-Upstream Y [mm], Total charge [ADC],0,0
-#tracker_up_down_x_centroid_diff_vs_charge_sum,,main,(tracker_d_x_centroid) - (tracker_u_x_centroid),(tracker_u_charge_sum)+ (tracker_d_charge_sum),0,,0,60,-30,30,5000,0,100000,,Downstream-Upstream X [mm], Total charge [ADC],0,0
+#tracker_up_down_y_centroid_diff_vs_charge_sum,,main,(tracker_d_y_centroid) - (tracker_u_y_centroid),(tracker_u_charge_sum) + (tracker_d_charge_sum),0,,0,60,-30,30,2000,0,100,,Downstream-Upstream Y [mm], Total charge [ADC],0,0
+#tracker_up_down_x_centroid_diff_vs_charge_sum,,main,(tracker_d_x_centroid) - (tracker_u_x_centroid),(tracker_u_charge_sum)+ (tracker_d_charge_sum),0,,0,60,-30,30,2000,0,100,,Downstream-Upstream X [mm], Total charge [ADC],0,0
 #
-tracker_up_down_y_centroid_diff,,main,(tracker_d_y_centroid) - (tracker_u_y_centroid),0,0,,kBlue,600,-30,30,0,0,0,0,Downstream-Upstream Y [mm],,,
-tracker_up_down_x_centroid_diff,,main,(tracker_d_x_centroid) - (tracker_u_x_centroid),0,0,,kBlue,600,-30,30,0,0,0,0,Downstream-Upstream X [mm],,,
-#
-#
-peak_catcher,,main,beamcatcher_peak,0,0,,kBlue,5000,0,5000,0,0,0,0,Peak [ADCcounts],,,
-#charge_vs_peak_catcher,,main,beamcatcher_charge,beamcatcher_peak,0,,0,5000,0,100000,5000,0,5000,,Charge [ADCcounts],Peak [ADCcounts],0,0
-charge_catcher,,main,beamcatcher_charge,0,0,,kBlue,5000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+tracker_up_down_y_centroid_diff,,main,(tracker_d_y_centroid) - (tracker_u_y_centroid),0,0,,kBlue,2400,-30,30,0,0,0,0,Downstream-Upstream Y [mm],,,0
+tracker_up_down_x_centroid_diff,,main,(tracker_d_x_centroid) - (tracker_u_x_centroid),0,0,,kBlue,2400,-30,30,0,0,0,0,Downstream-Upstream X [mm],,,0
 #
 #
-#charge_pos0_xm1_y1, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 10 && crilin_charge[6]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],, ,
-#charge_pos7_x0_ym1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== -10 && crilin_charge[1]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_pos4_x0_y0,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge[4]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_central,,main,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge[4]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_pos1_x0_y1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 10 && crilin_charge[7]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_pos8_x1_ym1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10 && crilin_charge[2]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_pos5_x1_y0,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0 && crilin_charge[5]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
-#charge_pos2_x1_y1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10 && crilin_charge[8]>20,kBlue,2000,0,100000,0,0,0,0,Charge [ADCcounts],,,
+peak_catcher,,main,beamcatcher_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [ADCcounts],,,0
+#charge_vs_peak_catcher,,main,beamcatcher_charge,beamcatcher_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
+charge_catcher,,main,beamcatcher_charge,0,0,,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
+#
+#
+#charge_pos0_xm1_y1, ,charges,crilin_charge,0,0,crilin_x==-10 && crilin_y== 10 && crilin_charge[6]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],, ,
+#charge_pos7_x0_ym1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== -10 && crilin_charge[1]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_pos4_x0_y0,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge[4]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_central,,main,crilin_charge,0,0,crilin_x==0 && crilin_y== 0 && crilin_charge[4]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_pos1_x0_y1,,charges,crilin_charge,0,0,crilin_x==0 && crilin_y== 10 && crilin_charge[7]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_pos8_x1_ym1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10 && crilin_charge[2]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_pos5_x1_y0,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0 && crilin_charge[5]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
+#charge_pos2_x1_y1,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10 && crilin_charge[8]>20,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,
