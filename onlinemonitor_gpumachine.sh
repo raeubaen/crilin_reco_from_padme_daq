@@ -4,11 +4,13 @@
 
 #lastfile=$(ls -1 local/rawdata/$folder | sort -V | tail -n 2 | head -n 1)
 
-#xrdcp "root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/last_file.txt" /tmp/last_file.txt
+xrdcp -f "root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/last_file.txt" /tmp/last_file.txt
 
 orig=$(pwd)
 
 while true; do
+
+        echo cycling
 
 	if [ ! -e /tmp/current_file.txt ]; then
 	    cp -n /tmp/last_file.txt /tmp/current_file.txt;
@@ -37,11 +39,11 @@ while true; do
 
 	mkdir -p /root/plot_files/$run_name/current_fragment/
 
+        echo "----------------------- /root/plot_files/$run_name/current_fragment/ -----------------------"
 	python3 reco_gpu.py -ro /root/reco_files/$run_name/reco_$n_fragment.root -i $filename -po /root/plot_files/$run_name/current_fragment/ -dj /root/crilin_reco_from_padme_daq/confs/$conf.json -hd "source /root/crilin_reco_from_padme_daq/hadd_gpu.sh $run_name $conf $n_fragment &"
 
-	xrdcp /root/reco_files/$run_name/reco_$n_fragment.root $reco_xrd &
+	xrdcp -f /root/reco_files/$run_name/reco_$n_fragment.root $reco_xrd &
 
-        break
 done
 
 cd $orig

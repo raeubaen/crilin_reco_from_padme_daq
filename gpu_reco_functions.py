@@ -53,8 +53,8 @@ def generic_reco(
 
 
   print("starting to transfer to VRAM")
-  waves = cp.asarray(cpu_waves)
-  waves *= 1000./4096
+  waves = cp.asarray(cpu_waves).astype(cp.float32)
+  waves *= 1000./4096.
 
   print("transferred - starting split")
 

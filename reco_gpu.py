@@ -88,7 +88,9 @@ def main(arguments):
 
     print(f"plot: {time.time() - time_plot:.2f}")
 
-    #os.system(args.hadd_cmd)
+    print(args.hadd_cmd)
+
+    os.system(args.hadd_cmd)
 
     time_write = time.time()
     branch_types = {k: (v.dtype, v.shape[1:]) for k, v in reco_dict.items()}

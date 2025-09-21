@@ -58,8 +58,9 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
   try:
     name = row['name']
 
-    if not just_draw:
-      os.makedirs(f"{outputfolder}/{row.folder}/", exist_ok=True)
+    print(name)
+
+    os.makedirs(f"{outputfolder}/{row.folder}/", exist_ok=True)
 
     f = ROOT.TFile(f"{outputfolder}/{row.folder}/{name}.root", ("update" if just_draw else "recreate"))
     f.cd()
@@ -69,8 +70,11 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
     if just_draw:
       for key in f.GetListOfKeys():
         obj = key.ReadObj()
-        if obj.InheritsFrom("TCanvas"):
-          f.Delete(f"{key.GetName()};{key.GetCycle()}")
+        try:
+          if obj.InheritsFrom("TCanvas"):
+            f.Delete(f"{key.GetName()};{key.GetCycle()}")
+        except TypeError:
+          pass
 
     c = ROOT.TCanvas(f"{name}_canvas")
     c.cd()
