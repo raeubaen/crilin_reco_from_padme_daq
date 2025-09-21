@@ -10,14 +10,16 @@ charge_pos8_x1_ym1_ch2,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== -10
 charge_pos5_x1_y0_ch5,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 0 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
 charge_pos2_x1_y1_ch8,,charges,crilin_charge,0,0,crilin_x==10 && crilin_y== 10 ,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
 charge_sum,,main,crilin_charge_sum,0,0,,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
-peak_central,,main,crilin_peak,0,0,crilin_x==0 && crilin_y== 0,kBlue,2000,0,200,0,0,0,0,Peak [ADCcounts],,,1
-#charge_vs_peak_central,,main,crilin_charge,crilin_peak,0,crilin_x==0 && crilin_y== 0,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
-peak_scint,,main,tagger_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [ADCcounts],,,1
-#charge_vs_peak_scint,,main,tagger_charge,tagger_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
+peak_central,,main,crilin_peak,0,0,crilin_x==0 && crilin_y== 0,kBlue,2000,0,200,0,0,0,0,Peak [mV],,,1
+#charge_vs_peak_central,,main,crilin_charge,crilin_peak,0,crilin_x==0 && crilin_y== 0,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [mV],0,0
+peak_scint,,main,tagger_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [mV],,,1
+#charge_vs_peak_scint,,main,tagger_charge,tagger_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [mV],0,0
 charge_scint,,main,tagger_charge,0,0, tagger_charge>20,kBlue,2000,0,400,0,0,0,0,Charge [pC],,,1
 #
 crilin_x_y_centroid,,main,crilin_x_centroid,crilin_y_centroid,0,(crilin_charge_sum > 0) && ((crilin_x_centroid*crilin_y_centroid)!= 0),0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
-tracker_down_x_y_centroid,,main,tracker_d_x_centroid,tracker_d_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
+#
+crilin_x_y_centroid_fiducial_pm2p5mm,,main,crilin_x_centroid,crilin_y_centroid,0,(abs(tracker_u_y_centroid+2) < 2.5) && (abs(tracker_u_x_centroid) < 2.5) && (crilin_charge_sum > 0) && ((crilin_x_centroid*crilin_y_centroid)!= 0),0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
+#tracker_down_x_y_centroid,,main,tracker_d_x_centroid,tracker_d_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
 tracker_up_x_y_centroid,,main,tracker_u_x_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Reco X [mm], Reco Y [mm],0,0
 tracker_up_down_x_centroid,,main,tracker_d_x_centroid,tracker_u_x_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Downstream X [mm], Upstream X [mm],0,0
 tracker_up_down_y_centroid,,main,tracker_d_y_centroid,tracker_u_y_centroid,0,crilin_charge_sum > 0,0,600,-30,30,600,-30,30,,Downstream Y [mm], Upstream Y [mm],0,0
@@ -32,8 +34,8 @@ tracker_up_down_y_centroid_diff,,main,(tracker_d_y_centroid) - (tracker_u_y_cent
 tracker_up_down_x_centroid_diff,,main,(tracker_d_x_centroid) - (tracker_u_x_centroid),0,0,,kBlue,2400,-30,30,0,0,0,0,Downstream-Upstream X [mm],,,0
 #
 #
-peak_catcher,,main,beamcatcher_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [ADCcounts],,,0
-#charge_vs_peak_catcher,,main,beamcatcher_charge,beamcatcher_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [ADCcounts],0,0
+peak_catcher,,main,beamcatcher_peak,0,0,,kBlue,2000,0,1000,0,0,0,0,Peak [mV],,,0
+#charge_vs_peak_catcher,,main,beamcatcher_charge,beamcatcher_peak,0,,0,2000,0,100,2000,0,2000,,Charge [pC],Peak [mV],0,0
 charge_catcher,,main,beamcatcher_charge,0,0,,kBlue,2000,0,100,0,0,0,0,Charge [pC],,,1
 #
 #

@@ -58,7 +58,7 @@ def main(arguments):
       if dd["reco_conf"]["do_centroid"]:
         x_y_z_tuple = [map_df[coord].to_numpy()[active_row_list] for coord in ["x", "y", "z"]]
       else:
-	x_y_z_tuple = None
+        x_y_z_tuple = None
 
       print(f"{detector} pre-process: {time.time() - time_read:.2f}")
       time_reco = time.time()

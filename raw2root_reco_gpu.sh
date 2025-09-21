@@ -24,7 +24,6 @@ xrdcp /tmp/last_file.txt "root://eospublic.cern.ch//eos/experiment/muoncollider/
 
 
 
-
 cd /home/crilin/crilinRECO/default_crilin_reco_from_padme_daq
 
 reco_xrd="root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/reco_files/reco_${run_name}_${n_fragment}.root"

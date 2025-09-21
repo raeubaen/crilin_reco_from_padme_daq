@@ -54,6 +54,8 @@ def generic_reco(
 
   print("starting to transfer to VRAM")
   waves = cp.asarray(cpu_waves)
+  waves *= 1000./4096
+
   print("transferred - starting split")
 
   print(mempool.used_bytes())              # 0
@@ -85,7 +87,10 @@ def generic_reco(
   mask_under_thr = values_max < charge_zerosup_peak_threshold #shape (Event, Channels)
 
   charge = cp.sum(signal_waveforms, axis=2)
+
   charge[mask_under_thr] = 0
+  charge /= (50 * sampling_rate)
+
   charge_sum = cp.sum(charge, axis=1)
 
   print("charges done")
