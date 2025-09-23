@@ -1,4 +1,4 @@
-This code is used for the reconstruction of unpacked data derived from the EBeTe unpacker used in ECAL Test Beam analysis
+analastfile.sh daqlogger.sh sono file per la cartella del DAQ
 
 Overview of the code:
   - **reco.py & reco_functions.py**\
@@ -9,3 +9,4 @@ Overview of the code:
 
   - **plot_list.csv**\
     csv file with the list of the plots and the settings for each one
+
