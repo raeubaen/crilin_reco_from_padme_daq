@@ -20,7 +20,7 @@ xrdcp $unpacked $unpacked_xrd &
 
 echo $unpacked_xrd $conf > /tmp/last_file.txt
 
-xrdcp /tmp/last_file.txt "root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/last_file.txt"
+xrdcp -f /tmp/last_file.txt "root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/last_file.txt"
 
 
 
