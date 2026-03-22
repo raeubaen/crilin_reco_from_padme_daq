@@ -10,3 +10,7 @@ Overview of the code:
   - **plot_list.csv**\
     csv file with the list of the plots and the settings for each one
 
+To launch:
+   python3 onlinemonitor_nogpu.py <nrun> <conf>  (conf w/o extension or path)
+   Optional arguments --> restart from fragment or change the sleep time between reconstructions steps
+   

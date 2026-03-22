@@ -36,7 +36,7 @@ def generic_reco(
   charge_zerosup_peak_threshold=10,
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
-  timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
+  timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
 ):
 
   argmax_idx, event_idx, chan_idx, signal_indices, baseline_indices = split(waves, pre=signal_samples_pre_peak, post=signal_samples_post_peak)
@@ -103,27 +103,27 @@ def generic_reco(
     rise = signal_waveforms[:, :, (signal_samples_pre_peak - rise_samples_pre_peak):(signal_samples_pre_peak + rise_samples_post_peak)]
     rise_interp = ndimage.zoom(rise, [1, 1, interpolation_factor])
 
+    for timing_method in timing_methods:
+        if timing_method == "cf":
+            interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
+            thresholds = interp*cf #values_max*cf
+            return_dict.update({f"{det}_interp": interp})
+        elif timing_method == "fixed_thr":
+            thresholds = np.ones((rise.shape[0], rise.shape[1]))*timing_thr
+        else:
+            print(f"ao {timing_methods}")
+            raise NotImplemented(f"method: {timing_methods} not implemented")
 
-    if timing_method == "cf":
-      interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
-      thresholds = interp*cf #values_max*cf
-      return_dict.update({f"{det}_interp": interp})
 
-    elif timing_method == "fixed_thr":
-      thresholds = np.ones((rise.shape[0], rise.shape[1]))*timing_thr
+        pseudo_t = np.argmax(rise_interp > np.repeat((thresholds)[:, :, np.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
 
-    else:
-      raise NotImplemented(f"method: {timing_method} not implemented")
+        pseudo_t += np.random.uniform(low=-0.5, high=0.5, size=pseudo_t.shape)
 
+        pseudo_t /= float(sampling_rate*interpolation_factor)
 
-    pseudo_t = np.argmax(rise_interp > np.repeat((thresholds)[:, :, np.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
+        pseudo_t += ((argmax_idx - rise_samples_pre_peak)/ sampling_rate)
 
-    pseudo_t += np.random.uniform(low=-0.5, high=0.5, size=pseudo_t.shape)
-
-    pseudo_t /= float(sampling_rate*interpolation_factor)
-
-    pseudo_t += ((argmax_idx - rise_samples_pre_peak)/ sampling_rate)
-    return_dict.update({f"{det}_cf_time": pseudo_t})
+        return_dict.update({f"{det}_{timing_methods}_time": pseudo_t})
 
   save_waves_mask = np.random.uniform(size=(waves.shape[0],)) > 0.01
   waves[save_waves_mask, ...] = 0

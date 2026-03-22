@@ -149,13 +149,6 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         h.Draw("ZCOL")
         h.GetYaxis().SetTitle(row.ylabel)
 
-        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1)) #iterative...
-        h.GetXaxis().SetRangeUser(h.GetMean(1) - 3*h.GetRMS(1), h.GetMean(1) + 3*h.GetRMS(1))
-        h.GetXaxis().SetRangeUser(h.GetMean(1) - 5*h.GetRMS(1), h.GetMean(1) + 5*h.GetRMS(1))
-        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2)) #iterative...
-        h.GetYaxis().SetRangeUser(h.GetMean(2) - 3*h.GetRMS(2), h.GetMean(2) + 3*h.GetRMS(2))
-        h.GetYaxis().SetRangeUser(h.GetMean(2) - 5*h.GetRMS(2), h.GetMean(2) + 5*h.GetRMS(2))
-
     else:
         ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
 
