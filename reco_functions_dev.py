@@ -1,3 +1,4 @@
+
 from multiprocessing import Pool
 
 import numpy as np
@@ -59,29 +60,32 @@ def generic_reco(
   event_idx_2d = np.arange(waves.shape[0])[:, None]        # shape (E, 1)
   chan_idx_2d  = np.arange(waves.shape[1])[None, :]        # shape (1, C)
 
+
   values_max = waves[event_idx_2d, chan_idx_2d, argmax_idx]  # shape (Event, Channels)
+
+  charge = np.sum(signal_waveforms, axis=2)
+  charge /= (50 * sampling_rate)
+
+  return_dict = {}
+  mask_selected_events = np.ones((charge.shape[0],), dtype=bool)
+  det = detector_name
 
   for var in chid_dict:
     return_dict.update({f"{det}_{var}": np.repeat(chid_dict[var][np.newaxis, :], waves.shape[0], axis=0)})
 
-  charge = np.sum(signal_waveforms, axis=2)
-  charge /= (50 * sampling_rate)
+  if "eqfactor" in chid_dict:
+    charge *= return_dict[f"{det}_eqfactor"]
 
   mask_under_thr = values_max < charge_zerosup_peak_threshold #shape (Event, Channels)
 
   charge[mask_under_thr] = 0
   charge_sum = np.sum(charge, axis=1)
-  #charge_sum = np.sum(charge, axis=1)
 
   tWave = np.repeat(np.arange(0, waves.shape[2])[np.newaxis, :], waves.shape[1], axis=0)
   tWave = np.repeat(tWave[np.newaxis, :], waves.shape[0], axis=0).astype(float)
   tWave /= sampling_rate
 
 
-
-  return_dict = {}
-  mask_selected_events = np.ones((charge.shape[0],), dtype=bool)
-  det = detector_name
 
 
   if do_centroid:

@@ -1,0 +1,116 @@
+name,title,folder,x,y,z,cuts,color,binsnx,binsminx,binsmaxx,binsny,binsminy,binsmaxy,contours,xlabel,ylabel,zlabel,logy
+chargeLG_xm1_ym2_ch0, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==-30 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x0_ym2_ch1, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x1_ym2_ch2, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==30 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+#,,,,,,,,,,,,,,,,,,
+chargeLG_xm2_ym1_ch3,,chargesLG,LGslayer_charge,0,0,LGslayer_x==-60 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeLG_xm1_ym1_ch4, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==-30 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x0_ym1_ch5, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x1_ym1_ch6, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==30 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x2_ym1_ch7,,chargesLG,LGslayer_charge,0,0,LGslayer_x==60 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeLG_xm2_y0_ch8,,chargesLG,LGslayer_charge,0,0,LGslayer_x==-60 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeLG_xm1_y0_ch9, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==-30 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x0_y0_ch10, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x1_y0_ch11, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==30 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x2_y0_ch12,,chargesLG,LGslayer_charge,0,0,LGslayer_x==60 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeLG_xm2_y1_ch13,,chargesLG,LGslayer_charge,0,0,LGslayer_x==-60 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeLG_xm1_y1_ch14, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==-30 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x0_y1_ch15, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x1_y1_ch16, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==30 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x2_y1_ch17,,chargesLG,LGslayer_charge,0,0,LGslayer_x==60 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeLG_xm1_y2_ch18, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==-30 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x0_y2_ch19, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeLG_x1_y2_ch20, ,chargesLG,LGslayer_charge,0,0,LGslayer_x==30 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+#,,,,,,,,,,,,,,,,,,
+peakLG_xm1_ym2_ch0, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==-30 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x0_ym2_ch1, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x1_ym2_ch2, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==30 && LGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+#,,,,,,,,,,,,,,,,,,
+peakLG_xm2_ym1_ch3,,peaksLG,LGslayer_peak,0,0,LGslayer_x==-60 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakLG_xm1_ym1_ch4, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==-30 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x0_ym1_ch5, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x1_ym1_ch6, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==30 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x2_ym1_ch7,,peaksLG,LGslayer_peak,0,0,LGslayer_x==60 && LGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakLG_xm2_y0_ch8,,peaksLG,LGslayer_peak,0,0,LGslayer_x==-60 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakLG_xm1_y0_ch9, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==-30 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x0_y0_ch10, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x1_y0_ch11, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==30 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x2_y0_ch12,,peaksLG,LGslayer_peak,0,0,LGslayer_x==60 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakLG_xm2_y1_ch13,,peaksLG,LGslayer_peak,0,0,LGslayer_x==-60 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakLG_xm1_y1_ch14, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==-30 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x0_y1_ch15, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x1_y1_ch16, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==30 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x2_y1_ch17,,peaksLG,LGslayer_peak,0,0,LGslayer_x==60 && LGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakLG_xm1_y2_ch18, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==-30 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x0_y2_ch19, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakLG_x1_y2_ch20, ,peaksLG,LGslayer_peak,0,0,LGslayer_x==30 && LGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+#,,,,,,,,,,,,,,,,,,
+
+chargeHG_xm1_ym2_ch0, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==-30 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x0_ym2_ch1, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x1_ym2_ch2, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==30 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+#,,,,,,,,,,,,,,,,,,
+chargeHG_xm2_ym1_ch3,,chargesHG,HGslayer_charge,0,0,HGslayer_x==-60 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeHG_xm1_ym1_ch4, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==-30 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x0_ym1_ch5, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x1_ym1_ch6, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==30 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x2_ym1_ch7,,chargesHG,HGslayer_charge,0,0,HGslayer_x==60 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeHG_xm2_y0_ch8,,chargesHG,HGslayer_charge,0,0,HGslayer_x==-60 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeHG_xm1_y0_ch9, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==-30 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x0_y0_ch10, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x1_y0_ch11, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==30 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x2_y0_ch12,,chargesHG,HGslayer_charge,0,0,HGslayer_x==60 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeHG_xm2_y1_ch13,,chargesHG,HGslayer_charge,0,0,HGslayer_x==-60 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+chargeHG_xm1_y1_ch14, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==-30 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x0_y1_ch15, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x1_y1_ch16, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==30 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x2_y1_ch17,,chargesHG,HGslayer_charge,0,0,HGslayer_x==60 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+#,,,,,,,,,,,,,,,,,,
+chargeHG_xm1_y2_ch18, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==-30 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x0_y2_ch19, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+chargeHG_x1_y2_ch20, ,chargesHG,HGslayer_charge,0,0,HGslayer_x==30 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Charge [pC],, ,1
+#,,,,,,,,,,,,,,,,,,
+peakHG_xm1_ym2_ch0, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==-30 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x0_ym2_ch1, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x1_ym2_ch2, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==30 && HGslayer_y== -60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+#,,,,,,,,,,,,,,,,,,
+peakHG_xm2_ym1_ch3,,peaksHG,HGslayer_peak,0,0,HGslayer_x==-60 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakHG_xm1_ym1_ch4, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==-30 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x0_ym1_ch5, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x1_ym1_ch6, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==30 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x2_ym1_ch7,,peaksHG,HGslayer_peak,0,0,HGslayer_x==60 && HGslayer_y== -30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakHG_xm2_y0_ch8,,peaksHG,HGslayer_peak,0,0,HGslayer_x==-60 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakHG_xm1_y0_ch9, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==-30 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x0_y0_ch10, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x1_y0_ch11, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==30 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x2_y0_ch12,,peaksHG,HGslayer_peak,0,0,HGslayer_x==60 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakHG_xm2_y1_ch13,,peaksHG,HGslayer_peak,0,0,HGslayer_x==-60 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+peakHG_xm1_y1_ch14, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==-30 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x0_y1_ch15, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x1_y1_ch16, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==30 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x2_y1_ch17,,peaksHG,HGslayer_peak,0,0,HGslayer_x==60 && HGslayer_y== 30,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],,,1
+#,,,,,,,,,,,,,,,,,,
+peakHG_xm1_y2_ch18, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==-30 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x0_y2_ch19, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+peakHG_x1_y2_ch20, ,peaksHG,HGslayer_peak,0,0,HGslayer_x==30 && HGslayer_y== 60,kBlue,300,-50,1000,0,0,0,0,Peak Amplitude [mV],, ,1
+#,,,,,,,,,,,,,,,,,,
+chargeLG_sum,,main,LGslayer_charge_sum,0,0,,kBlue,600,-50,2000,0,0,0,0,Charge [pC],,,1
+chargeLG_central,,main,LGslayer_charge,0,0,LGslayer_x==0 && LGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+peakLG_central,,main,LGslayer_peak,0,0,LGslayer_x==0 && LGslayer_y== 0,kBlue,1000,0,1000,0,0,0,0,Peak [mV],,,1
+LGslayer_x_y_centroid,,main,LGslayer_x_centroid,LGslayer_y_centroid,0,(LGslayer_charge_sum > 0) && ((LGslayer_x_centroid*LGslayer_y_centroid)!= 0),0,150,-75,75,150,-75,75,,Reco X [mm], Reco Y [mm],0,0
+#peak_catcher,,main,beamcatcher_peak,0,0,,kBlue,300,0,1000,0,0,0,0,Peak [mV],,,0
+#charge_catcher,,main,beamcatcher_charge,0,0,,kBlue,300,0,1000,0,0,0,0,Charge [pC],,,1
+chargeHG_sum,,main,HGslayer_charge_sum,0,0,,kBlue,600,-50,2000,0,0,0,0,Charge [pC],,,1
+chargeHG_central,,main,HGslayer_charge,0,0,HGslayer_x==0 && HGslayer_y== 0,kBlue,300,-50,1000,0,0,0,0,Charge [pC],,,1
+peakHG_central,,main,HGslayer_peak,0,0,HGslayer_x==0 && HGslayer_y== 0,kBlue,1000,0,1000,0,0,0,0,Peak [mV],,,1
+HGslayer_x_y_centroid,,main,HGslayer_x_centroid,HGslayer_y_centroid,0,(HGslayer_charge_sum > 0) && ((HGslayer_x_centroid*HGslayer_y_centroid)!= 0),0,150,-75,75,150,-75,75,,Reco X [mm], Reco Y [mm],0,0

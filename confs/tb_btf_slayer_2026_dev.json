@@ -1,7 +1,7 @@
 {
   "global": {
     "tree_name": "NTU",
-    "map_filename": "maps/tb_btf_slayer_2026_old1.csv",
+    "map_filename": "maps/tb_btf_slayer_2026.csv",
     "plot_list": "plotlists/plot_list_btf_slayer_2026.csv"
   },
 
@@ -10,7 +10,7 @@
     "LGslayer": {
       "waves_branch_name": "Waves",
       "to_be_inverted": false,
-      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "chid_vars_list": ["digi_ch", "board", "global_chip", "eqfactor"],
       "reco_conf": {
         "baseline_samples": 20,
         "signal_samples_pre_peak": 40,
@@ -32,7 +32,7 @@
     "HGslayer": {
       "waves_branch_name": "Waves",
       "to_be_inverted": false,
-      "chid_vars_list": ["digi_ch", "board", "global_chip"],
+      "chid_vars_list": ["digi_ch", "board", "global_chip", "eqfactor"],
       "reco_conf": {
         "signal_samples_pre_peak": 40,
         "signal_samples_post_peak": 200,
