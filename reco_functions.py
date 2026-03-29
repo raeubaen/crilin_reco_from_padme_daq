@@ -4,7 +4,8 @@ import numpy as np
 from scipy import ndimage
 from scipy.signal import filtfilt, butter
 
-def split(waveforms, pre=5, post=10):
+
+def split(waveforms, pre=5, post=10, baseline_samples=20):
 
     # Assume waveforms is shape (E, C, S)
     E, C, S = waveforms.shape
@@ -14,7 +15,7 @@ def split(waveforms, pre=5, post=10):
 
     # Step 2: Build offsets
     window_offsets = np.arange(-pre, post).reshape(1, 1, -1)
-    baseline_offsets = np.arange(-50, -pre - 10).reshape(1, 1, -1)
+    baseline_offsets = np.arange(-pre-baseline_samples, -pre).reshape(1, 1, -1)
 
     # Expand argmax index for broadcasting
     argmax_exp = argmax_idx[:, :, np.newaxis]  # shape (E, C, 1)
@@ -32,21 +33,22 @@ def split(waveforms, pre=5, post=10):
 
 def generic_reco(
   waves, detector_name, chid_dict, x_y_z_tuple,
-  signal_samples_pre_peak=5, signal_samples_post_peak=10,
+  signal_samples_pre_peak=5, signal_samples_post_peak=10, baseline_samples=20,
   charge_zerosup_peak_threshold=10,
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
-  timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
+  timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None, dynfactor=1.
 ):
 
   argmax_idx, event_idx, chan_idx, signal_indices, baseline_indices = split(waves, pre=signal_samples_pre_peak, post=signal_samples_post_peak)
 
   baseline_waveforms = waves[event_idx, chan_idx, baseline_indices]
   baseline_means = baseline_waveforms.mean(axis=2)
+  baseline_integral = np.sum(baseline_waveforms[:, :, int(baseline_waveforms.shape[2]/2):], axis=2) - baseline_means*baseline_samples/2
 
   waves = waves - np.repeat(baseline_means[:, :, np.newaxis], waves.shape[2], axis=2)  # baseline subtraction
 
-  waves *= 1000./4096
+  waves *= dynfactor*1000./4096
 
   signal_waveforms = waves[event_idx, chan_idx, signal_indices]
 
@@ -61,13 +63,13 @@ def generic_reco(
   values_max = waves[event_idx_2d, chan_idx_2d, argmax_idx]  # shape (Event, Channels)
 
   charge = np.sum(signal_waveforms, axis=2)
-
   charge /= (50 * sampling_rate)
 
   mask_under_thr = values_max < charge_zerosup_peak_threshold #shape (Event, Channels)
 
   charge[mask_under_thr] = 0
   charge_sum = np.sum(charge, axis=1)
+  #charge_sum = np.sum(charge, axis=1)
 
   tWave = np.repeat(np.arange(0, waves.shape[2])[np.newaxis, :], waves.shape[1], axis=0)
   tWave = np.repeat(tWave[np.newaxis, :], waves.shape[0], axis=0).astype(float)
@@ -132,7 +134,8 @@ def generic_reco(
   return_dict.update({
     f"{det}_pos": argmax_idx,
     f"{det}_peak": values_max, f"{det}_charge": charge, f"{det}_charge_sum": charge_sum,
-    f"{det}_wave": waves, f"{det}_t_wave": tWave
+    f"{det}_wave": waves, f"{det}_t_wave": tWave, f"{det}_baseline_integral": baseline_integral/baseline_samples*(signal_samples_pre_peak+signal_samples_post_peak)*dynfactor*1000./4096/(50 * sampling_rate),
+    f"{det}_baseline_mean": baseline_means
   })
 
 

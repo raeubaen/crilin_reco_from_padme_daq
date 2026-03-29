@@ -34,6 +34,8 @@ def main(arguments):
     # open input file
     file = uproot.open(args.input, num_workers=10)
     tree = file[global_dict["tree_name"]]
+    trigmask = tree["TrigMask"].array(library="np")
+
     print(f"open file: {time.time() - time_open :.2f}")
 
     for detector in detectors_dict:
@@ -69,6 +71,7 @@ def main(arguments):
     mask_global, reco_dict = np.logical_and.reduce([detectors_dict[detector]["mask"] for detector in detectors_dict]), {}
     for detector in detectors_dict: reco_dict.update(detectors_dict[detector]["reco_dict"])
     for branch in reco_dict: reco_dict[branch] = reco_dict[branch][mask_global, ...]
+    reco_dict["trigmask"] = trigmask[mask_global, ...]
     print(f"merge: {time.time() - time_merge:.2f}")
 
     time_plot = time.time()

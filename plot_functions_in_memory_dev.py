@@ -1,60 +1,38 @@
-import time, re, os, ROOT
+import time, re, os, sys, ROOT
 import numpy as np
 import traceback
 import shutil
 
-def replace_index_axis1(match):
-    var = match.group(1)
-    idx = match.group(2)
-    return f"uproot_dict['{var}'][:,{idx}]"
-
-
-def replace_index_noch(match):
-    var = match.group(1)
-    return f"uproot_dict['{var}']"
-
 
 def eval_formula(formula, data_dict):
-    if "(" in formula and "[" not in formula:
-      pattern = re.compile(r"(\w+)")
-      numpy_expr = pattern.sub(replace_index_noch, formula)
-      print(numpy_expr)
-      result = eval(numpy_expr, {"uproot_dict": data_dict, "np": np})
+    """
+    Evaluate a formula with ${var} syntax and optional @ for broadcasting axes.
 
-      return result
+    - ${var} -> uproot_dict["var"]
+    - ${var}@ -> uproot_dict["var"][:, np.newaxis]
+    - ${var}@@ -> uproot_dict["var"][:, np.newaxis][:, np.newaxis] etc.
+    """
 
+    def replace_var(m):
+        varname = m.group(1)
+        at_symbols = m.group(2) or ""
+        arr = f'uproot_dict["{varname}"]'
+        if at_symbols:
+            arr += ''.join(['[:, np.newaxis]' for _ in at_symbols])
+        return arr
 
-    if "[" not in formula: return data_dict[formula]
+    # Match ${var} optionally followed by one or more @ symbols
+    pattern = re.compile(r'\$\{\s*(\w+)\s*\}(\@*)')
+    expr = pattern.sub(replace_var, formula)
 
-    #if "[" not in formula: eval(formula, {"uproot_dict": data_dict, "np": np})
-
-    pattern = re.compile(r"(\w+)\[(\d+)\]")
-    numpy_expr = pattern.sub(replace_index_axis1, formula)
-    print(numpy_expr)
-    result = eval(numpy_expr, {"uproot_dict": data_dict, "np": np})
-
-    return result
-
-
-def convert_root_cut_to_numpy_expr(cut_str, available_vars):
-    # Replace && with & and || with |
-    cut_str = cut_str.replace("&&", "&").replace("||", "|").replace("[", "[:, ")
-
-    # Replace ROOT var names with uproot_dict["var"]
-    pattern = re.compile(r'\b(' + '|'.join(re.escape(var) for var in available_vars) + r')\b')
-    expr = pattern.sub(r'uproot_dict["\1"]', cut_str)
-
-    comp_ops = ['>=', '<=', '==', '!=', '>', '<']
-    for op in comp_ops:
-        # Wrap expressions with comparison operators, avoiding double wrapping
-        pattern = rf'(?<!\()([^\s&|()]+(?:\s*\[[^\]]+\])?\s*{re.escape(op)}\s*[^\s&|()]+)(?!\))'
-        expr = re.sub(pattern, r'(\1)', expr)
-
-    return expr
+    # Safe eval environment
+    safe_globals = {"uproot_dict": data_dict, "np": np, "__builtins__": {}}
+    return eval(expr, safe_globals)
 
 
 def plot(row, uproot_dict, outputfolder, just_draw=False):
 
+  print("\n\nbeginning plot function")
   ROOT.gErrorIgnoreLevel = ROOT.kError
 
   try:
@@ -88,11 +66,10 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         first_key = next(iter(uproot_dict.keys()))
         mask = np.ones((uproot_dict[first_key].shape[0],), dtype=bool)
       else:
-        expr = convert_root_cut_to_numpy_expr(str(row.cuts), uproot_dict.keys())
-        print(expr)
-        mask = eval(expr)
+        mask = eval_formula(row.cuts, uproot_dict)
 
       x = eval_formula(row.x, uproot_dict)[mask]
+      x = np.atleast_1d(x)
       nevents = x.shape[0]
       x = x.ravel()
 
@@ -102,7 +79,8 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         else:
           h = ROOT.TH1F(name, row.title, int(row.binsnx), float(row.binsminx), float(row.binsmaxx))
 
-          h.FillN(len(x), x.astype(np.float64), np.ones_like(x, dtype=np.float64))
+          if len(x) > 0:
+              h.FillN(len(x), x.astype(np.float64), np.ones_like(x, dtype=np.float64))
 
         h.Draw("HIST")
         h.SetFillColorAlpha(ROOT.kBlue, 0.2)
@@ -141,12 +119,16 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         if just_draw:
           h = f.Get(f"{name}")
         else:
+          print("row.y: ", row.y)
           y = eval_formula(row.y, uproot_dict)[mask].ravel()
           h = ROOT.TH2F(name, row.title,
                       int(row.binsnx), float(row.binsminx), float(row.binsmaxx),
                       int(row.binsny), float(row.binsminy), float(row.binsmaxy))
-          print(x.shape, y.shape)
-          h.FillN(len(x), x.astype(np.float64), y.astype(np.float64), np.ones_like(x, dtype=np.float64))
+
+          if len(x) == 0:
+              pass
+          else:
+              h.FillN(len(x), x.astype(np.float64), y.astype(np.float64), np.ones_like(x, dtype=np.float64))
 
         h.Draw("ZCOL")
         h.GetYaxis().SetTitle(row.ylabel)
