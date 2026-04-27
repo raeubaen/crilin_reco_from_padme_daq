@@ -4,6 +4,8 @@
 
 #lastfile=$(ls -1 local/rawdata/$folder | sort -V | tail -n 2 | head -n 1)
 
+rm -f /tmp/current_file.txt
+
 orig=$(pwd)
 
 while true; do
@@ -47,7 +49,7 @@ while true; do
 	python3 reco_gpu.py -ro /root/reco_files/$run_name/reco_$n_fragment.root -i $filename -po /root/plot_files/$run_name/current_fragment/ -dj /root/crilin_reco_from_padme_daq/confs/$conf.json -hd "source /root/crilin_reco_from_padme_daq/hadd_gpu.sh $run_name $conf $n_fragment &"
 
 	xrdcp -f /root/reco_files/$run_name/reco_$n_fragment.root $reco_xrd &
-
+        break
 done
 
 cd $orig

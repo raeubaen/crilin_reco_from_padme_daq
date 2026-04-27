@@ -1,6 +1,7 @@
 import os, json, uproot, argparse, sys, time, ROOT
 import numpy as np
 import gpu_reco_functions as reco_functions
+import awkward as ak
 import pandas as pd
 import plot_functions_in_memory as plot_functions
 from concurrent.futures import ThreadPoolExecutor as tpe
@@ -88,16 +89,17 @@ def main(arguments):
 
     print(f"plot: {time.time() - time_plot:.2f}")
 
-    print(args.hadd_cmd)
+    #print(args.hadd_cmd)
 
-    os.system(args.hadd_cmd)
+    #os.system(args.hadd_cmd)
 
     time_write = time.time()
-    branch_types = {k: (v.dtype, v.shape[1:]) for k, v in reco_dict.items()}
-    compression_map = {"zlib": uproot.compression.ZLIB(level=4), "lz4": uproot.compression.LZ4(level=1), "none": None}
-    with uproot.recreate(args.reco_output_file, compression=compression_map[args.compression_type]) as f:
-        tree = f.mktree("tree", branch_types)
-        tree.extend(reco_dict)
+
+    with uproot.recreate(
+    	    args.reco_output_file,
+    	    compression=uproot.LZ4(1)
+    	) as f:
+    	    f["tree"] = reco_dict
 
     print(f"write: {time.time() - time_write:.2f}")
 

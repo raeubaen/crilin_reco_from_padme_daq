@@ -64,19 +64,19 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
 
     os.makedirs(f"{outputfolder}/{row.folder}/", exist_ok=True)
 
-    f = ROOT.TFile(f"{outputfolder}/{row.folder}/{name}.root", ("update" if just_draw else "recreate"))
-    f.cd()
+    #f = ROOT.TFile(f"{outputfolder}/{row.folder}/{name}.root", ("update" if just_draw else "recreate"))
+    #f.cd()
 
     ROOT.gROOT.SetBatch(ROOT.kTRUE)
 
-    if just_draw:
-      for key in f.GetListOfKeys():
-        obj = key.ReadObj()
-        try:
-          if obj.InheritsFrom("TCanvas"):
-            f.Delete(f"{key.GetName()};{key.GetCycle()}")
-        except TypeError:
-          pass
+#    if just_draw:
+#      for key in f.GetListOfKeys():
+#        obj = key.ReadObj()
+#        try:
+#          if obj.InheritsFrom("TCanvas"):
+#            f.Delete(f"{key.GetName()};{key.GetCycle()}")
+#        except TypeError:
+#          pass
 
     c = ROOT.TCanvas(f"{name}_canvas")
     c.cd()
@@ -98,7 +98,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
 
     if str(row.y).strip() == "0" and str(row.z).strip() == "0":
         if just_draw:
-          h = f.Get(f"{name}")
+          pass #h = f.Get(f"{name}")
         else:
           h = ROOT.TH1F(name, row.title, int(row.binsnx), float(row.binsminx), float(row.binsmaxx))
 
@@ -139,7 +139,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
 
     elif str(row.y).strip() != "0" and str(row.z).strip() == "0":
         if just_draw:
-          h = f.Get(f"{name}")
+          pass #  h = f.Get(f"{name}")
         else:
           y = eval_formula(row.y, uproot_dict)[mask].ravel()
           h = ROOT.TH2F(name, row.title,
@@ -155,7 +155,7 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
         ROOT.gStyle.SetPalette(ROOT.kLightTemperature)
 
         if just_draw:
-          h = f.Get(f"{name}")
+          pass #  h = f.Get(f"{name}")
         else:
           y = eval_formula(row.y, uproot_dict)[mask].ravel()
           z = eval_formula(row.z, uproot_dict)[mask].ravel()
@@ -196,13 +196,13 @@ def plot(row, uproot_dict, outputfolder, just_draw=False):
       shutil.copy2(f"{outputfolder}/jsroot_viewer.php", f"{outputfolder}/{row.folder}/jsroot_viewer.php")
 
     #c.SaveAs(f"{outputfolder}/{row.folder}/{name}.pdf")
-    c.SaveAs(f"{outputfolder}/{row.folder}/{name}.png")
-    if just_draw: c.Write("", ROOT.TObject.kOverwrite)
-    else:
-      c.Write()
-      h.Write()
-    f.Close()
-    c.Close()
+    #c.SaveAs(f"{outputfolder}/{row.folder}/{name}.png")
+    #if just_draw: c.Write("", ROOT.TObject.kOverwrite)
+    #else:
+    #  c.Write()
+    #  h.Write()
+    #f.Close()
+    #c.Close()
     del c
     del h
 

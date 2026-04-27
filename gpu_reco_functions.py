@@ -38,7 +38,7 @@ def generic_reco(
   charge_zerosup_peak_threshold=10,
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
-  timing_method="cf", cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
+  timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None
 ):
 
 
@@ -136,16 +136,16 @@ def generic_reco(
     rise_interp = ndimage.zoom(rise, [1, 1, interpolation_factor])
 
 
-    if timing_method == "cf":
-      peak_interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
-      thresholds = peak_interp*cf #values_max*cf
-      return_dict.update({f"{det}_peak_interp": cp.asnumpy(peak_interp)})
+    for timing_method in timing_methods:
+        if timing_method == "cf":
+            interp = rise_interp.max(axis=2) #shape: (Events, Channel) - on y axis
+            thresholds = interp*cf #values_max*cf
+        elif timing_method == "fixed_thr":
+            thresholds = cp.ones((rise.shape[0], rise.shape[1]))*timing_thr
+        else:
+            print(f"ao {timing_methods}")
+            raise NotImplemented(f"method: {timing_methods} not implemented")
 
-    elif timing_method == "fixed_thr":
-      thresholds = cp.ones((rise.shape[0], rise.shape[1]))*timing_thr
-
-    else:
-      raise NotImplemented(f"method: {timing_method} not implemented")
 
 
     pseudo_t = cp.argmax(rise_interp > cp.repeat((thresholds)[:, :, cp.newaxis], rise_interp.shape[2], axis=2), axis=2).astype(float)
@@ -159,15 +159,15 @@ def generic_reco(
     return_dict.update({f"{det}_cf_time": cp.asnumpy(pseudo_t)})
     print("timing to cpu and in dict - done")
 
-  save_waves_mask = cp.random.uniform(size=(waves.shape[0],)) > 0.01
-  waves[save_waves_mask, ...] = 0
-  tWave[save_waves_mask, ...] = 0
-  print("masking waves done")
+  #save_waves_mask = cp.random.uniform(size=(waves.shape[0],)) > 0.01
+  #waves[save_waves_mask, ...] = 0
+  #tWave[save_waves_mask, ...] = 0
+  #print("masking waves done")
 
   return_dict.update({
     f"{det}_peak_pos": cp.asnumpy(argmax_idx),
     f"{det}_peak": cp.asnumpy(values_max), f"{det}_charge": cp.asnumpy(charge), f"{det}_charge_sum": cp.asnumpy(charge_sum),
-    f"{det}_wave": cp.asnumpy(waves), f"{det}_t_wave": cp.asnumpy(tWave)
+    #f"{det}_wave": cp.asnumpy(waves), f"{det}_t_wave": cp.asnumpy(tWave)
   })
   print("to cpu: done")
 
