@@ -35,7 +35,6 @@ while true; do
 
 	echo "--------------- runname,fragment: $run_name, $n_fragment"
 
-
 	unpacked_xrd="root://eospublic.cern.ch/$filename"
 	reco_xrd="root://eospublic.cern.ch//eos/experiment/muoncollider/data/crilin/h2-2025/gpu_reco_files/reco_${run_name}_${n_fragment}.root"
 

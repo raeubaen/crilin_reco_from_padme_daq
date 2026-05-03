@@ -40,6 +40,7 @@ def generic_reco(
   timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None, dynfactor=1.
 ):
 
+
   argmax_idx, event_idx, chan_idx, signal_indices, baseline_indices = split(waves, pre=signal_samples_pre_peak, post=signal_samples_post_peak)
 
   baseline_waveforms = waves[event_idx, chan_idx, baseline_indices]
