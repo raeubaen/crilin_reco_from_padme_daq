@@ -40,11 +40,9 @@ def generic_reco(
   do_centroid=True,
   do_timing=True, rise_samples_pre_peak=5, rise_samples_post_peak=2, sampling_rate=5,
   timing_methods=["cf"], cf=0.12, timing_thr=None, interpolation_factor=20, lp_freq=None,
-  rise_interp_left_samples=5, rise_interp_right_samples=5, clone_crilin_25=False,
+  rise_interp_left_samples=5, rise_interp_right_samples=5, clone_crilin_25=True,
   baseline_samples=20
 ):
-
-  print("waves[0]", cpu_waves[0])
 
   if detector_name == "crilin" and clone_crilin_25:
     print("processing crilin, going from 9 to 225 channels by cloning waves by 25x: WIP")
@@ -70,15 +68,11 @@ def generic_reco(
   baseline_waveforms = waves[event_idx, chan_idx, baseline_indices]
   baseline_means = baseline_waveforms.mean(axis=2)
 
-  print("waves befroe sub: ", waves[0])
   waves = waves - cp.repeat(baseline_means[:, :, cp.newaxis], waves.shape[2], axis=2)  # baseline subtraction
-
-  print("waves after sub: ", waves[0])
 
   print("baseline sub done")
   signal_waveforms = waves[event_idx, chan_idx, signal_indices]
 
-  print("signal waves[0]: ", signal_waveforms[0])
   print("signal extr done")
 
   #if lp_freq is not None:
@@ -100,12 +94,6 @@ def generic_reco(
   charge_sum = cp.sum(charge, axis=1)
 
   print("charges done")
-
-  tWave = cp.repeat(cp.arange(0, waves.shape[2])[cp.newaxis, :], waves.shape[1], axis=0)
-  tWave = cp.repeat(tWave[cp.newaxis, :], waves.shape[0], axis=0).astype(float)
-  tWave /= sampling_rate
-
-  print("tWave created")
 
   return_dict = {}
   mask_selected_events = cp.ones((charge.shape[0],), dtype=bool)
@@ -145,8 +133,6 @@ def generic_reco(
         (signal_samples_pre_peak + rise_samples_post_peak)
     ]
 
-    print("rise:", rise[0][0])
-
     for timing_method in timing_methods:
 
         if timing_method == "cf":
@@ -158,8 +144,6 @@ def generic_reco(
         else:
             raise NotImplementedError(f"method: {timing_method}")
 
-        print("thresholds: ", thresholds[0][0])
-
         # ---------------------------------------------------------
         # SELECT ONLY VALID CHANNELS (NEW, key change)
         # ---------------------------------------------------------
@@ -168,20 +152,11 @@ def generic_reco(
         rise_valid = rise[idx_valid]              # (N_valid, T)
         thr_valid  = thresholds[idx_valid]        # (N_valid,)
 
-        print("thr_valid: ", thr_valid[0])
-        # ---------------------------------------------------------
-        # FIRST CROSSING (UNCHANGED LOGIC, just 2D → 1D)
-        # ---------------------------------------------------------
         prelim_pseudo_t = cp.argmax(
             rise_valid > thr_valid[:, None],
             axis=1
         )
 
-        print("prelim_pseudo_t: ", prelim_pseudo_t[0])
-
-        # ---------------------------------------------------------
-        # BUILD WINDOW (UNCHANGED)
-        # ---------------------------------------------------------
         offsets = cp.arange(
             -rise_interp_left_samples,
              rise_interp_right_samples + 1
@@ -190,23 +165,12 @@ def generic_reco(
         idx = prelim_pseudo_t[:, None] + offsets[None, :]
         idx = cp.clip(idx, 0, rise_valid.shape[1] - 1)
 
-        print("idx: ", idx[0])
-
-        # ---------------------------------------------------------
-        # EXTRACT SEGMENTS
-        # ---------------------------------------------------------
         rise_segment = cp.take_along_axis(
             rise_valid,
             idx.astype(cp.int32),
             axis=1
         )
 
-        print("rise_segment: ", rise_segment[0])
-
-        # ---------------------------------------------------------
-        # INTERPOLATION (ONLY VALID CHANNELS NOW)
-        # ---------------------------------------------------------
-        print("rise_segment.shape: ", rise_segment.shape)
         rise_segment_3d = rise_segment[:, None, :]   # restore fake channel axis
 
         rise_interp = ndimage.zoom(
@@ -218,22 +182,11 @@ def generic_reco(
 
         rise_interp = rise_interp[:, 0, :]  # remove dummy axis
 
-        print("rise_interp.shape: ", rise_interp.shape)
-        print("rise_interp: ", rise_interp[0])
-
-        # ---------------------------------------------------------
-        # SECOND CROSSING
-        # ---------------------------------------------------------
         pseudo_t_valid = cp.argmax(
             rise_interp > thr_valid[:, None],
             axis=1
         ).astype(cp.float32)
 
-        print("pseudot (1st step): ", pseudo_t_valid[0])
-
-        # ---------------------------------------------------------
-        # FINAL TIMING (UNCHANGED FORMULA)
-        # ---------------------------------------------------------
         pseudo_t_valid += cp.random.uniform(
             low=-0.5,
             high=0.5,
@@ -248,14 +201,8 @@ def generic_reco(
             - rise_samples_pre_peak
         )
 
-        print("pseudot (final valid): ", pseudo_t_valid[0])
-
-        print("peak pos,rise_samples_pre_peak,rise_interp_left_samples,prelim_pseudo_t,pseudo_t_valid / interpolation_factor", argmax_idx[idx_valid][0],rise_samples_pre_peak,rise_interp_left_samples,prelim_pseudo_t[0],pseudo_t_valid[0] / interpolation_factor)
         pseudo_t_valid /= sampling_rate
 
-        # ---------------------------------------------------------
-        # SCATTER BACK (restore original shape)
-        # ---------------------------------------------------------
         pseudo_t = cp.zeros(mask_under_thr.shape, dtype=cp.float32)
 
         pseudo_t[idx_valid] = pseudo_t_valid

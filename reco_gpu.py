@@ -48,6 +48,7 @@ def main(arguments):
         waves = tree[dd["waves_branch_name"]].array(library="np", decompression_executor=decompr_exec, interpretation_executor=interpret_exec)
 
       print(f"{detector} read: {time.time() - time_curr:.2f}")
+      print(f"{detector} waves array shape: {waves.shape}")
       time_read = time.time()
       if len(waves.shape) == 4: waves = waves.reshape(waves.shape[0], waves.shape[1]*waves.shape[2], waves.shape[3])
       waves = waves[:, active_branch_ch_list, :]
