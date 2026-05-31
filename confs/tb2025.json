@@ -1,6 +1,6 @@
 {
   "global": {
-    "tree_name": "NTU",
+    "tree_name": "RawEvents",
     "map_filename": "maps/tb_all.csv",
     "plot_list": "plotlists/plot_list.csv"
   },

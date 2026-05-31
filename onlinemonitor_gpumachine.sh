@@ -45,7 +45,7 @@ while true; do
 	mkdir -p /root/plot_files/$run_name/current_fragment/
 
         echo "----------------------- /root/plot_files/$run_name/current_fragment/ -----------------------"
-	python3 reco_gpu.py -ro /root/reco_files/$run_name/reco_$n_fragment.root -i $filename -po /root/plot_files/$run_name/current_fragment/ -dj /root/crilin_reco_from_padme_daq/confs/$conf.json -hd "source /root/crilin_reco_from_padme_daq/hadd_gpu.sh $run_name $conf $n_fragment &"
+	python3 -m ferrari_core.reco -ro /root/reco_files/${run_name}/ -i $filename -po /eos/user/r/rgargiul/www/test_ferrari_on_crilin_from_gpu/ -j /root/crilin_reco_from_padme_daq/confs/$conf.json -opt electrons -r ${run_name} -s ${n_fragment}
 
 	xrdcp -f /root/reco_files/$run_name/reco_$n_fragment.root $reco_xrd &
         break
