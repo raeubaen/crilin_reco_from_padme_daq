@@ -1,0 +1,236 @@
+{
+    "global": {
+        "plugins": [],
+        "spill_type": {
+            "electrons": {
+                "plot_list": "plotlists/plot_list_electrons.csv",
+                "tree_name": "tree",
+                "detector_list": ["crilin", "tagger", "beamcatcher", "trigger"],
+                "global_branches": [],
+                "option":
+                {
+                    "crilin": {
+                        "reco_conf": {
+                        }
+                    }
+                }
+            },
+            "pions": {
+                "plot_list": "plotlists/plot_list_pions.csv",
+                "tree_name": "RawEvents",
+                "detector_list": ["crilin", "tagger", "beamcatcher", "trigger"],
+                "global_branches": [],
+                "option":
+                {
+                    "crilin": {
+                        "reco_conf": {
+                        }
+                    }
+                }
+            },
+        }
+    },
+    "detectors": {
+        "crilin": {
+            "generic_reco": {
+                "waves_branch": "Waves",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_map.csv",
+                "chid_vars_list": ["branch_ch","board","digi_ch","global_chip"],
+                "to_be_inverted": false,
+                "remove_last_n_samples": 50,
+                "geo_needed": ["x", "y", "z"],
+                "apply_gain_ratios": null,
+                "apply_intercalib": "fee_inverse_gain",
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_baseline_gap": 10,
+            		    "baseline_samples": 40,
+                    "peak_pos_from_highest_ch": false,
+                    "signal_samples_pre_peak": 30,
+                    "signal_samples_post_peak": 200,
+                    "charge_zerosup_peak_threshold": 7,
+                    "seed_charge_threshold": 50,
+                    "do_central_region": true,
+                    "central_region_width": 7,
+                    "fixed_central_region": [0, 0],
+                    "coords_2d_list": ["x", "y"],
+                    "do_timing": true,
+                    "timing_methods": ["cf"],
+                    "interpolation_factor": 40,
+                    "cf": 0.11,
+                    "rise_samples_pre_peak": 30,
+                    "rise_samples_post_peak": 30,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "sampling_rate": 5,
+                    "save_mean_rms_all_samples": true,
+                    "save_only_central_region_info": false,
+                    "charge_to_peak_slope": 1,
+                    "charge_to_peak_conversion": false,
+                    "do_centroid": true,
+                    "w0_log_centroid": 7,
+                }
+            }
+        },
+
+        "tagger": {
+            "generic_reco":
+            {
+                "waves_branch": "Waves",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_map.csv",
+                "chid_vars_list": ["branch_ch","board","digi_ch","global_chip"],
+                "decode": null,
+                "to_be_inverted": true,
+                "geo_needed": [],
+                "remove_last_n_samples": 50,
+                "apply_gain_ratios": null,
+                "apply_intercalib": null,
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_samples_pre_peak": 30,
+                    "signal_samples_post_peak": 250,
+                    "charge_zerosup_peak_threshold": 10,
+                    "coords_2d_list": [],
+                    "seed_charge_threshold": 50,
+                    "sampling_rate": 5,
+                    "save_mean_rms_all_samples": true,
+                    "do_timing": true,
+                    "timing_methods": ["cf"],
+                    "cf": 0.11,
+                    "rise_samples_pre_peak": 30,
+                    "rise_samples_post_peak": 30,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "interpolation_factor": 40
+                }
+            }
+    	},
+
+        "beamcatcher": {
+            "generic_reco":
+            {
+                "waves_branch": "Waves",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_all.csv",
+                "decode": null,
+                "to_be_inverted": true,
+                "remove_last_n_samples": 50,
+                "apply_gain_ratios": null,
+                "apply_intercalib": null,
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_samples_pre_peak": 30,
+                    "signal_samples_post_peak": 250,
+                    "charge_zerosup_peak_threshold": 5,
+                    "do_timing": true,
+                    "timing_methods": ["cf"],
+                    "sampling_rate": 5,
+                    "rise_samples_pre_peak": 30,
+                    "rise_samples_post_peak": 30,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "interpolation_factor": 40
+                }
+            }
+        },
+        "tracker_u": {
+          "generic_reco": {
+                "waves_branch": "Waves",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_all.csv",
+                "decode": null,
+                "chid_vars_list": ["branch_ch", "digi_ch", "board", "global_chip"],
+                "to_be_inverted": false,
+                "remove_last_n_samples": 50,
+                "apply_gain_ratios": null,
+                "apply_intercalib": null,
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_samples_pre_peak": 35,
+                    "signal_samples_post_peak": 600,
+                    "charge_zerosup_peak_threshold": 7,
+                    "coords_2d_list": ["x", "y"],
+                    "do_timing": true,
+                    "timing_methods": ["cf"],
+                    "cf": 0.11,
+                    "interpolation_factor": 40,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "sampling_rate": 5,
+                    "rise_samples_pre_peak": 35,
+                    "rise_samples_post_peak": 30,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "interpolation_factor": 40
+                }
+          }
+      },
+
+    	"tracker_d": {
+          "generic_reco": {
+                "waves_branch": "Waves",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_all.csv",
+                "decode": null,
+                "chid_vars_list": ["branch_ch", "digi_ch", "board", "global_chip"],
+                "to_be_inverted": false,
+                "remove_last_n_samples": 50,
+                "apply_gain_ratios": null,
+                "apply_intercalib": null,
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_samples_pre_peak": 35,
+                    "signal_samples_post_peak": 600,
+                    "charge_zerosup_peak_threshold": 7,
+                    "coords_2d_list": ["x", "y"],
+                    "do_timing": true,
+                    "timing_methods": ["cf"],
+                    "cf": 0.11,
+                    "interpolation_factor": 40,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "sampling_rate": 5,
+                    "rise_samples_pre_peak": 35,
+                    "rise_samples_post_peak": 30,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "interpolation_factor": 40
+                }
+          }
+      },
+
+
+      "trigger": {
+          "generic_reco": {
+                "waves_branch": "WavesTrig",
+                "_comment": "null ch_map means all channels active, list is active chs, string is map filename",
+                "ch_map": "maps/tb_all.csv",
+                "decode": null,
+                "chid_vars_list": ["branch_ch", "digi_ch", "board", "global_chip"],
+                "to_be_inverted": false,
+                "remove_last_n_samples": 50,
+                "apply_gain_ratios": null,
+                "apply_intercalib": null,
+                "decode_and_select_gains": null,
+                "reco_conf": {
+                    "signal_samples_pre_peak": 50,
+                    "signal_samples_post_peak": 100,
+                    "charge_zerosup_peak_threshold": 7,
+                    "do_timing": true,
+                    "timing_methods": ["fixed_thr"],
+                    "timing_thr": 500,
+                    "interpolation_factor": 40,
+                    "rise_interp_left_samples": 3,
+                    "rise_interp_right_samples": 3,
+                    "sampling_rate": 5,
+                    "rise_samples_pre_peak": 50,
+                    "rise_samples_post_peak": 100,
+                    "interpolation_factor": 40
+                }
+          }
+      },
+
+    }
+}
