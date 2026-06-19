@@ -10,7 +10,7 @@ export RECO_FOLDER="${RECO_UNPACKED_OUTDIR}/reco_dqm"
 export LOGS_DIR="eos/user/r/rgargiul/www/h2dqm/CRILIN_TB_2026-dev/logs/"
 
 export WORKING_DIR="${HOME_DIR}/crilin_reco_from_padme_daq"
-export JSON_CONF="${HOME_DIR}/crilin_reco_from_padme_daq/confs/detectors_conf.json"
+export JSON_CONF="${HOME_DIR}/crilin_reco_from_padme_daq/confs/tb_2026.json"
 export PHP_FILES_DIR="${HOME_DIR}/crilin_reco_from_padme_daq/ferrari_core/php/"
 export PLOTS_PLUGINS_FOLDER="${HOME_DIR}/crilin_reco_from_padme_daq/custom_plot_functions/"
 
