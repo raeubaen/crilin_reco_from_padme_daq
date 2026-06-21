@@ -2,7 +2,6 @@ RUN=$1
 
 echo Run: $RUN
 
-RECO_FOLDER="${RECO_UNPACKED_OUTDIR}/reco_dqm/"
 LOGS_FOLDER="${RECO_UNPACKED_OUTDIR}/re-reco/re-reco-logs/"
 
 DONE_FILE="/tmp/done_files.txt"
@@ -13,29 +12,28 @@ echo "LOGS in " ${LOGS_FOLDER}
 
 echo > $DONE_FILE
 
-for spill_str in $(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}'); do
+fragment_list="$(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}')"
 
-    # Convert spill number safely (leading zeros → decimal)
-    spill=$((10#$spill_str))
+export RECO_FOLDER="{RE_RECO_FOLDER}"
 
-    #if (( spill % $SPILL_LASER == 0 )); then
-    #    echo "Skipping spill $spill (divisible by $SPILL_LASER)"
-    #    continue
-    #fi
+for fragment_str in ${fragment_list}; do
 
-    echo $RECO_FOLDER/run_$RUN/${RUN}_$(printf "%04d" $((10#$spill)))_reco.root >> $DONE_FILE
+    # Convert fragment number safely (leading zeros → decimal)
+    fragment=$fragment_str)
 
-    echo "Processing spill $spill"
+    echo ${RE_RECO_FOLDER}/run_$RUN/${RUN}_${fragment}_reco.root >> $DONE_FILE
+
+    echo "Processing fragment $fragment"
 
     mkdir -p $LOGS_FOLDER/log_${RUN}
 
     cd $WORKING_DIR
 
-    # Launch background job for this actual spill
-    bash -c "./process_spill.sh $RUN $spill electrons noplots nounpack >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${spill}.log 2>&1 &"
+    # Launch background job for this actual fragment
+    bash -c "./process_fragment.sh $RUN $fragment electrons noplots nounpack >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
 
     while true; do
-        running=$(ps aux | grep "bash -c ./process_spill.sh" | grep -v grep | wc -l)
+        running=$(ps aux | grep "bash -c ./process_fragment.sh" | grep -v grep | wc -l)
         if (( running < 12 )); then
             break
         fi
