@@ -1,7 +1,7 @@
 {
   "global": {
     "plugins": ["custom_recos.post_reco_crilin"],
-    "spill_type": {
+    "fragment_type": {
       "electrons": {
         "plot_list": "plotlists/plot_list_electrons.csv",
         "tree_name": "RawEvents",
