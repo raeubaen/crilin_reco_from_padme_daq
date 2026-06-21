@@ -1,4 +1,4 @@
-import os
+import os, sys
 import argparse
 import time
 import glob
@@ -31,12 +31,20 @@ export DAQ_MACHINE_UNPACKED_FOLDER="${DAQ_MACHINE_DAQ_FOLDER}/local/rawdata/"
 unpacked_dir = os.getenv("DAQ_MACHINE_UNPACKED_FOLDER")
 script_dir = os.getenv("DAQ_MACHINE_ONLINE_FOLDER")
 
-total_fragments_in_period=os.getenv("TOTAL_FRAGMENTS_IN_PERIOD")
-process_fragments_in_period=os.getenv("PROCESS_FRAGMENTS_IN_PERIOD")
+total_fragments_in_period = os.getenv("TOTAL_FRAGMENTS_IN_PERIOD")
+process_fragments_in_period = os.getenv("PROCESS_FRAGMENTS_IN_PERIOD")
 
+if any(x is None for x in (unpacked_dir, script_dir, total_fragments_in_period, process_fragments_in_period)):
+  print(f"Define env sourcing needed!")
+  sys.exit(1)
+  
 n = startn
 
-infile_dir = glob.glob(f"{unpacked_dir}/run_{nrun:07d}_*")[0]
+try:
+  infile_dir = glob.glob(f"{unpacked_dir}/run_{nrun:07d}_*")[0]
+except IndexError:
+  print(f"Run not initialized!, path {unpacked_dir}/run_{nrun:07d}_* not found")
+  sys.exit(1)
 infile_name_base = infile_dir.split(f"{unpacked_dir}/")[1]
 
 while True:
@@ -51,7 +59,7 @@ while True:
           pass
         else: continue
         print("Going on, processing")
-        code = os.system(f"source {script_dir}/copy_to_eos_and_create_lock_file.sh {current_file} {setup} 2>&1 | tee /tmp/onlinelogs_{nrun}_{n}.txt &")
+        code = os.system(f"{script_dir}/copy_to_eos_and_create_lock_file.sh {current_file} {setup} 2>&1 | tee /tmp/onlinelogs_{nrun}_{n}.txt")
         print("------------------------- reco done ----------------------------")
         if code!=0: break
       else:
