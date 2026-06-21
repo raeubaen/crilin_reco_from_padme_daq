@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# --- launch settings with beam|laser as input parameter ---
 if [ "$#" -lt 3 ]; then
     echo "Usage: $0 <run_number> <fragment_number> <setup> [noplots]"
     return
@@ -17,7 +16,7 @@ else
   doplots="1"
 fi
 
-UNPACKED_FILE=$(printf "$REMOTE_UNPACKED_FILENAME_FMT" "$run_name" "$run_name" "$n_fragment")
+UNPACKED_FILE=$(printf "$REMOTE_UNPACKED_FILENAME_FMT" "$RUN" "$RUN" "$FRAGMENT")
 
 echo "plot? yes=1, no=0: " $doplots
 
@@ -28,8 +27,6 @@ FRAGMENT_STR="${FRAGMENT}_${setup}"
 # --- Start global timer ---
 start_time=$(date +%s)
 
-
-if [ "$dounpack" -ne 0 ]; then
 
 cd ${WORKING_DIR}
 
@@ -75,13 +72,13 @@ end_time=$(date +%s)
 total_time=$((end_time - start_time))
 echo "Total elapsed time: $total_time seconds."
 
+FRAGMENT_NO=$(echo $FRAGMENT | awk -F '_' '{print $7}')
+
 if [ "$doplots" == "1" ]; then
   cp -rT "$PLOT_MAIN_FOLDER/run_$RUN/fragment_$FRAGMENT_STR" "$PLOT_MAIN_FOLDER/run_$RUN/${setup}_current_fragment"
 
-  if [ "$setup" != "laser" ]; then
-    echo "writing folder path to hadd buffer: $PLOT_MAIN_FOLDER/to_hadd_buffer.txt"
-    echo $PLOT_CURRENT_FOLDER >> ${HADD_GLOB_BUFFER}
-  fi
+  echo "writing folder path to hadd buffer: $PLOT_MAIN_FOLDER/to_hadd_buffer.txt"
+  echo $PLOT_CURRENT_FOLDER >> ${HADD_GLOB_BUFFER}
 
   if [ $((FRAGMENT_NO % FRAGMENT_HADD_INTERVAL)) -eq $((FRAGMENT_HADD_INTERVAL - 1)) ]; then
     cp ${HADD_GLOB_BUFFER} ${HADD_NOW_DIRS}
