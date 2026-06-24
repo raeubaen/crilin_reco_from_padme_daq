@@ -40,3 +40,4 @@ export FRAGMENT_HADD_INTERVAL=2
 export PARALLEL_GAP=5
 export LAST_LAUNCH_FILE="/tmp/reco_last_launch"
 
+export TEST_RUN="0000999_20260622_152729"
