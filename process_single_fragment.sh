@@ -72,7 +72,8 @@ end_time=$(date +%s)
 total_time=$((end_time - start_time))
 echo "Total elapsed time: $total_time seconds."
 
-FRAGMENT_NO=$(echo $FRAGMENT | awk -F '_' '{print $7}')
+echo "FRAGMENT": $FRAGMENT
+echo "$((FRAGMENT % FRAGMENT_HADD_INTERVAL)) -eq $((FRAGMENT_HADD_INTERVAL - 1))": $((FRAGMENT % FRAGMENT_HADD_INTERVAL)) -eq $((FRAGMENT_HADD_INTERVAL - 1))
 
 if [ "$doplots" == "1" ]; then
   cp -rT "$PLOT_MAIN_FOLDER/run_$RUN/fragment_$FRAGMENT_STR" "$PLOT_MAIN_FOLDER/run_$RUN/${setup}_current_fragment"
@@ -80,7 +81,7 @@ if [ "$doplots" == "1" ]; then
   echo "writing folder path to hadd buffer: $PLOT_MAIN_FOLDER/to_hadd_buffer.txt"
   echo $PLOT_CURRENT_FOLDER >> ${HADD_GLOB_BUFFER}
 
-  if [ $((FRAGMENT_NO % FRAGMENT_HADD_INTERVAL)) -eq $((FRAGMENT_HADD_INTERVAL - 1)) ]; then
+  if [ $((FRAGMENT % FRAGMENT_HADD_INTERVAL)) -eq $((FRAGMENT_HADD_INTERVAL - 1)) ]; then
     cp ${HADD_GLOB_BUFFER} ${HADD_NOW_DIRS}
      echo "copying to hadd-now buffer"
   fi
