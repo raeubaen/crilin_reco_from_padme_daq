@@ -9,8 +9,7 @@
           "crilin",
           "paletta",
           "cindy",
-          "beamcatcher",
-          "trigger"
+          "beamcatcher"
         ],
         "global_branches": [],
         "option": {
@@ -60,8 +59,8 @@
           "signal_baseline_gap": 10,
           "baseline_samples": 40,
           "peak_pos_from_highest_ch": false,
-          "signal_samples_pre_peak": 30,
-          "signal_samples_post_peak": 200,
+          "signal_samples_pre_peak": 100,
+          "signal_samples_post_peak": 500,
           "charge_zerosup_peak_threshold": 7,
           "do_timing": true,
           "timing_methods": [
@@ -142,7 +141,7 @@
         "decode_and_select_gains": null,
         "reco_conf": {
           "signal_samples_pre_peak": 30,
-          "signal_samples_post_peak": 250,
+          "signal_samples_post_peak": 100,
           "charge_zerosup_peak_threshold": 10,
           "seed_charge_threshold": 50,
           "sampling_rate": 2.5,
