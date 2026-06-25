@@ -1,5 +1,7 @@
 RUN=$1
 
+source define_envs.sh
+
 echo Run: $RUN
 
 LOGS_FOLDER="${RECO_UNPACKED_OUTDIR}/re-reco/re-reco-logs/"
@@ -14,12 +16,12 @@ echo > $DONE_FILE
 
 fragment_list="$(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}')"
 
-export RECO_FOLDER="{RE_RECO_FOLDER}"
+export RECO_FOLDER="${RE_RECO_FOLDER}"
 
 for fragment_str in ${fragment_list}; do
 
     # Convert fragment number safely (leading zeros → decimal)
-    fragment=$fragment_str)
+    fragment=$fragment_str
 
     echo ${RE_RECO_FOLDER}/run_$RUN/${RUN}_${fragment}_reco.root >> $DONE_FILE
 
@@ -30,11 +32,13 @@ for fragment_str in ${fragment_list}; do
     cd $WORKING_DIR
 
     # Launch background job for this actual fragment
-    bash -c "./process_fragment.sh $RUN $fragment electrons noplots nounpack >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
+    echo "./process_single_fragment.sh $RUN $fragment electrons noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
+
+    bash -c "./process_single_fragment.sh $RUN $fragment electrons noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
 
     while true; do
-        running=$(ps aux | grep "bash -c ./process_fragment.sh" | grep -v grep | wc -l)
-        if (( running < 12 )); then
+        running=$(ps aux | grep "python3 -m ferrari_core.reco" | grep -v grep | wc -l)
+        if (( running < 14 )); then
             break
         fi
         sleep 1
