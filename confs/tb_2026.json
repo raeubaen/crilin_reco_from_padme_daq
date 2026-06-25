@@ -1,6 +1,6 @@
 {
   "global": {
-    "plugins": ["custom_recos.post_reco_crilin"],
+    "plugins": ["custom_recos.post_reco_crilin", "custom_recos.gaussian_filter"],
     "fragment_type": {
       "electrons": {
         "plot_list": "plotlists/plot_list_electrons.csv",
@@ -77,7 +77,9 @@
           "save_only_central_region_info": false,
           "charge_unit_slope": 0.008,
           "charge_unit_conversion": true,
-          "w0_log_centroid": 7
+          "w0_log_centroid": 7,
+          "lp_freq": 0.2,
+          "pre_process_routine": "gaussian_filter"
         }
       }
     },
@@ -106,7 +108,7 @@
           "seed_charge_threshold": 50,
           "sampling_rate": 2.5,
           "save_mean_rms_all_samples": true,
-          "do_timing": true,
+          "do_timing": false,
           "timing_methods": [
             "cf"
           ],
@@ -146,7 +148,7 @@
           "seed_charge_threshold": 50,
           "sampling_rate": 2.5,
           "save_mean_rms_all_samples": true,
-          "do_timing": true,
+          "do_timing": false,
           "timing_methods": [
             "cf"
           ],
@@ -214,7 +216,7 @@
             "x",
             "y"
           ],
-          "do_timing": true,
+          "do_timing": false,
           "timing_methods": [
             "cf"
           ],
@@ -255,7 +257,7 @@
             "x",
             "y"
           ],
-          "do_timing": true,
+          "do_timing": false,
           "timing_methods": [
             "cf"
           ],
@@ -293,7 +295,7 @@
           "signal_samples_pre_peak": 50,
           "signal_samples_post_peak": 100,
           "charge_zerosup_peak_threshold": 7,
-          "do_timing": true,
+          "do_timing": false,
           "timing_methods": [
             "fixed_thr"
           ],
