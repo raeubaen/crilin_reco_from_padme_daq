@@ -4,10 +4,10 @@ export USE_CUDA=0
 
 export NCPU_PER_FRAGMENT=3
 
-export FLOAT_ACCURACY_WAVES_NUMPY="float32"
-
 export TOTAL_FRAGMENTS_IN_PERIOD=1
 export PROCESS_FRAGMENTS_IN_PERIOD=1
+
+export FLOAT_ACCURACY_WAVES_NUMPY="float32"
 
 export DAQ_MACHINE_DAQ_FOLDER="/home/crilin/crilinDAQ"
 export DAQ_MACHINE_ONLINE_FOLDER="/home/crilin/crilinRECO/default_crilin_reco_from_padme_daq"
