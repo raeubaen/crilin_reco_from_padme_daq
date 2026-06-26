@@ -12,7 +12,7 @@ parser.add_argument('nrun', type=int, help='nrun - please unambigous')
 parser.add_argument('setup', type=str, help='name of the setup in json config (default: electrons)')
 parser.add_argument('--startn', type=int, help='skip n fragments', default=0)
 parser.add_argument('--sleep', type=float, help='sleep between fragments', default=1)
-parser.add_argument('--test', type=bool, help='test, meaning copies a pedestal file', default=0)
+parser.add_argument('--test', type=bool, help='test, meaning copies a pedestal file', default=1)
 
 args = parser.parse_args()
 v = vars(args)

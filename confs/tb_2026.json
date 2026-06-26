@@ -14,7 +14,8 @@
         "global_branches": [],
         "option": {
           "crilin": {
-            "reco_conf": {}
+            "reco_conf": {
+            }
           }
         }
       },
@@ -22,7 +23,7 @@
         "plot_list": "plotlists/plot_list_muons.csv",
         "tree_name": "RawEvents",
         "detector_list": [
-           "crilin",
+          "crilin",
           "paletta",
           "cindy",
           "beamcatcher"
@@ -30,7 +31,11 @@
         "global_branches": [],
         "option": {
           "crilin": {
-            "reco_conf": {}
+            "reco_conf": {
+              "peak_accept_window_ns_from_highest_ch": null,
+              "signal_samples_pre_peak": 50,
+              "signal_samples_post_peak": 250
+            }
           }
         }
       }
