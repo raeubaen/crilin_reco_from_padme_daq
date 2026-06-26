@@ -18,14 +18,14 @@
           }
         }
       },
-      "pions": {
-        "plot_list": "plotlists/plot_list_pions.csv",
+      "muons": {
+        "plot_list": "plotlists/plot_list_muons.csv",
         "tree_name": "RawEvents",
         "detector_list": [
-          "crilin",
-          "tagger",
-          "beamcatcher",
-          "trigger"
+           "crilin",
+          "paletta",
+          "cindy",
+          "beamcatcher"
         ],
         "global_branches": [],
         "option": {
