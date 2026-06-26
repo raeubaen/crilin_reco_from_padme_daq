@@ -38,7 +38,7 @@ for fragment_str in ${fragment_list}; do
 
     while true; do
         running=$(ps aux | grep "python3 -m ferrari_core.reco" | grep -v grep | wc -l)
-        if (( running < 14 )); then
+        if (( running < 6 )); then
             break
         fi
         sleep 1

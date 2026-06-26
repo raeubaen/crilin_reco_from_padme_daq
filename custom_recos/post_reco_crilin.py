@@ -1,6 +1,7 @@
 from ferrari_core.registry import register_routine
 import numpy as np
 
+
 @register_routine("post_reco_crilin")
 def post_reco_crilin(mask, reco, **kwargs):
 
