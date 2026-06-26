@@ -1,6 +1,6 @@
 RUN=$1
 
-source define_envs.sh
+source lxplus_define_envs.sh
 
 echo Run: $RUN
 
