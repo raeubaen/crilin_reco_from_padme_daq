@@ -49,7 +49,7 @@
           "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy"
         ],
         "to_be_inverted": false,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "geo_needed": null,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
@@ -61,7 +61,7 @@
           "peak_pos_from_highest_ch": false,
           "signal_samples_pre_peak": 100,
           "signal_samples_post_peak": 500,
-          "charge_zerosup_peak_threshold": 7,
+          "charge_zerosup_peak_threshold": 1,
           "do_timing": true,
           "timing_methods": [
             "cf"
@@ -97,7 +97,7 @@
         "decode": null,
         "to_be_inverted": true,
         "geo_needed": null,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
         "decode_and_select_gains": null,
@@ -137,7 +137,7 @@
         "decode": null,
         "to_be_inverted": true,
         "geo_needed": null,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
         "decode_and_select_gains": null,
@@ -177,7 +177,7 @@
         "geo_needed": null,
         "decode": null,
         "to_be_inverted": true,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
         "decode_and_select_gains": null,
@@ -204,7 +204,7 @@
           "global_chip"
         ],
         "to_be_inverted": false,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
         "decode_and_select_gains": null,
@@ -245,7 +245,7 @@
           "global_chip"
         ],
         "to_be_inverted": false,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": "one_over_gain_over_ADC_per_mV",
         "decode_and_select_gains": null,
@@ -287,7 +287,7 @@
           "global_chip"
         ],
         "to_be_inverted": false,
-        "remove_last_n_samples": 0,
+        "remove_last_n_samples": 25,
         "apply_gain_ratios": null,
         "apply_intercalib": null,
         "decode_and_select_gains": null,
