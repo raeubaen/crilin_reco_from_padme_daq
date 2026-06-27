@@ -14,7 +14,8 @@
         "global_branches": [],
         "option": {
           "crilin": {
-            "reco_conf": {
+            "reco_conf":
+              "charge_zerosup_peak_threshold": 3,
             }
           }
         }
@@ -34,7 +35,8 @@
             "reco_conf": {
               "peak_accept_window_ns_from_highest_ch": null,
               "signal_samples_pre_peak": 50,
-              "signal_samples_post_peak": 250
+              "signal_samples_post_peak": 250,
+              "charge_zerosup_peak_threshold": -100
             }
           }
         }
@@ -51,7 +53,7 @@
           "branch_ch",
           "board",
           "digi_ch",
-          "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy"
+          "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy", "gain"
         ],
         "to_be_inverted": false,
         "remove_last_n_samples": 25,
