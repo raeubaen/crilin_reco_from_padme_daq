@@ -14,7 +14,7 @@
         "global_branches": [],
         "option": {
           "crilin": {
-            "reco_conf":
+            "reco_conf": {
               "charge_zerosup_peak_threshold": 3
             }
           }
