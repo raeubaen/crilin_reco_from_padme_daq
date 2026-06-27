@@ -15,7 +15,7 @@
         "option": {
           "crilin": {
             "reco_conf":
-              "charge_zerosup_peak_threshold": 3,
+              "charge_zerosup_peak_threshold": 3
             }
           }
         }
