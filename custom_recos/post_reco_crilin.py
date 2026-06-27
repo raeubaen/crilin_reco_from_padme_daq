@@ -7,6 +7,7 @@ def post_reco_crilin(mask, reco, **kwargs):
 
   globals().update(kwargs)
 
+  peak_noise_flag = reco["crilin_peak"] > charge_zerosup_peak_threshold/reco["crilin_gain"]
 
   for layer in range(5):
     charge = reco["crilin_charge"].copy()
@@ -14,6 +15,14 @@ def post_reco_crilin(mask, reco, **kwargs):
     charge[reco["crilin_layer"] != layer] = 0
 
     charge_sum = np.sum(charge, axis=1)
+
+    peak = reco["crilin_peak"].copy()
+
+    peak[reco["crilin_layer"] != layer] = 0
+
+    peak_sum = np.sum(peak, axis=1)
+
+    peak_sum_thr_on = np.sum(peak * peak_noise_flag, axis=1)
 
     charge_fraction = np.zeros_like(charge)
     charge_fraction[charge_sum>0] = charge[charge_sum>0] / charge_sum[charge_sum>0][:, None]
@@ -29,8 +38,18 @@ def post_reco_crilin(mask, reco, **kwargs):
 
     reco.update({
       f"crilin_charge_sum_layer_{layer}": charge_sum,
+      f"crilin_peak_sum_layer_{layer}": peak_sum,
+      f"crilin_peak_sum_thr_yes_layer_{layer}": peak_sum_thr_on,
       f"crilin_charge_central_layer_{layer}": np.sum(charge*(reco["crilin_ix"]==0)*(reco["crilin_iy"]==0), axis=1),
       f"crilin_charge_fraction_layer_{layer}": charge_fraction}
     )
+
+  reco.update({ f"crilin_charge_sum_all_layers": np.sum([reco[f"crilin_charge_sum_layer_{layer}"] for layer in range(5)], axis=0) })
+  reco.update({ f"crilin_peak_sum_all_layers": np.sum([reco[f"crilin_peak_sum_layer_{layer}"] for layer in range(5)], axis=0) })
+  reco.update({ f"crilin_peak_sum_thr_yes_all_layers": np.sum([reco[f"crilin_peak_sum_thr_yes_layer_{layer}"] for layer in range(5)], axis=0) })
+
+  reco.update({
+      f"crilin_peak_noise_flag": peak_noise_flag
+  })
 
   return mask, reco
