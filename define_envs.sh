@@ -1,6 +1,4 @@
-source /cvmfs/sft.cern.ch/lcg/views/LCG_108/x86_64-el9-gcc15-opt/setup.sh
-
-export USE_CUDA=0
+export USE_CUDA=1
 
 export NCPU_PER_FRAGMENT=3
 
