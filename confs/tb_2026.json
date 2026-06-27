@@ -82,8 +82,7 @@
           "save_only_central_region_info": false,
           "charge_unit_slope": 0.008,
           "charge_unit_conversion": true,
-          "w0_log_centroid": 7,
-          "lp_freq": 0.2
+          "w0_log_centroid": 7
         }
       }
     },
