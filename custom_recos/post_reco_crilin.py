@@ -35,6 +35,7 @@ def post_reco_crilin(mask, reco, **kwargs):
   )
   reco.update({f"crilin_ix_centroid": ix_centroid, f"crilin_iy_centroid": iy_centroid})
 
+
   for layer in range(5):
 
     peak_current_layer = peak * (reco["crilin_layer"] == layer)
