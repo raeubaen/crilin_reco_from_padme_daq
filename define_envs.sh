@@ -1,20 +1,18 @@
-source /cvmfs/sft.cern.ch/lcg/views/LCG_108/x86_64-el9-gcc15-opt/setup.sh
-
-export USE_CUDA=0
+export USE_CUDA=1
 
 export NCPU_PER_FRAGMENT=3
 
 export TOTAL_FRAGMENTS_IN_PERIOD=1
 export PROCESS_FRAGMENTS_IN_PERIOD=1
 
-export FLOAT_ACCURACY_WAVES_NUMPY="float32"
+export FLOAT_ACCURACY_WAVES_NUMPY="float16"
 
 export DAQ_MACHINE_DAQ_FOLDER="/home/crilin/crilinDAQ"
 export DAQ_MACHINE_ONLINE_FOLDER="/home/crilin/crilinRECO/default_crilin_reco_from_padme_daq"
 export DAQ_MACHINE_UNPACKED_FOLDER="${DAQ_MACHINE_DAQ_FOLDER}/local/rawdata/"
 
 export SINGLE_FRAGMENT_PROCESS_TIMEOUT_SECONDS=30
-export HOME_DIR="/afs/cern.ch/work/r/rgargiul/"
+export HOME_DIR="/root/"
 
 export PLOT_MAIN_FOLDER="/eos/user/r/rgargiul/www/h2dqm/CRILIN_TB_2026-dev/"
 export RECO_UNPACKED_OUTDIR="/eos/experiment/muoncollider/data/crilin/h2-2026/"
