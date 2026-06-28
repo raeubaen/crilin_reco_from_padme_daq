@@ -57,7 +57,7 @@
         "remove_last_n_samples": 25,
         "geo_needed": null,
         "apply_gain_ratios": null,
-        "apply_intercalib": "one_over_gain_over_ADC_per_mV",
+        "apply_intercalib": ["one_over_gain_over_ADC_per_mV"],
         "decode_and_select_gains": null,
         "reco_conf": {
           "post_process_routine": "post_reco_crilin",
