@@ -2,6 +2,15 @@ from ferrari_core.registry import register_routine
 import numpy as np
 
 
+def centroid(fractions, w0_log_centroid, x_or_y):
+    w = np.maximum(0.0, w0_log_centroid + np.log(np.clip(fractions, 1e-8, None)))
+
+    w /= (np.sum(w, axis=1, keepdims=True))
+
+    return w @ x_or_y
+
+
+
 @register_routine("post_reco_crilin")
 def post_reco_crilin(mask, reco, **kwargs):
 
@@ -9,44 +18,42 @@ def post_reco_crilin(mask, reco, **kwargs):
 
   peak_noise_flag = reco["crilin_peak"] > charge_zerosup_peak_threshold/reco["crilin_gain"]
 
+  peak = reco["crilin_peak"] * peak_noise_flag
+
+  peak_sum = np.sum(peak, axis=1)
+
+  peak_fraction = np.zeros_like(peak)
+  peak_fraction[peak_sum>0] = peak[peak_sum>0] / peak_sum[peak_sum>0][:, None]
+
+  ix_centroid = centroid(peak_fraction, w0_log_centroid, reco["crilin_ix"][0])
+  iy_centroid = centroid(peak_fraction, w0_log_centroid, reco["crilin_iy"][0])
+
+  reco.update({
+    f"crilin_peak_thr_yes": peak,
+    f"crilin_peak_thr_yes_sum": peak_sum,
+    f"crilin_peak_thr_yes_fraction": peak_fraction}
+  )
+  reco.update({f"crilin_ix_centroid": ix_centroid, f"crilin_iy_centroid": iy_centroid})
+
   for layer in range(5):
-    charge = reco["crilin_charge"].copy()
 
-    charge[reco["crilin_layer"] != layer] = 0
+    peak_current_layer = peak * (reco["crilin_layer"] == layer)
 
-    charge_sum = np.sum(charge, axis=1)
+    peak_current_layer_sum = np.sum(peak_current_layer, axis=1)
 
-    peak = reco["crilin_peak"].copy()
+    peak_current_layer_fraction = np.zeros_like(peak_current_layer_sum)
+    peak_current_layer_fraction[peak_current_layer_sum>0] = peak[peak_current_layer_sum>0] / peak_sum[peak_current_layer_sum>0][:, None]
 
-    peak[reco["crilin_layer"] != layer] = 0
+    ix_centroid_current_layer = centroid(peak_fraction, w0_log_centroid, reco["crilin_ix"][0])
+    iy_centroid_current_layer = centroid(peak_fraction, w0_log_centroid, reco["crilin_iy"][0])
 
-    peak_sum = np.sum(peak, axis=1)
-
-    peak_sum_thr_on = np.sum(peak * peak_noise_flag, axis=1)
-
-    charge_fraction = np.zeros_like(charge)
-    charge_fraction[charge_sum>0] = charge[charge_sum>0] / charge_sum[charge_sum>0][:, None]
-
-    w = np.maximum(0.0, w0_log_centroid + np.log(np.clip(charge_fraction, 1e-8, None)))
-
-    w /= (np.sum(w, axis=1, keepdims=True))
-
-    ix_centroid = w @ reco["crilin_ix"][0]
-    iy_centroid = w @ reco["crilin_iy"][0]
-
-    reco.update({f"crilin_ix_centroid_layer_{layer}": ix_centroid, f"crilin_iy_centroid_layer_{layer}": iy_centroid})
+    reco.update({f"crilin_ix_centroid_layer_{layer}": ix_centroid_current_layer, f"crilin_iy_centroid_layer_{layer}": iy_centroid_current_layer})
 
     reco.update({
-      f"crilin_charge_sum_layer_{layer}": charge_sum,
-      f"crilin_peak_sum_layer_{layer}": peak_sum,
-      f"crilin_peak_sum_thr_yes_layer_{layer}": peak_sum_thr_on,
-      f"crilin_charge_central_layer_{layer}": np.sum(charge*(reco["crilin_ix"]==0)*(reco["crilin_iy"]==0), axis=1),
-      f"crilin_charge_fraction_layer_{layer}": charge_fraction}
+      f"crilin_peak_thr_yes_sum_layer_{layer}": peak_current_layer_sum,
+      f"crilin_peak_thr_yes_central_layer_{layer}": np.sum(peak_current_layer*(reco["crilin_ix"]==0)*(reco["crilin_iy"]==0), axis=1),
+      f"crilin_peak_thr_yes_fraction_layer_{layer}": peak_current_layer_fraction}
     )
-
-  reco.update({ f"crilin_charge_sum_all_layers": np.sum([reco[f"crilin_charge_sum_layer_{layer}"] for layer in range(5)], axis=0) })
-  reco.update({ f"crilin_peak_sum_all_layers": np.sum([reco[f"crilin_peak_sum_layer_{layer}"] for layer in range(5)], axis=0) })
-  reco.update({ f"crilin_peak_sum_thr_yes_all_layers": np.sum([reco[f"crilin_peak_sum_thr_yes_layer_{layer}"] for layer in range(5)], axis=0) })
 
   reco.update({
       f"crilin_peak_noise_flag": peak_noise_flag
