@@ -34,7 +34,8 @@
             "reco_conf": {
               "peak_accept_window_ns_from_highest_ch": null,
               "signal_samples_pre_peak": 50,
-              "signal_samples_post_peak": 250
+              "signal_samples_post_peak": 250,
+              "charge_zerosup_peak_threshold": -10
             }
           }
         }
@@ -67,7 +68,7 @@
           "peak_pos_from_highest_ch": false,
           "signal_samples_pre_peak": 100,
           "signal_samples_post_peak": 500,
-          "charge_zerosup_peak_threshold": 1,
+          "charge_zerosup_peak_threshold": 3,
           "do_timing": true,
           "timing_methods": [
             "cf"
