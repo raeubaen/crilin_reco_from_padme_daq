@@ -12,7 +12,7 @@ export DAQ_MACHINE_ONLINE_FOLDER="/home/crilin/crilinRECO/default_crilin_reco_fr
 export DAQ_MACHINE_UNPACKED_FOLDER="${DAQ_MACHINE_DAQ_FOLDER}/local/rawdata/"
 
 export SINGLE_FRAGMENT_PROCESS_TIMEOUT_SECONDS=30
-export HOME_DIR="/afs/cern.ch/work/r/rgargiul/"
+export HOME_DIR="/root/"
 
 export PLOT_MAIN_FOLDER="/eos/user/r/rgargiul/www/h2dqm/CRILIN_TB_2026-dev/"
 export RECO_UNPACKED_OUTDIR="/eos/experiment/muoncollider/data/crilin/h2-2026/"
