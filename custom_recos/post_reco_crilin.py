@@ -42,8 +42,8 @@ def post_reco_crilin(mask, reco, **kwargs):
 
     peak_current_layer_sum = np.sum(peak_current_layer, axis=1)
 
-    peak_current_layer_fraction = np.zeros_like(peak)
-    peak_current_layer_fraction[peak_sum>0] = peak[peak_sum>0] / peak_sum[peak_sum>0][:, None]
+    peak_current_layer_fraction = np.zeros_like(peak_current_layer)
+    peak_current_layer_fraction[peak_current_layer_sum>0] = peak[peak_current_layer_sum>0] / peak_sum[peak_current_layer_sum>0][:, None]
 
     ix_centroid_current_layer = centroid(peak_fraction, w0_log_centroid, reco["crilin_ix"][0])
     iy_centroid_current_layer = centroid(peak_fraction, w0_log_centroid, reco["crilin_iy"][0])
