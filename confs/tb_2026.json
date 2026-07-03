@@ -71,8 +71,9 @@
           "charge_zerosup_peak_threshold": 3,
           "do_timing": true,
           "timing_methods": [
-            "cf"
+            "cf", "lsfit"
           ],
+          "spline_file": "templates/coeffs_centrale_layer1.txt",
           "interpolation_factor": 40,
           "cf": 0.11,
           "rise_samples_pre_peak": 30,
@@ -84,9 +85,7 @@
           "save_only_central_region_info": false,
           "charge_unit_slope": 0.008,
           "charge_unit_conversion": true,
-          "w0_log_centroid": 7,
-          "lp_freq": 0.2,
-          "pre_process_routine": "gaussian_filter"
+          "w0_log_centroid": 7
         }
       }
     },
