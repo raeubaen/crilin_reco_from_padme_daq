@@ -1,6 +1,6 @@
 RUN=$1
 
-source lxplus_define_envs.sh
+#source lxplus_define_envs.sh
 
 echo Run: $RUN
 
@@ -36,9 +36,10 @@ for fragment_str in ${fragment_list}; do
 
     bash -c "./process_single_fragment.sh $RUN $fragment electrons noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
 
+    sleep 1
     while true; do
         running=$(ps aux | grep "python3 -m ferrari_core.reco" | grep -v grep | wc -l)
-        if (( running < 6 )); then
+        if (( running < 1 )); then
             break
         fi
         sleep 1
