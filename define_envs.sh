@@ -20,7 +20,7 @@ export UNPACKED_FOLDER="${RECO_UNPACKED_OUTDIR}/DataTree_dqm"
 export REMOTE_UNPACKED_FILENAME_FMT="${UNPACKED_FOLDER}/run_%s/unpacked_%s_%s.root"
 
 export RECO_FOLDER="${RECO_UNPACKED_OUTDIR}/reco_dqm"
-export RE_RECO_FOLDER="${RECO_UNPACKED_OUTDIR}/re-reco_dqm"
+export RE_RECO_FOLDER="${RECO_UNPACKED_OUTDIR}/re-reco_dqm_calib"
 
 export LOGS_DIR="/eos/user/r/rgargiul/www/h2dqm/CRILIN_TB_2026-dev/logs/"
 
