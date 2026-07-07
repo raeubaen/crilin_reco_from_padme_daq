@@ -61,7 +61,8 @@
         "apply_intercalib": ["one_over_gain_over_ADC_per_mV", "one_over_mpv"],
         "decode_and_select_gains": null,
         "reco_conf": {
-          "peak_accept_window_ns_from_highest_ch": 50,
+          "baseline_beginning_n_samples": 50,
+          "peak_accept_window_ns_from_highest_ch": 10,
           "post_process_routine": "post_reco_crilin",
           "signal_baseline_gap": 10,
           "baseline_samples": 40,
@@ -86,8 +87,8 @@
           "charge_unit_slope": 0.008,
           "charge_unit_conversion": true,
           "w0_log_centroid": 7,
-          "lp_freq": null,
-          "pre_process_routine": null
+          "lp_freq": 0.2,
+          "pre_process_routine": "gaussian_filter"
         }
       }
     },
