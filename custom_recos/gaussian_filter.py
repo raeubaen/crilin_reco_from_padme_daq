@@ -16,6 +16,10 @@ def gaussian_filter(waves, lp_freq, sampling_rate, **kwargs):
 
     globals().update(kwargs)
 
+    if USE_CUDA: mempool = xp.get_default_memory_pool()
+
+    if USE_CUDA: print("filter start, using in GPU:, ", int(mempool.used_bytes()/(1024**2)), "MB")
+
     n = waves.shape[-1]
 
     # Frequency axis [GHz]
@@ -28,4 +32,14 @@ def gaussian_filter(waves, lp_freq, sampling_rate, **kwargs):
 
     wf_fft = xp.fft.rfft(waves, axis=-1)
     wf_fft *= H[None, None, :]
-    return xp.fft.irfft(wf_fft, n=n, axis=-1)
+    final_waves = xp.fft.irfft(wf_fft, n=n, axis=-1)
+
+    if USE_CUDA: print("A, using in GPU:, ", int(mempool.used_bytes()/(1024**2)), "MB")
+
+    del n, sigma, H, wf_fft
+    if USE_CUDA: print("B, using in GPU:, ", int(mempool.used_bytes()/(1024**2)), "MB")
+
+    if USE_CUDA: cache = xp.fft.config.get_plan_cache()
+    if USE_CUDA: cache.clear()
+
+    return final_waves
