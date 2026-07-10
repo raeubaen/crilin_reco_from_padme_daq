@@ -11,7 +11,7 @@
           "cindy",
           "beamcatcher"
         ],
-        "global_branches": [],
+        "global_branches": ["StartCell"],
         "option": {
           "crilin": {
             "reco_conf": {
@@ -52,7 +52,7 @@
           "branch_ch",
           "board",
           "digi_ch",
-          "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy", "gain"
+           "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy", "gain"
         ],
         "to_be_inverted": false,
         "remove_last_n_samples": 25,
@@ -61,6 +61,7 @@
         "apply_intercalib": ["one_over_gain_over_ADC_per_mV", "one_over_mpv"],
         "decode_and_select_gains": null,
         "reco_conf": {
+          "save_pre_processed_waves": true,
           "baseline_beginning_n_samples": 50,
           "peak_accept_window_ns_from_highest_ch": 10,
           "post_process_routine": "post_reco_crilin",
@@ -72,10 +73,10 @@
           "charge_zerosup_peak_threshold": -100,
           "do_timing": true,
           "timing_methods": [
-            "cf", "lsfit"
+            "cf"
           ],
           "spline_file": "templates/coeffs_centrale_layer1.txt",
-          "interpolation_factor": 40,
+	  "interpolation_factor": 40,
           "cf": 0.11,
           "rise_samples_pre_peak": 30,
           "rise_samples_post_peak": 30,
