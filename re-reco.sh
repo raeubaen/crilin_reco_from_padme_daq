@@ -1,4 +1,5 @@
 RUN=$1
+MODE=$2
 
 #source lxplus_define_envs.sh
 
@@ -14,7 +15,9 @@ echo "LOGS in " ${LOGS_FOLDER}
 
 echo > $DONE_FILE
 
-fragment_list="$(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}')"
+#fragment_list="$(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}')"
+
+fragment_list="$(ls -1 "$UNPACKED_FOLDER/run_$RUN/unpacked_${RUN}"*.root | awk -F "_" '{print $NF}' | awk -F "."  '{print $1}')"
 
 export RECO_FOLDER="${RE_RECO_FOLDER}"
 
@@ -32,9 +35,9 @@ for fragment_str in ${fragment_list}; do
     cd $WORKING_DIR
 
     # Launch background job for this actual fragment
-    echo "./process_single_fragment.sh $RUN $fragment electrons noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
+    echo "./process_single_fragment.sh $RUN $fragment $MODE noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
 
-    bash -c "./process_single_fragment.sh $RUN $fragment electrons noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
+    bash -c "./process_single_fragment.sh $RUN $fragment $MODE noplots >  $LOGS_FOLDER/log_${RUN}/log_${RUN}_${fragment}.log 2>&1 &"
 
     sleep 1
     while true; do
