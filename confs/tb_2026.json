@@ -1,6 +1,6 @@
 {
   "global": {
-    "plugins": ["custom_recos.post_reco_crilin", "custom_recos.gaussian_filter"],
+    "plugins": ["custom_recos.post_reco_crilin", "custom_recos.gaussian_filter", "custom_recos.pedestal_selection"],
     "fragment_type": {
       "pedestals": {
         "plot_list": "plotlists/plot_list_electrons.csv",
@@ -9,13 +9,17 @@
           "crilin"
         ],
         "global_branches": ["StartCell", "event_trigger_mask"],
+        "global_filter_routine": "pedestal_selection",
         "option": {
           "crilin": {
             "reco_conf": {
-              "fixed_peak_position_value": 500,
-              "signal_samples_pre_peak": -500,
-              "signal_samples_post_peak": 500
-
+              "fixed_peak_position_value": 410,
+              "signal_samples_pre_peak": 100,
+              "signal_samples_post_peak": 500,
+              "signal_baseline_gap": 10,
+              "baseline_samples": 40,
+              "lp_freq": 0.2,
+              "pre_process_routine": "gaussian_filter"
             }
           }
         }
@@ -30,6 +34,7 @@
           "beamcatcher"
         ],
         "global_branches": ["StartCell", "event_trigger_mask"],
+        "global_filter_routine": null,
         "option": {
           "crilin": {
             "reco_conf": {
@@ -47,6 +52,7 @@
           "beamcatcher"
         ],
         "global_branches": [],
+        "global_filter_routine": null,
         "option": {
           "crilin": {
             "reco_conf": {
@@ -70,7 +76,7 @@
           "branch_ch",
           "board",
           "digi_ch",
-           "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy", "gain"
+          "global_chip", "fee_ch", "fee_board", "layer", "ix", "iy", "gain"
         ],
         "to_be_inverted": false,
         "remove_last_n_samples": 25,
@@ -320,8 +326,8 @@
         "apply_intercalib": null,
         "decode_and_select_gains": null,
         "reco_conf": {
-          "signal_samples_pre_peak": 50,
-          "signal_samples_post_peak": 100,
+          "signal_samples_pre_peak": 100,
+          "signal_samples_post_peak": 500,
           "charge_zerosup_peak_threshold": 7,
           "do_timing": false,
           "timing_methods": [
