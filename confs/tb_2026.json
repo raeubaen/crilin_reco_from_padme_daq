@@ -13,13 +13,12 @@
         "option": {
           "crilin": {
             "reco_conf": {
-              "fixed_peak_position_value": 410,
+              "peak_accept_window_ns_from_highest_ch": null,
+              "fixed_peak_position_value": 412,
               "signal_samples_pre_peak": 100,
               "signal_samples_post_peak": 500,
               "signal_baseline_gap": 10,
-              "baseline_samples": 40,
-              "lp_freq": 0.2,
-              "pre_process_routine": "gaussian_filter"
+              "baseline_samples": 40
             }
           }
         }
@@ -85,7 +84,7 @@
         "apply_intercalib": ["one_over_gain_over_ADC_per_mV", "one_over_mpv"],
         "decode_and_select_gains": null,
         "reco_conf": {
-          "save_pre_processed_waves": true,
+          "save_pre_processed_waves": false,
           "baseline_beginning_n_samples": 50,
           "peak_accept_window_ns_from_highest_ch": 10,
           "post_process_routine": "post_reco_crilin",
@@ -97,7 +96,7 @@
           "charge_zerosup_peak_threshold": -100,
           "do_timing": true,
           "timing_methods": [
-            "cf"
+            "lsfit"
           ],
           "spline_file": "templates/coeffs_centrale_layer1.txt",
       	  "interpolation_factor": 40,
