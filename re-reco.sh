@@ -1,7 +1,18 @@
 RUN=$1
 MODE=$2
 
-#source lxplus_define_envs.sh
+if [ "$USE_CUDA" = "1" ]; then
+    echo "Using CUDA"
+    N_PARALLEL=1
+else
+    echo "Using CPU"
+    N_PARALLEL=6
+
+fi
+
+echo "parallel processes: $N_PARALLEL"
+
+export RECO_FOLDER_ORIGINAL="${RECO_FOLDER}"
 
 echo Run: $RUN
 
@@ -14,8 +25,6 @@ mkdir -p $LOGS_FOLDER
 echo "LOGS in " ${LOGS_FOLDER}
 
 echo > $DONE_FILE
-
-#fragment_list="$(ls -1 "$RECO_FOLDER/run_$RUN/${RUN}_"*.root | awk -F "_" '{print $(NF-1)}')"
 
 fragment_list="$(ls -1 "$UNPACKED_FOLDER/run_$RUN/unpacked_${RUN}"*.root | awk -F "_" '{print $NF}' | awk -F "."  '{print $1}')"
 
@@ -51,3 +60,5 @@ for fragment_str in ${fragment_list}; do
 done
 
 echo list of files re-recoed in $DONE_FILE
+
+export RECO_FOLDER="${RECO_FOLDER_ORIGINAL}"
