@@ -1,6 +1,8 @@
 RUN=$1
 MODE=$2
 
+DRY=$3
+
 if [ "$USE_CUDA" = "1" ]; then
     echo "Using CUDA"
     N_PARALLEL=1
@@ -56,6 +58,10 @@ for fragment_str in ${fragment_list}; do
         fi
         sleep 1
     done
+
+    if [ "$DRY" == "1" ]; then
+      break
+    fi
 
 done
 
