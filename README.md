@@ -1,6 +1,10 @@
 See wiki
 
 Per il sottomodulo:
+Dopo il clone della repo parent (QUESTA QUI):
+```bash
+git submodule update --init --recursive
+```
 
 Per fare in modo che `git pull` aggiorni anche i submodule puoi usare:
 
