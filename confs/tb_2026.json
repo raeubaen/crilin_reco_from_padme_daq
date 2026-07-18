@@ -96,15 +96,15 @@
           "charge_zerosup_peak_threshold": -100,
           "do_timing": true,
           "timing_methods": [
-            "lsfit"
+            "cf", "lsfit"
           ],
           "spline_file": "templates/coeffs_template_100GeV_ch222_filtered_new.txt",
       	  "interpolation_factor": 40,
           "cf": 0.11,
           "rise_samples_pre_peak": 30,
           "rise_samples_post_peak": 30,
-          "rise_interp_left_samples": 3,
-          "rise_interp_right_samples": 3,
+          "rise_interp_left_samples": 5,
+          "rise_interp_right_samples": 5,
           "sampling_rate": 2.5,
           "save_mean_rms_all_samples": true,
           "save_only_central_region_info": false,
@@ -138,7 +138,6 @@
           "signal_samples_pre_peak": 30,
           "signal_samples_post_peak": 250,
           "charge_zerosup_peak_threshold": 10,
-          "seed_charge_threshold": 50,
           "sampling_rate": 2.5,
           "save_mean_rms_all_samples": true,
           "do_timing": false,
@@ -175,13 +174,13 @@
         "apply_intercalib": ["one_over_gain_over_ADC_per_mV"],
         "decode_and_select_gains": null,
         "reco_conf": {
+          "save_pre_processed_waves": true,
           "signal_samples_pre_peak": 30,
           "signal_samples_post_peak": 100,
           "charge_zerosup_peak_threshold": 10,
-          "seed_charge_threshold": 50,
           "sampling_rate": 2.5,
           "save_mean_rms_all_samples": true,
-          "do_timing": false,
+          "do_timing": true,
           "timing_methods": [
             "cf"
           ],
@@ -189,7 +188,7 @@
           "rise_samples_pre_peak": 30,
           "charge_unit_slope": 0.008,
           "charge_unit_conversion": true,
-          "rise_samples_post_peak": 30,
+          "rise_samples_post_peak": 5,
           "rise_interp_left_samples": 3,
           "rise_interp_right_samples": 3,
           "interpolation_factor": 40
